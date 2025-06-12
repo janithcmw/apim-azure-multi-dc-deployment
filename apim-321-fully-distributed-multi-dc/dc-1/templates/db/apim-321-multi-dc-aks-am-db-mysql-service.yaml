@@ -1,0 +1,22 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-mysql-service
+  namespace : {{ .Release.Namespace }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "subnet-cluster1"
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.0.1.103"
+    #Manual DNS entry should be added to mysql.service.am.wso2.com -> 10.0.1.103
+spec:
+  type: LoadBalancer
+  selector:
+    deployment: wso2am-mysql
+    product: api-manager
+  ports:
+    - name: mysql-port
+      port: 3306
+      targetPort: 3306
+      protocol: TCP
+---
