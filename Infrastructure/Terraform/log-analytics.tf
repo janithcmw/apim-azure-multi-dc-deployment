@@ -10,8 +10,8 @@ module "cluster1_log_analytics" {
     internet_ingestion_enabled      = true
     internet_query_enabled          = true
     tags                            = local.tags
-    log_analytics_solution_name     = true
-    log_analytics_solution_enabled  = "ContainerInsights"
+    log_analytics_solution_enabled  = true
+    log_analytics_solution_name     = "ContainerInsights"
 }
 
 module "cluster2_log_analytics" {
