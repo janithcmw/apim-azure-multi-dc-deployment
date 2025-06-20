@@ -11,7 +11,7 @@ module "cluster1_virtual_network" {
 #vertual network for the cluster1 'snet-{var.aks_node_pool_subnet_name}' | The created vnet need to be pushed to the Aks cluster
 module "cluster2_virtual_network" {
     source = "github.com/wso2/azure-terraform-modules//modules/azurerm/Virtual-Network?ref=v0.44.0"
-    virtual_network_name            = local.cluster1_virtual_network_name
+    virtual_network_name            = local.cluster2_virtual_network_name
     virtual_network_address_space   = "10.2.0.0/16"
     location                        = var.location
     resource_group_name             = module.resource_group.resource_group_name
