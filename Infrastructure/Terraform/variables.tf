@@ -42,10 +42,10 @@ variable "cluster2_padding" {
   type        = string
 }
 
-variable "subscription_id" {
-  description = "Subscription ID for the Azure account"
-  type        = string
-}
+#variable "subscription_id" {
+#  description = "Subscription ID for the Azure account"
+#  type        = string
+#}
 
 variable "tags" {
   default     = {}
