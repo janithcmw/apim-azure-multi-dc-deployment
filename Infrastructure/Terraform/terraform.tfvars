@@ -103,5 +103,5 @@ cluster2_aks_node_pool_subnet_address_prefix = "10.2.1.0/24"
 
 
 # Load balancer configuration
-cluster1_internal_loadbalancer_subnet_address_prefix = "10.3.1.0/24"
-cluster2_internal_loadbalancer_subnet_address_prefix = "10.4.1.0/24"
+cluster1_internal_loadbalancer_subnet_address_prefix = "10.1.0.0/24"
+cluster2_internal_loadbalancer_subnet_address_prefix = "10.2.0.0/24"
