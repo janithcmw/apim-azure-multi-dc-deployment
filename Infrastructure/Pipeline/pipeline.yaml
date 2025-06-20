@@ -5,7 +5,7 @@
 variables:
   # terraform backend
   terraformstoragerg: 'rg-cst-api-app'                                   
-  terraformstorageaccount: 'tfstatestoragecst 
+  terraformstorageaccount: 'tfstatestoragecst'
 
 # Define resources.
 resources:
@@ -106,7 +106,7 @@ stages:
               az aks get-credentials --resource-group multi-dc-deployment-tests --name aks-cluster1 --overwrite-existing --admin
               sudo kubelogin convert-kubeconfig -l azurecli
 
-              #create secret to access the doker repository.
+              #create secret to access the docker repository.
               kubectl create secret docker-registry <secret-name> --docker-username=<> --docker-password=<> --docker-email=<>
               
               #install dc-1
@@ -117,7 +117,7 @@ stages:
               az aks get-credentials --resource-group multi-dc-deployment-tests --name aks-cluster2 --overwrite-existing --admin
               sudo kubelogin convert-kubeconfig -l azurecli
 
-              #create secret to access the doker repository.
+              #create secret to access the docker repository.
               kubectl create secret docker-registry <secret-name> --docker-username=<> --docker-password=<> --docker-email=<>
 
               #install dc-2
