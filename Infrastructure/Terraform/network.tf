@@ -103,7 +103,7 @@ module "set_pvt_dns_A_records_tm2_DC1" {
 module "set_pvt_dns_A_records_tm1_DC2" {
     source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
     private_dns_a_record_name   = "traffic.manager1.external.svc.dc2"
-    zone_name                   = var.private_dns_zone_name
+    private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
     records                     = ["10.2.1.101"]
