@@ -13,7 +13,7 @@
 Used to store the terraform state file in Azure Blob Storage
 */
 terraform {
-  required_version = "= 1.9.6"
+  required_version = "= 1.12.2"
   backend "azurerm" {
     resource_group_name  = "rg-cst-api-app"
     storage_account_name = "tfstatestoragecst"
