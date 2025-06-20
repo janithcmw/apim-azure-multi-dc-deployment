@@ -5,7 +5,7 @@ module "cluster1_log_analytics" {
     location                        = var.location
     resource_group_name             = module.resource_group.resource_group_name
     log_analytics_workspace_sku     = "PerGB2018"
-    log_retention_in_days           = 7
+    log_retention_in_days           = 40
     daily_quota_gb                  = -1
     internet_ingestion_enabled      = true
     internet_query_enabled          = true
@@ -20,7 +20,7 @@ module "cluster2_log_analytics" {
     location                        = var.location
     resource_group_name             = module.resource_group.resource_group_name
     log_analytics_workspace_sku     = "PerGB2018"
-    log_retention_in_days           = 7
+    log_retention_in_days           = 40
     daily_quota_gb                  = -1
     internet_ingestion_enabled      = true
     internet_query_enabled          = true
