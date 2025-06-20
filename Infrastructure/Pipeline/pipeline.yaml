@@ -1,0 +1,127 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+variables:
+  # terraform backend
+  terraformstoragerg: 'rg-cst-api-app'                                   
+  terraformstorageaccount: 'tfstatestoragecst 
+
+# Define resources.
+resources:
+  repositories:
+    - repository: apim-azure-multi-dc-deployment
+      type: github
+      endpoint: azure-multi-dc-deployment
+      name: janithcmw/apim-azure-multi-dc-deployment
+
+pool:
+  name: shared-vmss-pool-4
+
+stages:
+  - stage: Infrastructure_Provisioning
+    jobs:
+      - job: Provision_Infrastructure
+        displayName: Infrastructure Provisioning
+        steps:
+        - script: echo Starting Azure Multi DC Pipeline!!!
+          displayName: 'Beginning'
+        - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+          displayName: 'Install Terraform 1.12.2'
+          inputs:
+              terraformVersion: 1.12.2
+
+        - checkout: apim-azure-multi-dc-deployment
+          path: s/apim-azure-multi-dc-deployment
+        
+        - script: |
+            mkdir -p "$(Agent.BuildDirectory)/s/azure-build-tf"
+            cp "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Infrastructure/Terraform" "$(Agent.BuildDirectory)/s/azure-build-tf/"
+        
+        # - task: DownloadSecureFile@1 #currenty not needed since the details are commited to the git repo it self.
+        #   inputs:
+        #     secureFile: 'terraform.tfvars'
+        
+        - script: |
+            mv "$(Agent.TempDirectory)/terraform.tfvars" "$(Agent.BuildDirectory)/s/azure-build-tf/"
+
+        - script: 
+            ls $(Agent.BuildDirectory)/s/azure-build-tf/
+          displayName: 'List directory of tf artifacts.'
+
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform init'
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
+            commandOptions: '-upgrade'
+            backendServiceArm: 'Infrastructure Provisioning Service Connection'
+            backendAzureRmResourceGroupName: '$(terraformstoragerg)'
+            backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
+            backendAzureRmContainerName: 'test-terraform-storage'
+            backendAzureRmKey: '.terraform/terraform.tfstate'
+
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform plan'
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
+            environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
+
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform apply -auto-approve'
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
+            commandOptions: '-auto-approve'
+            environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
+        
+        # - checkout: apim-azure-multi-dc-deployment
+        #   path: s/helm-artifacts
+
+        - script: |
+            mkdir -p "$(Agent.BuildDirectory)/s/helm-deployment-build"
+            cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/*" "$(Agent.BuildDirectory)/s/helm-deployment-build/"
+
+        - script: |
+            ls $(Agent.BuildDirectory)/s/helm-deployment-build/
+          displayName: 'List directory of helm artifacts.'
+
+        - task: AzureCLI@2
+          displayName: Login to AKS using kubelogin
+          inputs:
+            azureSubscription: 'Infrastructure Provisioning Service Connection'
+            scriptType: 'bash'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+            
+              #navigate to helm repository location.
+              cd $(Agent.BuildDirectory)/s/helm-deployment-build/
+              ls
+
+              #login into cluster1
+              az aks get-credentials --resource-group multi-dc-deployment-tests --name aks-cluster1 --overwrite-existing --admin
+              sudo kubelogin convert-kubeconfig -l azurecli
+
+              #create secret to access the doker repository.
+              kubectl create secret docker-registry janithcmw-secret --docker-username=janithcmw --docker-password=dckr_pat_e67k076xwws2VucQVtc3oCNCSvQ --docker-email=janithcmw@gmail.com
+              
+              #install dc-1
+              helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-1
+              kubectl get pods --namespace default
+
+              #login into cluster2
+              az aks get-credentials --resource-group multi-dc-deployment-tests --name aks-cluster2 --overwrite-existing --admin
+              sudo kubelogin convert-kubeconfig -l azurecli
+
+              #create secret to access the doker repository.
+              kubectl create secret docker-registry janithcmw-secret --docker-username=janithcmw --docker-password=dckr_pat_e67k076xwws2VucQVtc3oCNCSvQ --docker-email=janithcmw@gmail.com
+
+              #install dc-2
+              helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-2
+              kubectl get pods --namespace default
+
+              echo "Deployment executed successfully!!!"
