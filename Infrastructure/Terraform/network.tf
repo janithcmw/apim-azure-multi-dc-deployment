@@ -20,24 +20,20 @@ module "cluster2_virtual_network" {
 
 #Handing peering between two vnets.
 module "cluster1_virtual_network_to_cluster2_virtual_network" {
-    source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
-    custom_peering_dest_name    = "cluster1_virtual_network_to_cluster2_virtual_network"
-    resource_group_name         = module.resouce_group.resource_group_name
-    virtual_network_name        = module.cluster1_virtual_network.virtual_network_name
-    remote_virtual_network_id   = module.cluster2_virtual_network.virtual_network_id
-    allow_virtual_network_acces = true
-    allow_forwarded_traffic     = true
+    source                          = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
+    custom_peering_dest_name        = "cluster1_virtual_network_to_cluster2_virtual_network"
+    remote_virtual_network_id       = module.cluster2_virtual_network.virtual_network_id
+    allow_virtual_network_access    = true
+    allow_forwarded_traffic         = true
 }
 
 
 module "cluster2_virtual_network_to_cluster1_virtual_network" {
-    source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
-    custom_peering_dest_name    = "cluster2_virtual_network_to_cluster1_virtual_network"
-    resource_group_name         = module.resouce_group.resource_group_name
-    virtual_network_name        = module.cluster2_virtual_network.virtual_network_name
-    remote_virtual_network_id   = module.cluster1_virtual_network.virtual_network_id
-    allow_virtual_network_acces = true
-    allow_forwarded_traffic     = true
+    source                          = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
+    custom_peering_dest_name        = "cluster2_virtual_network_to_cluster1_virtual_network"
+    remote_virtual_network_id       = module.cluster1_virtual_network.virtual_network_id
+    allow_virtual_network_access    = true
+    allow_forwarded_traffic         = true
 }
 
 # If there are exsisting VNets that needs to be peered with the above VNets those also should be handled.
