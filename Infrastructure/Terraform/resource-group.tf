@@ -1,8 +1,8 @@
 
 # Provider Block
 provider "azurerm" {
-  # subscription_id = var.subscription_id
-  features {}
+    subscription_id = var.subscription_id
+    features {}
 }
 
 # Creating resource group.
