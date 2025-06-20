@@ -75,7 +75,7 @@ module "aks_cluster_2" {
   aks_load_balancer_subnet_nsg_rules                   = var.aks_load_balancer_subnet_nsg_rules
   aks_load_balancer_subnet_network_security_group_name = join("-", ["loadbalancer", var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
   aks_load_balancer_subnet_name                        = join("-", [module.cluster2_virtual_network.virtual_network_name, "loadbalancer"])
-  internal_loadbalancer_subnet_address_prefix          = var.cluster1_internal_loadbalancer_subnet_address_prefix
+  internal_loadbalancer_subnet_address_prefix          = var.cluster2_internal_loadbalancer_subnet_address_prefix
   aks_admin_username                                   = var.aks_admin_username
   aks_public_ssh_key_path                              = var.aks_public_ssh_key_path
   azure_policy_enabled                                 = var.azure_policy_enabled
