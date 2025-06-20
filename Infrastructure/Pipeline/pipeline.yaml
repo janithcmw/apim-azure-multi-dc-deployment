@@ -107,7 +107,7 @@ stages:
               sudo kubelogin convert-kubeconfig -l azurecli
 
               #create secret to access the doker repository.
-              kubectl create secret docker-registry janithcmw-secret --docker-username=janithcmw --docker-password=dckr_pat_e67k076xwws2VucQVtc3oCNCSvQ --docker-email=janithcmw@gmail.com
+              kubectl create secret docker-registry janithcmw-secret --docker-username=<> --docker-password=<> --docker-email=<>
               
               #install dc-1
               helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-1
@@ -118,7 +118,7 @@ stages:
               sudo kubelogin convert-kubeconfig -l azurecli
 
               #create secret to access the doker repository.
-              kubectl create secret docker-registry janithcmw-secret --docker-username=janithcmw --docker-password=dckr_pat_e67k076xwws2VucQVtc3oCNCSvQ --docker-email=janithcmw@gmail.com
+              kubectl create secret docker-registry janithcmw-secret --docker-username=<> --docker-password=<> --docker-email=<>
 
               #install dc-2
               helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-2
