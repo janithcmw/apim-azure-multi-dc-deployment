@@ -217,11 +217,6 @@ variable "internal_load_balancer_subnet_enforce_private_link_endpoint_network_po
   type        = string
 }
 
-variable "tags" {
-  default   = "tag-val"
-  
-}
-
 variable "private_dns_zone_name" {
   default = "am.wso2.com"
   description = "The dns name of the Aks cluster private DNS."
