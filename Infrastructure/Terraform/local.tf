@@ -15,5 +15,5 @@ locals {
   resource_group_name                   = join("-", [var.project, var.application_name, var.environment, var.location])
   cluster1_virtual_network_name         = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
   cluster2_virtual_network_name         = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
-  tags                                  = join("-", ["tag", var.project, var.application_name, var.environment, var.location])
+  tags                                  = {tag = join("-", ["tag", var.project, var.application_name, var.environment, var.location])}
 }
