@@ -14,6 +14,7 @@ resources:
       type: github
       endpoint: azure-multi-dc-deployment
       name: janithcmw/apim-azure-multi-dc-deployment
+      ref: refs/heads/localRun
 
 pool:
   name: shared-vmss-pool-4
@@ -33,7 +34,6 @@ stages:
 
         - checkout: apim-azure-multi-dc-deployment
           path: s/apim-azure-multi-dc-deployment
-          ref: refs/heads/localRun
         
         - script: |
             mkdir -p "$(Agent.BuildDirectory)/s/azure-build-tf"
