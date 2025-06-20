@@ -87,7 +87,7 @@ module "set_pvt_dns_A_records_tm1_DC1" {
     private_dns_a_record_name   = "traffic.manager1.external.svc.dc1"
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
-    ttl                         = 300
+    time_to_live                = 300
     records                     = ["10.1.1.101"]
     tags                        = local.tags
 }
@@ -96,7 +96,7 @@ module "set_pvt_dns_A_records_tm2_DC1" {
     private_dns_a_record_name   = "traffic.manager2.external.svc.dc1"
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
-    ttl                         = 300
+    time_to_live                = 300
     records                     = ["10.1.1.102"]
     tags                        = local.tags
 }
@@ -105,7 +105,7 @@ module "set_pvt_dns_A_records_tm1_DC2" {
     private_dns_a_record_name   = "traffic.manager1.external.svc.dc2"
     zone_name                   = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
-    ttl                         = 300
+    time_to_live                = 300
     records                     = ["10.2.1.101"]
     tags                        = local.tags
 }
@@ -114,7 +114,7 @@ module "set_pvt_dns_A_records_tm2_DC2" {
     private_dns_a_record_name   = "traffic.manager2.external.svc.dc2"
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
-    ttl                         = 300
+    time_to_live                = 300
     records                     = ["10.2.1.101"]
     tags                        = local.tags
 }
@@ -123,7 +123,7 @@ module "set_pvt_dns_A_records_database" {
     private_dns_a_record_name   = "traffic.manager1.external.svc.dc1"
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
-    ttl                         = 300
+    time_to_live                = 300
     records                     = ["10.1.1.103"]
     tags                        = local.tags
 }
