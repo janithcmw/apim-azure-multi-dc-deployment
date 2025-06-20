@@ -10,7 +10,7 @@ module "aks_cluster_1" {
   log_analytics_workspace_id                           = module.cluster1_log_analytics.log_analytics_workspace_id
   private_cluster_enabled                              = var.private_cluster_enabled
   kubernetes_version                                   = var.kubernetes_version
-  default_node_pool_name                               = join("-", [var.default_node_pool_name, var.cluster1_padding])
+  default_node_pool_name                               = join("", [var.default_node_pool_name, var.cluster1_padding])
   default_node_pool_vm_size                            = var.default_node_pool_vm_size
   default_node_pool_os_disk_size_gb                    = var.default_node_pool_os_disk_size_gb
   default_node_pool_max_count                          = var.default_node_pool_max_count
@@ -52,7 +52,7 @@ module "aks_cluster_2" {
   log_analytics_workspace_id                           = module.cluster2_log_analytics.log_analytics_workspace_id
   private_cluster_enabled                              = var.private_cluster_enabled
   kubernetes_version                                   = var.kubernetes_version
-  default_node_pool_name                               = join("-", [var.default_node_pool_name, var.cluster2_padding])
+  default_node_pool_name                               = join("", [var.default_node_pool_name, var.cluster2_padding])
   default_node_pool_vm_size                            = var.default_node_pool_vm_size
   default_node_pool_os_disk_size_gb                    = var.default_node_pool_os_disk_size_gb
   default_node_pool_max_count                          = var.default_node_pool_max_count
