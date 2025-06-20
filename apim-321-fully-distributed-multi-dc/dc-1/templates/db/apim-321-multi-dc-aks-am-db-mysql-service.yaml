@@ -7,7 +7,7 @@ metadata:
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "subnet-cluster1"
-    service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.0.1.103"
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.1.1.103"
     #Manual DNS entry should be added to mysql.service.am.wso2.com -> 10.0.1.103
 spec:
   type: LoadBalancer
