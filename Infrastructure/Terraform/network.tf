@@ -57,6 +57,9 @@ module "cluster1_dns_vnet_link" {
     private_dns_zone_name               = var.private_dns_zone_name
     virtual_network_id                  = module.cluster1_virtual_network.virtual_network_id
     #registration_enabled                = true #not used in module, have to check why?
+    depends_on = [
+        module.common_aks_cluster_dns
+    ]
 }
 
 module "cluster2_dns_vnet_link" {
@@ -66,6 +69,9 @@ module "cluster2_dns_vnet_link" {
     private_dns_zone_name               = var.private_dns_zone_name
     virtual_network_id                  = module.cluster2_virtual_network.virtual_network_id
     #registration_enabled                = true #not used in module, have to check why?
+    depends_on = [
+        module.common_aks_cluster_dns
+    ]
 }
 
 #Assign roles for aks clusters
@@ -74,6 +80,10 @@ module "dns_zone_permission_aks_cluster_1" {
     resource_id             = module.common_aks_cluster_dns.private_dns_zone_id
     role_definition_name    = "DNS Zone Contributor"
     principal_id            = module.aks_cluster_1.aks_api_server_identity
+    depends_on = [
+        module.common_aks_cluster_dns,
+        module.cluster1_dns_vnet_link
+    ]
 }
 
 module "dns_zone_permission_aks_cluster_2" {
@@ -81,6 +91,10 @@ module "dns_zone_permission_aks_cluster_2" {
     resource_id             = module.common_aks_cluster_dns.private_dns_zone_id
     role_definition_name    = "DNS Zone Contributor"
     principal_id            = module.aks_cluster_2.aks_api_server_identity
+    depends_on = [
+        module.common_aks_cluster_dns,
+        module.cluster2_dns_vnet_link
+    ]
 }
 
 #Adding DNS A recodes based on the set up in Helm.
@@ -92,6 +106,9 @@ module "set_pvt_dns_A_records_tm1_DC1" {
     time_to_live                = 300
     records                     = ["10.1.1.101"]
     tags                        = local.tags
+    depends_on = [
+        module.common_aks_cluster_dns
+    ]
 }
 module "set_pvt_dns_A_records_tm2_DC1" {
     source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
@@ -101,6 +118,9 @@ module "set_pvt_dns_A_records_tm2_DC1" {
     time_to_live                = 300
     records                     = ["10.1.1.102"]
     tags                        = local.tags
+    depends_on = [
+        module.common_aks_cluster_dns
+    ]
 }
 module "set_pvt_dns_A_records_tm1_DC2" {
     source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
@@ -110,6 +130,9 @@ module "set_pvt_dns_A_records_tm1_DC2" {
     time_to_live                = 300
     records                     = ["10.2.1.101"]
     tags                        = local.tags
+    depends_on = [
+        module.common_aks_cluster_dns
+    ]
 }
 module "set_pvt_dns_A_records_tm2_DC2" {
     source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
@@ -119,6 +142,9 @@ module "set_pvt_dns_A_records_tm2_DC2" {
     time_to_live                = 300
     records                     = ["10.2.1.101"]
     tags                        = local.tags
+    depends_on = [
+        module.common_aks_cluster_dns
+    ]
 }
 module "set_pvt_dns_A_records_database" {
     source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
@@ -128,6 +154,9 @@ module "set_pvt_dns_A_records_database" {
     time_to_live                = 300
     records                     = ["10.1.1.103"]
     tags                        = local.tags
+    depends_on = [
+        module.common_aks_cluster_dns
+    ]
 }
 
               
