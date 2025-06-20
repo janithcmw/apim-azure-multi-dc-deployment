@@ -7,7 +7,7 @@ location         = "westeurope"
 hub_spoke        = "spoke"
 
 //AKS Cluster 
-kubernetes_version      = "1.29.9"
+kubernetes_version      = "1.31.8"
 private_cluster_enabled = true
 
 #Node Pool
