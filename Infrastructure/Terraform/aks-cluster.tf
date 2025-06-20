@@ -3,10 +3,10 @@ module "aks_cluster_1" {
   source = "github.com/wso2/azure-terraform-modules//modules/azurerm/AKS-Generic?ref=v0.44.0"
   # Cluster configurations
   aks_cluster_name                                     = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
-  aks_cluster_dns_prefix                               = join("-", [var.aks_cluster_dns_prefix, var.cluster1_padding])
+  aks_cluster_dns_prefix                               = join("-", [var.cluster1_aks_cluster_dns_prefix, var.cluster1_padding])
   location                                             = var.location
-  aks_resource_group_name                              = module.resouce_group.resource_group_name
-  virtual_network_resource_group_name                  = module.resouce_group.resource_group_name
+  aks_resource_group_name                              = module.resource_group.resource_group_name
+  virtual_network_resource_group_name                  = module.resource_group.resource_group_name
   log_analytics_workspace_id                           = module.cluster1_log_analytics.log_analytics_workspace_id
   private_cluster_enabled                              = var.private_cluster_enabled
   kubernetes_version                                   = var.kubernetes_version
@@ -33,7 +33,7 @@ module "aks_cluster_1" {
   aks_load_balancer_subnet_nsg_rules                   = var.aks_load_balancer_subnet_nsg_rules # two this is working? I do not need to specify any ips, can I skip
   aks_load_balancer_subnet_network_security_group_name = join("-", ["loadbalancer", var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
   aks_load_balancer_subnet_name                        = join("-", [module.cluster1_virtual_network.virtual_network_name, "loadbalancer"])
-  internal_loadbalancer_subnet_address_prefix          = var.internal_loadbalancer_subnet_address_prefix
+  internal_loadbalancer_subnet_address_prefix          = var.cluster1_internal_loadbalancer_subnet_address_prefix
   aks_admin_username                                   = var.aks_admin_username
   aks_public_ssh_key_path                              = var.aks_public_ssh_key_path
   azure_policy_enabled                                 = var.azure_policy_enabled
@@ -45,10 +45,10 @@ module "aks_cluster_2" {
   source = "github.com/wso2/azure-terraform-modules//modules/azurerm/AKS-Generic?ref=v0.44.0"
   # Cluster configurations
   aks_cluster_name                                     = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
-  aks_cluster_dns_prefix                               = join("-", [var.aks_cluster_dns_prefix, var.cluster2_padding])
+  aks_cluster_dns_prefix                               = join("-", [var.cluster2_aks_cluster_dns_prefix, var.cluster2_padding])
   location                                             = var.location
-  aks_resource_group_name                              = module.resouce_group.resource_group_name
-  virtual_network_resource_group_name                  = module.resouce_group.resource_group_name
+  aks_resource_group_name                              = module.resource_group.resource_group_name
+  virtual_network_resource_group_name                  = module.resource_group.resource_group_name
   log_analytics_workspace_id                           = module.cluster2_log_analytics.log_analytics_workspace_id
   private_cluster_enabled                              = var.private_cluster_enabled
   kubernetes_version                                   = var.kubernetes_version
@@ -75,7 +75,7 @@ module "aks_cluster_2" {
   aks_load_balancer_subnet_nsg_rules                   = var.aks_load_balancer_subnet_nsg_rules
   aks_load_balancer_subnet_network_security_group_name = join("-", ["loadbalancer", var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
   aks_load_balancer_subnet_name                        = join("-", [module.cluster2_virtual_network.virtual_network_name, "loadbalancer"])
-  internal_loadbalancer_subnet_address_prefix          = var.internal_loadbalancer_subnet_address_prefix
+  internal_loadbalancer_subnet_address_prefix          = var.cluster1_internal_loadbalancer_subnet_address_prefix
   aks_admin_username                                   = var.aks_admin_username
   aks_public_ssh_key_path                              = var.aks_public_ssh_key_path
   azure_policy_enabled                                 = var.azure_policy_enabled
