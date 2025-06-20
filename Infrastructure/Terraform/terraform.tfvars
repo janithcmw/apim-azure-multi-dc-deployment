@@ -29,20 +29,20 @@ aks_admin_username      = "ubuntu"
 
 # NSG rules for cluster subnet and Load balancer subnet
 aks_node_pool_subnet_nsg_rules = {
-  allow_vm_subnet_to_nodepool = {#todo need to check for the outbunt traffic
-    priority                                   = "100"
-    name                                       = "AllowVmSubnetToNodepool"
-    description                                = "Allow traffic from VM's subnet to AKS node pool"
-    direction                                  = "Inbound"
-    access                                     = "Allow"
-    protocol                                   = "*"
-    source_port_ranges                         = ["0-65535"]
-    destination_port_ranges                    = ["0-65535"]
-    source_address_prefixes                    = ["*"]
-    destination_address_prefixes               = ["*"]
-    source_application_security_group_ids      = []
-    destination_application_security_group_ids = []
-  }
+#  allow_vm_subnet_to_nodepool = {#todo need to check for the outbunt traffic
+#    priority                                   = "100"
+#    name                                       = "AllowVmSubnetToNodepool"
+#    description                                = "Allow traffic from VM's subnet to AKS node pool"
+#    direction                                  = "Inbound"
+#    access                                     = "Allow"
+#    protocol                                   = "*"
+#    source_port_ranges                         = ["0-65535"]
+#    destination_port_ranges                    = ["0-65535"]
+#    source_address_prefixes                    = ["*"]
+#    destination_address_prefixes               = ["*"]
+#    source_application_security_group_ids      = []
+#    destination_application_security_group_ids = []
+#  }
   # allow_nodepool_outbound_to_any = {
   # priority                                   = "200"
   # name                                       = "AllowNodepoolOutboundToAny"
@@ -60,20 +60,20 @@ aks_node_pool_subnet_nsg_rules = {
 }
 
 aks_load_balancer_subnet_nsg_rules = {
-  allow_vm_subnet_to_loadbalancer = {
-    priority                                   = "120"
-    name                                       = "AllowVmSubnetToLoadBalancer"
-    description                                = "Allow traffic from VM's subnet to AKS load balancer"
-    direction                                  = "Inbound"
-    access                                     = "Allow"
-    protocol                                   = "*"
-    source_port_ranges                         = ["0-65535"]
-    destination_port_ranges                    = ["0-65535"]
-    source_address_prefixes                    = ["*"]
-    destination_address_prefixes               = ["*"]
-    source_application_security_group_ids      = []
-    destination_application_security_group_ids = []
-  }
+#  allow_vm_subnet_to_loadbalancer = {
+#    priority                                   = "120"
+#    name                                       = "AllowVmSubnetToLoadBalancer"
+#    description                                = "Allow traffic from VM's subnet to AKS load balancer"
+#    direction                                  = "Inbound"
+#    access                                     = "Allow"
+#    protocol                                   = "*"
+#    source_port_ranges                         = ["0-65535"]
+#    destination_port_ranges                    = ["0-65535"]
+#    source_address_prefixes                    = ["*"]
+#    destination_address_prefixes               = ["*"]
+#    source_application_security_group_ids      = []
+#    destination_application_security_group_ids = []
+#  }
   # allow_loadbalancer_outbound_to_any = {
   # priority                                   = "220"
   # name                                       = "AllowNodepoolOutboundToAny"
