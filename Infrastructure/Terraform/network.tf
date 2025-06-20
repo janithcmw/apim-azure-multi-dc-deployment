@@ -4,7 +4,7 @@ module "cluster1_virtual_network" {
     virtual_network_name            = local.cluster1_virtual_network_name
     virtual_network_address_space   = ["10.1.0.0/16"]
     location                        = var.location
-    resource_group_name             = module.resouce_group.resource_group_name
+    resource_group_name             = module.resource_group.resource_group_name
     tags                            = local.tags
 }
 
@@ -14,7 +14,7 @@ module "cluster2_virtual_network" {
     virtual_network_name            = local.cluster1_virtual_network_name
     virtual_network_address_space   = ["10.1.0.0/16"]
     location                        = var.location
-    resource_group_name             = module.resouce_group.resource_group_name
+    resource_group_name             = module.resource_group.resource_group_name
     tags                            = local.tags
 }
 
@@ -43,7 +43,7 @@ module "cluster2_virtual_network_to_cluster1_virtual_network" {
 module "common_aks_cluster_dns" {
     source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-Zone?ref=v0.44.0"
     private_dns_zone_name   = var.private_dns_zone_name
-    resource_group_name     = module.resouce_group.resource_group_name
+    resource_group_name     = module.resource_group.resource_group_name
     tags                    = var.tags
 }
 
@@ -51,7 +51,7 @@ module "common_aks_cluster_dns" {
 module "cluster1_dns_vnet_link" {
     source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-Zone-Vnet-Link?ref=v0.44.0"
     private_dns_zone_vnet_link_name     = "cluster1_virtual_network-dns-link"
-    resource_group_name                 = module.resouce_group.resource_group_name
+    resource_group_name                 = module.resource_group.resource_group_name
     private_dns_zone_name               = var.private_dns_zone_name
     virtual_network_id                  = module.cluster1_virtual_network.virtual_network_id
     #registration_enabled                = true #not used in module, have to check why?
@@ -60,7 +60,7 @@ module "cluster1_dns_vnet_link" {
 module "cluster2_dns_vnet_link" {
     source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-Zone-Vnet-Link?ref=v0.44.0"
     private_dns_zone_vnet_link_name     = "cluster1_virtual_network-dns-link"
-    resource_group_name                 = module.resouce_group.resource_group_name
+    resource_group_name                 = module.resource_group.resource_group_name
     private_dns_zone_name               = var.private_dns_zone_name
     virtual_network_id                  = module.cluster2_virtual_network.virtual_network_id
     #registration_enabled                = true #not used in module, have to check why?
@@ -82,49 +82,49 @@ module "dns_zone_permission_aks_cluster_2" {
 }
 
 #Adding DNS A recodes based on the set up in Helm.
-module "set_dns_A_records_tm1_DC1" {
-    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/DNS-A-Record?ref=v0.44.0"
-    record_name             = "traffic.manager1.external.svc.dc1"
+module "set_pvt_dns_A_records_tm1_DC1" {
+    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
+    name                    = "traffic.manager1.external.svc.dc1"
     zone_name               = var.private_dns_zone_name
-    resource_group_name     = module.resouce_group.resource_group_name
+    resource_group_name     = module.resource_group.resource_group_name
     ttl                     = 300
-    records                 = ["10.0.1.101"]
+    records                 = ["10.1.1.101"]
     tags                    = local.tags
 }
-module "set_dns_A_records_tm2_DC1" {
-    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/DNS-A-Record?ref=v0.44.0"
-    record_name             = "traffic.manager2.external.svc.dc1"
+module "set_pvt_dns_A_records_tm2_DC1" {
+    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
+    name                    = "traffic.manager2.external.svc.dc1"
     zone_name               = var.private_dns_zone_name
-    resource_group_name     = module.resouce_group.resource_group_name
+    resource_group_name     = module.resource_group.resource_group_name
     ttl                     = 300
-    records                 = ["10.0.1.102"]
+    records                 = ["10.1.1.102"]
     tags                    = local.tags
 }
-module "set_dns_A_records_tm1_DC2" {
-    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/DNS-A-Record?ref=v0.44.0"
-    record_name             = "traffic.manager1.external.svc.dc2"
+module "set_pvt_dns_A_records_tm1_DC2" {
+    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
+    name                    = "traffic.manager1.external.svc.dc2"
     zone_name               = var.private_dns_zone_name
-    resource_group_name     = module.resouce_group.resource_group_name
+    resource_group_name     = module.resource_group.resource_group_name
     ttl                     = 300
-    records                 = ["10.0.1.101"]
+    records                 = ["10.2.1.101"]
     tags                    = local.tags
 }
-module "set_dns_A_records_tm2_DC2" {
-    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/DNS-A-Record?ref=v0.44.0"
-    record_name             = "traffic.manager2.external.svc.dc2"
+module "set_pvt_dns_A_records_tm2_DC2" {
+    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
+    name                    = "traffic.manager2.external.svc.dc2"
     zone_name               = var.private_dns_zone_name
-    resource_group_name     = module.resouce_group.resource_group_name
+    resource_group_name     = module.resource_group.resource_group_name
     ttl                     = 300
-    records                 = ["10.0.1.101"]
+    records                 = ["10.2.1.101"]
     tags                    = local.tags
 }
-module "set_dns_A_records" {
-    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/DNS-A-Record?ref=v0.44.0"
-    record_name             = "traffic.manager1.external.svc.dc1"
+module "set_pvt_dns_A_records_database" {
+    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
+    name                    = "traffic.manager1.external.svc.dc1"
     zone_name               = var.private_dns_zone_name
-    resource_group_name     = module.resouce_group.resource_group_name
+    resource_group_name     = module.resource_group.resource_group_name
     ttl                     = 300
-    records                 = ["10.0.1.101"]
+    records                 = ["10.1.1.103"]
     tags                    = local.tags
 }
 

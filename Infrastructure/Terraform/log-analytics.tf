@@ -1,7 +1,7 @@
 #Configure log analytics for each cluster.
 module "cluster1_log_analytics" {
     source                          = "github.com/wso2/azure-terraform-modules//modules/azurerm/Log-Analytics-Workspace?ref=v0.44.0"
-    log_analytics_abbreviation      = module.resouce_group.resource_group_name
+    log_analytics_abbreviation      = module.resource_group.resource_group_name
     log_analytics_workspace_name    = local.cluster1_log_analytics_workspace_name
     sku                             = "Free"
     retention_in_days               = 7
@@ -15,7 +15,7 @@ module "cluster1_log_analytics" {
 
 module "cluster2_log_analytics" {
     source                          = "github.com/wso2/azure-terraform-modules//modules/azurerm/Log-Analytics-Workspace?ref=v0.44.0"
-    log_analytics_abbreviation      = module.resouce_group.resource_group_name
+    log_analytics_abbreviation      = module.resource_group.resource_group_name
     log_analytics_workspace_name    = local.cluster2_log_analytics_workspace_name
     sku                             = "Free"
     retention_in_days               = 7
