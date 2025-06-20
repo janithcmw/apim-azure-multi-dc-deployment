@@ -11,7 +11,7 @@ kubernetes_version      = "1.29.9"
 private_cluster_enabled = true
 
 #Node Pool
-default_node_pool_name                 = "akspool"
+default_node_pool_name                 = "pl"
 default_node_pool_vm_size              = "Standard_D8ds_v5"
 default_node_pool_os_disk_size_gb      = 128
 default_node_pool_max_count            = 6
