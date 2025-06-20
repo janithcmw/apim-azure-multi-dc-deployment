@@ -86,7 +86,7 @@ module "dns_zone_permission_aks_cluster_2" {
 }
 
 #Adding DNS A recodes based on the set up in Helm.
-module "set_dns_A_records" {
+module "set_dns_A_records_tm1_DC1" {
     source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/DNS-A-Record?ref=v0.44.0"
     record_name             = "traffic.manager1.external.svc.dc1"
     zone_name               = var.private_dns_zone_name
@@ -95,7 +95,7 @@ module "set_dns_A_records" {
     records                 = ["10.0.1.101"]
     tags                    = local.tags
 }
-module "set_dns_A_records" {
+module "set_dns_A_records_tm2_DC1" {
     source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/DNS-A-Record?ref=v0.44.0"
     record_name             = "traffic.manager2.external.svc.dc1"
     zone_name               = var.private_dns_zone_name
@@ -104,7 +104,7 @@ module "set_dns_A_records" {
     records                 = ["10.0.1.102"]
     tags                    = local.tags
 }
-module "set_dns_A_records" {
+module "set_dns_A_records_tm1_DC2" {
     source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/DNS-A-Record?ref=v0.44.0"
     record_name             = "traffic.manager1.external.svc.dc2"
     zone_name               = var.private_dns_zone_name
@@ -113,7 +113,7 @@ module "set_dns_A_records" {
     records                 = ["10.0.1.101"]
     tags                    = local.tags
 }
-module "set_dns_A_records" {
+module "set_dns_A_records_tm2_DC2" {
     source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/DNS-A-Record?ref=v0.44.0"
     record_name             = "traffic.manager2.external.svc.dc2"
     zone_name               = var.private_dns_zone_name

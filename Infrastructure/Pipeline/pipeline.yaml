@@ -37,14 +37,16 @@ stages:
         
         - script: |
             mkdir -p "$(Agent.BuildDirectory)/s/azure-build-tf"
-            cp "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Infrastructure/Terraform" "$(Agent.BuildDirectory)/s/azure-build-tf/"
+            echo "Existing files in the git repo cloned location." && ls "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Infrastructure/Terraform/"
+            cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Infrastructure/Terraform/." "$(Agent.BuildDirectory)/s/azure-build-tf/"
+            echo "Existing files in the Terraform build location." && ls "$(Agent.BuildDirectory)/s/azure-build-tf/"
         
-        # - task: DownloadSecureFile@1 #currenty not needed since the details are commited to the git repo it self.
-        #   inputs:
-        #     secureFile: 'terraform.tfvars'
+#        - task: DownloadSecureFile@1 #currenty not needed since the details are commented to the git repo itself.
+#          inputs:
+#            secureFile: 'terraform.tfvars'
         
-        - script: |
-            mv "$(Agent.TempDirectory)/terraform.tfvars" "$(Agent.BuildDirectory)/s/azure-build-tf/"
+#        - script: |
+#            mv "$(Agent.TempDirectory)/terraform.tfvars" "$(Agent.BuildDirectory)/s/azure-build-tf/"
 
         - script: 
             ls $(Agent.BuildDirectory)/s/azure-build-tf/
@@ -85,7 +87,8 @@ stages:
 
         - script: |
             mkdir -p "$(Agent.BuildDirectory)/s/helm-deployment-build"
-            cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/*" "$(Agent.BuildDirectory)/s/helm-deployment-build/"
+            tree "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/."
+            cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/." "$(Agent.BuildDirectory)/s/helm-deployment-build/"
 
         - script: |
             ls $(Agent.BuildDirectory)/s/helm-deployment-build/
