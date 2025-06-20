@@ -64,7 +64,7 @@ module "cluster1_dns_vnet_link" {
 
 module "cluster2_dns_vnet_link" {
     source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-Zone-Vnet-Link?ref=v0.44.0"
-    private_dns_zone_vnet_link_name     = "cluster1_virtual_network-dns-link"
+    private_dns_zone_vnet_link_name     = "cluster2_virtual_network-dns-link"
     resource_group_name                 = module.resource_group.resource_group_name
     private_dns_zone_name               = var.private_dns_zone_name
     virtual_network_id                  = module.cluster2_virtual_network.virtual_network_id
