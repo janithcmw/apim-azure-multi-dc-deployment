@@ -20,7 +20,7 @@ module "aks_cluster_1" {
   default_node_pool_orchestrator_version               = var.default_node_pool_orchestrator_version
   default_node_pool_availability_zones                 = var.default_node_pool_availability_zones
   default_node_pool_max_pods                           = var.default_node_pool_max_pods
-  aks_node_pool_resource_group_name                    = local.aks_node_pool_resource_group_name
+  aks_node_pool_resource_group_name                    = module.resource_group.resource_group_name
   aks_node_pool_subnet_address_prefix                  = var.cluster1_aks_node_pool_subnet_address_prefix
   aks_node_pool_subnet_name                            = join("-", [module.cluster1_virtual_network.virtual_network_name, "nodepool"])
   virtual_network_name                                 = module.cluster1_virtual_network.virtual_network_name
@@ -62,7 +62,7 @@ module "aks_cluster_2" {
   default_node_pool_orchestrator_version               = var.default_node_pool_orchestrator_version
   default_node_pool_availability_zones                 = var.default_node_pool_availability_zones
   default_node_pool_max_pods                           = var.default_node_pool_max_pods
-  aks_node_pool_resource_group_name                    = local.aks_node_pool_resource_group_name
+  aks_node_pool_resource_group_name                    = module.resource_group.resource_group_name
   aks_node_pool_subnet_address_prefix                  = var.cluster2_aks_node_pool_subnet_address_prefix
   aks_node_pool_subnet_name                            = join("-", [module.cluster2_virtual_network.virtual_network_name, "nodepool"])
   virtual_network_name                                 = module.cluster2_virtual_network.virtual_network_name

@@ -13,7 +13,6 @@ locals {
   cluster1_log_analytics_workspace_name = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
   cluster2_log_analytics_workspace_name = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
   resource_group_name                   = join("-", [var.project, var.application_name, var.environment, var.location])
-  aks_node_pool_resource_group_name     = join("-", [var.project, var.application_name, var.environment, var.location])
   cluster1_virtual_network_name         = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
   cluster2_virtual_network_name         = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
   tags                                  = {tag = join("-", ["tag", var.project, var.application_name, var.environment, var.location])}
