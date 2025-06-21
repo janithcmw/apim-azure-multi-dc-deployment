@@ -148,7 +148,7 @@ module "set_pvt_dns_A_records_tm2_DC2" {
 }
 module "set_pvt_dns_A_records_database" {
     source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
-    private_dns_a_record_name   = "traffic.manager1.external.svc.dc1"
+    private_dns_a_record_name   = "mysql.service"
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
