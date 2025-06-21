@@ -8,7 +8,7 @@ hub_spoke        = "spoke"
 
 //AKS Cluster 
 kubernetes_version      = "1.31.8"
-private_cluster_enabled = true
+private_cluster_enabled = false
 
 #Node Pool
 default_node_pool_name                 = "pl"
