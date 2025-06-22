@@ -260,3 +260,15 @@ variable "aks_load_balancer_subnet_nsg_rules" {
     destination_application_security_group_ids = list(string)
   }))
 }
+
+variable "bastion_vm_name" {
+  default = "bastion_vm"
+  description = "vm name connected to bastion."
+  type = string
+}
+
+variable "bastion_vm_size" {
+  default = "Standard_B1s"
+  description = "vm size that is used to ssh"
+  type = string
+}
