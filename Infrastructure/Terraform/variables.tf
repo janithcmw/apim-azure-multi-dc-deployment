@@ -272,3 +272,21 @@ variable "bastion_vm_size" {
   description = "vm size that is used to ssh"
   type = string
 }
+
+variable "bastion_admin_username" {
+  default = "bastionuser"
+  description = "user name for the bastion VM."
+  type = string
+}
+
+variable "bastion_public_ssh_key_path" {
+  default = "./ssh/id_rsa.pub"
+  description = "The public key that is used to connect to bastion vm."
+  type  = string
+}
+
+variable "bastion_computer_name" {
+  default = "bastion.vm"
+  description = "The hostname of the bastion vm."
+  type = string
+}
