@@ -25,7 +25,7 @@ module "bastion_vm_subnet" {
     resource_group_name         = module.resource_group.resource_group_name
     location                    = var.location
     virtual_network_name        = module.cluster1_virtual_network.virtual_network_name
-    address_prefixes            = ["10.1.2.0/24"]
+    address_prefix              = ["10.1.2.0/24"]
     network_security_group_name = var.bastion_nsg_name
     tags                        = local.tags
 }
