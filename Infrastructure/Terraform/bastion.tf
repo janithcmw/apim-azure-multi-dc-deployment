@@ -38,7 +38,7 @@ module "bastion_vm" {
   nic_name                  = "bastion_vm_nic"
   nic_ip_configuration_name = "bastion_vm_nic_ip_conf"
   subnet_id                 = module.bastion_vm_subnet.subnet_id
-  private_ip_address        = 10.1.2.22
+  private_ip_address        = "10.1.2.22"
   tags                      = local.tags
 }
 
