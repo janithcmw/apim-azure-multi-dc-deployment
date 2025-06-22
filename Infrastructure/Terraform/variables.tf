@@ -290,3 +290,15 @@ variable "bastion_computer_name" {
   description = "The hostname of the bastion vm."
   type = string
 }
+
+variable "bastion_vm_subnet_name" {
+  default = "bastion-vm-snet"
+  description = "Name of the bastion VM."
+  type  = string
+}
+
+variable "bastion_nsg_name" {
+  default = "bastion-nsg"
+  description = "The name of the bastion nsg."
+  type = string
+}
