@@ -134,7 +134,6 @@ spec:
 #          image: docker.wso2.com/{{ .Values.wso2.deployment.am.imageName }}:{{ .Values.wso2.deployment.am.imageTag }}
 #          {{- end }}
           image: {{ .Values.wso2.deployment.am.imageNameDirect }}
-          #image: {{ .Values.wso2.deployment.am.image.registry }}/{{ .Values.wso2.deployment.am.image.repository }}:{{ .Values.wso2.deployment.am.image.tag }}
           imagePullPolicy: {{ .Values.wso2.deployment.am.imagePullPolicy }}
           env:
             - name: PROFILE_NAME
