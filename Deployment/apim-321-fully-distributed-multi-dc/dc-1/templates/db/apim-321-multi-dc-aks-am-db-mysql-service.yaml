@@ -6,7 +6,7 @@ metadata:
   namespace : {{ .Release.Namespace }}
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "vnet-multi-dc-cst-env-westeurope-001"
+    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "snet-vnet-multi-dc-cst-env-westeurope-001-nodepool"
     service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.1.1.103"
     #Manual DNS entry should be added to mysql.service.am.wso2.com -> 10.0.1.103
 spec:
