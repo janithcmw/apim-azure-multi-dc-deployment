@@ -50,6 +50,6 @@ resource "azurerm_network_interface" "bastion_vm_nic" {
     name                          = "internal"
     subnet_id                     = module.bastion_vm_subnet.subnet_id
     private_ip_address_allocation = "Static"
-    private_ip_address            = "10.1.3.3"
+    private_ip_address            = "10.1.3.111"
   }
 }
