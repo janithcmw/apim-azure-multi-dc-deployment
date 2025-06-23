@@ -302,3 +302,9 @@ variable "bastion_nsg_name" {
   description = "The name of the bastion nsg."
   type = string
 }
+
+variable "bastion_vm_nic_name" {
+  default = "bastion_vm_nic"
+  description = "The name of the bastion nic."
+  type = string
+}
