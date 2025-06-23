@@ -19,7 +19,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "subnet-cluster1"
+    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "vnet-multi-dc-cst-env-westeurope-001"
     service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.1.1.102"
     #Manual DNS entry should be added to traffic.manager2.external.svc.dc1.am.wso2.com -> 10.0.1.102
 spec:
