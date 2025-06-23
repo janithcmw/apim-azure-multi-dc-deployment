@@ -18,18 +18,6 @@ module "cluster2_virtual_network" {
     tags                            = local.tags
 }
 
-# add subnet for bastion vm
-module "bastion_vm_subnet" {
-    source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Subnet?ref=v2.0.0"
-    subnet_name                 = var.bastion_vm_subnet_name
-    resource_group_name         = module.resource_group.resource_group_name
-    location                    = var.location
-    virtual_network_name        = module.cluster1_virtual_network.virtual_network_name
-    address_prefix              = ["10.1.2.0/24"]
-    network_security_group_name = var.bastion_nsg_name
-    tags                        = local.tags
-}
-
 #Handing peering between two vnets.
 module "cluster1_virtual_network_to_cluster2_virtual_network" {
     source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
