@@ -1,6 +1,6 @@
-#navigate to helm repository location.
-cd $(Agent.BuildDirectory)/s/helm-deployment-build/
-echo "Existing files in the Helm build location." && ls
+# Current location and the file structure.
+echo "The script 'helm-deploy.sh' will be executed inside the path: " && pwd
+echo "Existing files in the Helm build location." && tree
 
 #login into cluster1
 az aks get-credentials --resource-group rg-multi-dc-cst-env-westeurope --name aks-multi-dc-cst-env-westeurope-001 --overwrite-existing --admin
