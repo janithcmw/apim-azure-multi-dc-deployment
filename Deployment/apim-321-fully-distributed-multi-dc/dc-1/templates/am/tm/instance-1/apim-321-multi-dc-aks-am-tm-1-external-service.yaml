@@ -20,7 +20,7 @@ metadata:
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "snet-vnet-multi-dc-cst-env-westeurope-001-nodepool"
-    service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.1.1.101"
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.8.1.101"
     #Manual DNS entry should be added to traffic.manager1.external.svc.dc1.am.wso2.com -> 10.0.1.101
 spec:
   # label keys and values that must match in order to receive traffic for this service

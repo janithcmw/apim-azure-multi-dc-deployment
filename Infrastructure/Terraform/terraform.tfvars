@@ -98,10 +98,10 @@ cluster2_service_cidr   = "10.201.0.0/24"
 cluster2_dns_service_ip = "10.201.0.10"
 
 # Aks node pool
-cluster1_aks_node_pool_subnet_address_prefix = "10.1.1.0/24"
-cluster2_aks_node_pool_subnet_address_prefix = "10.2.1.0/24"
+cluster1_aks_node_pool_subnet_address_prefix = "10.8.1.0/24"
+cluster2_aks_node_pool_subnet_address_prefix = "10.9.1.0/24"
 
 
 # Load balancer configuration
-cluster1_internal_loadbalancer_subnet_address_prefix = "10.1.0.0/24"
-cluster2_internal_loadbalancer_subnet_address_prefix = "10.2.0.0/24"
+cluster1_internal_loadbalancer_subnet_address_prefix = "10.8.0.0/24"
+cluster2_internal_loadbalancer_subnet_address_prefix = "10.9.0.0/24"

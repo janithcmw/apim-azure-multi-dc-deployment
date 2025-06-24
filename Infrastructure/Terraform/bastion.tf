@@ -14,7 +14,7 @@ module "bastion" {
   tags                          = var.tags
   bastion_subnet_name           = "AzureBastionSubnet"
   virtual_network_name          = module.cluster1_virtual_network.virtual_network_name
-  subnet_address_prefixes       = "10.1.2.0/24"
+  subnet_address_prefixes       = "10.8.2.0/24"
   allow_https_internet_inbound  = true
   public_ip_abbreviation        = "cluster1_aks_ip"
   public_ip_name                = "bastion"
