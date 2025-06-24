@@ -49,7 +49,7 @@ stages:
               
               # handle the env specific scripts.
               mkdir -p "$(Agent.BuildDirectory)/s/env-scripts"
-              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deploy-Scripts/." "$(Agent.BuildDirectory)/s/env-scripts/"
+              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/Deploy-Scripts/." "$(Agent.BuildDirectory)/s/env-scripts/"
               echo "Existing files in the script location." && ls "$(Agent.BuildDirectory)/s/env-scripts/"
             displayName: 'Handle terraform scripts | helm artefacts | env specific Env.'
 
@@ -91,5 +91,6 @@ stages:
             inputs:
               azureSubscription: 'Infrastructure Provisioning Service Connection'
               scriptType: 'bash'
-              filePath: './helm-deploy.sh'
-              workingDirectory: '$(Agent.BuildDirectory)/s/env-scripts/'
+              scriptLocation: 'scriptPath'
+              scriptPath: '$(Agent.BuildDirectory)/s/env-scripts/helm-deploy.sh'
+              workingDirectory: '$(Agent.BuildDirectory)/s/helm-deployment-build/'
