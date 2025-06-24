@@ -4,8 +4,9 @@
 # https://aka.ms/yaml
 variables:
   # terraform backend
-  terraformstoragerg: 'rg-cst-api-app'                                   
+  terraformstoragerg: 'rg-cst-api-app'
   terraformstorageaccount: 'tfstatestoragecst'
+  subscription_id: <sub-id>
 
 # Define resources.
 resources:
@@ -17,7 +18,7 @@ resources:
       ref: refs/heads/localRun
 
 pool:
-  name: shared-vmss-pool-4
+  vmImage: ubuntu-latest
 
 stages:
   - stage: Infrastructure_Provisioning
@@ -25,107 +26,70 @@ stages:
       - job: Provision_Infrastructure
         displayName: Infrastructure Provisioning
         steps:
-        - script: echo Starting Azure Multi DC Pipeline!!!
-          displayName: 'Beginning'
-        - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-          displayName: 'Install Terraform 1.12.2'
-          inputs:
+          - script: echo Starting Azure Multi DC Pipeline!!!
+            displayName: 'Beginning'
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+            displayName: 'Install Terraform 1.12.2'
+            inputs:
               terraformVersion: 1.12.2
 
-        - checkout: apim-azure-multi-dc-deployment
-          path: s/apim-azure-multi-dc-deployment
-        
-        - script: |
-            mkdir -p "$(Agent.BuildDirectory)/s/azure-build-tf"
-            echo "Existing files in the git repo cloned location." && ls "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Infrastructure/Terraform/"
-            cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Infrastructure/Terraform/." "$(Agent.BuildDirectory)/s/azure-build-tf/"
-            echo "Existing files in the Terraform build location." && ls "$(Agent.BuildDirectory)/s/azure-build-tf/"
-        
-#        - task: DownloadSecureFile@1 #currenty not needed since the details are commented to the git repo itself.
-#          inputs:
-#            secureFile: 'terraform.tfvars'
-        
-#        - script: |
-#            mv "$(Agent.TempDirectory)/terraform.tfvars" "$(Agent.BuildDirectory)/s/azure-build-tf/"
+          - checkout: apim-azure-multi-dc-deployment
+            path: s/apim-azure-multi-dc-deployment
 
-        - script: 
-            ls $(Agent.BuildDirectory)/s/azure-build-tf/
-          displayName: 'List directory of tf artifacts.'
-
-        - task: TerraformTaskV2@2
-          displayName: 'Terraform init'
-          inputs:
-            provider: 'azurerm'
-            command: 'init'
-            workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
-            commandOptions: '-upgrade'
-            backendServiceArm: 'Infrastructure Provisioning Service Connection'
-            backendAzureRmResourceGroupName: '$(terraformstoragerg)'
-            backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
-            backendAzureRmContainerName: 'test-terraform-storage'
-            backendAzureRmKey: '.terraform/terraform.tfstate'
-
-        - task: TerraformTaskV2@2
-          displayName: 'Terraform plan'
-          inputs:
-            provider: 'azurerm'
-            command: 'plan'
-            workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
-            environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
-
-        - task: TerraformTaskV2@2
-          displayName: 'Terraform apply -auto-approve'
-          inputs:
-            provider: 'azurerm'
-            command: 'apply'
-            workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
-            commandOptions: '-auto-approve'
-            environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
-        
-        # - checkout: apim-azure-multi-dc-deployment
-        #   path: s/helm-artifacts
-
-        - script: |
-            mkdir -p "$(Agent.BuildDirectory)/s/helm-deployment-build"
-            tree "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/."
-            cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/." "$(Agent.BuildDirectory)/s/helm-deployment-build/"
-
-        - script: |
-            ls $(Agent.BuildDirectory)/s/helm-deployment-build/
-          displayName: 'List directory of helm artifacts.'
-
-        - task: AzureCLI@2
-          displayName: Login to AKS using kubelogin
-          inputs:
-            azureSubscription: 'Infrastructure Provisioning Service Connection'
-            scriptType: 'bash'
-            scriptLocation: 'inlineScript'
-            inlineScript: |
-            
-              #navigate to helm repository location.
-              cd $(Agent.BuildDirectory)/s/helm-deployment-build/
-              ls
-
-              #login into cluster1
-              az aks get-credentials --resource-group multi-dc-deployment-tests --name aks-cluster1 --overwrite-existing --admin
-              sudo kubelogin convert-kubeconfig -l azurecli
-
-              #create secret to access the docker repository.
-              kubectl create secret docker-registry <secret-name> --docker-username=<> --docker-password=<> --docker-email=<>
+          - script: |
+              # handle the tf scripts.
+              mkdir -p "$(Agent.BuildDirectory)/s/azure-build-tf"
+              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Infrastructure/Terraform/." "$(Agent.BuildDirectory)/s/azure-build-tf/"
+              echo "Existing files in the Terraform build location." && ls "$(Agent.BuildDirectory)/s/azure-build-tf/"
               
-              #install dc-1
-              helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-1
-              kubectl get pods --namespace default
+              # handle the helm scripts.
+              mkdir -p "$(Agent.BuildDirectory)/s/helm-deployment-build"
+              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/." "$(Agent.BuildDirectory)/s/helm-deployment-build/"
+              echo "Existing files in the Helm build location." && ls "$(Agent.BuildDirectory)/s/helm-deployment-build/"
+              
+              # handle the env specific scripts.
+              mkdir -p "$(Agent.BuildDirectory)/s/env-scripts"
+              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deploy-Scripts/." "$(Agent.BuildDirectory)/s/env-scripts/"
+              echo "Existing files in the script location." && ls "$(Agent.BuildDirectory)/s/env-scripts/"
+            displayName: 'Handle terraform scripts | helm artefacts | env specific Env.'
 
-              #login into cluster2
-              az aks get-credentials --resource-group multi-dc-deployment-tests --name aks-cluster2 --overwrite-existing --admin
-              sudo kubelogin convert-kubeconfig -l azurecli
+          - task: TerraformTaskV2@2
+            displayName: 'Terraform init'
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
+              commandOptions: '-upgrade'
+              backendServiceArm: 'Infrastructure Provisioning Service Connection'
+              backendAzureRmResourceGroupName: '$(terraformstoragerg)'
+              backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
+              backendAzureRmContainerName: 'test-terraform-storage'
+              backendAzureRmKey: '.terraform/terraform.tfstate'
 
-              #create secret to access the docker repository.
-              kubectl create secret docker-registry <secret-name> --docker-username=<> --docker-password=<> --docker-email=<>
+          - task: TerraformTaskV2@2
+            displayName: 'Terraform plan'
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
+              commandOptions: '-var="subscription_id=$(subscription_id)"'
+              environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
 
-              #install dc-2
-              helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-2
-              kubectl get pods --namespace default
+          - task: TerraformTaskV2@2
+            displayName: 'Terraform apply -auto-approve'
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
+              commandOptions: >
+                -auto-approve
+                -var="subscription_id=$(subscription_id)"
+              environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
 
-              echo "Deployment executed successfully!!!"
+          - task: AzureCLI@2
+            displayName: Login to AKS using kubelogin
+            inputs:
+              azureSubscription: 'Infrastructure Provisioning Service Connection'
+              scriptType: 'bash'
+              filePath: './helm-deploy.sh'
+              workingDirectory: '$(Agent.BuildDirectory)/s/env-scripts/'
