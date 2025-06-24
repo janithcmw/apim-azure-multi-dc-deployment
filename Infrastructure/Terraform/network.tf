@@ -2,7 +2,7 @@
 module "cluster1_virtual_network" {
     source = "github.com/wso2/azure-terraform-modules//modules/azurerm/Virtual-Network?ref=v0.44.0"
     virtual_network_name            = local.cluster1_virtual_network_name
-    virtual_network_address_space   = "10.1.0.0/16"
+    virtual_network_address_space   = "10.8.0.0/16"
     location                        = var.location
     resource_group_name             = module.resource_group.resource_group_name
     tags                            = local.tags
@@ -12,7 +12,7 @@ module "cluster1_virtual_network" {
 module "cluster2_virtual_network" {
     source = "github.com/wso2/azure-terraform-modules//modules/azurerm/Virtual-Network?ref=v0.44.0"
     virtual_network_name            = local.cluster2_virtual_network_name
-    virtual_network_address_space   = "10.2.0.0/16"
+    virtual_network_address_space   = "10.9.0.0/16"
     location                        = var.location
     resource_group_name             = module.resource_group.resource_group_name
     tags                            = local.tags
@@ -38,7 +38,7 @@ module "cluster2_virtual_network_to_cluster1_virtual_network" {
     allow_forwarded_src_traffic         = true
 }
 
-# If there are exsisting VNets that needs to be peered with the above VNets those also should be handled.
+# If there are existing VNets that needs to be peered with the above VNets those also should be handled.
 
 #Creating DNS zone.
 #Private DNS Zone for AKS service discovery
@@ -104,7 +104,7 @@ module "set_pvt_dns_A_records_tm1_DC1" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.1.1.101"]
+    records                     = ["10.8.1.101"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns
@@ -116,7 +116,7 @@ module "set_pvt_dns_A_records_tm2_DC1" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.1.1.102"]
+    records                     = ["10.8.1.102"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns
@@ -128,7 +128,7 @@ module "set_pvt_dns_A_records_tm1_DC2" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.2.1.101"]
+    records                     = ["10.9.1.101"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns
@@ -140,7 +140,7 @@ module "set_pvt_dns_A_records_tm2_DC2" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.2.1.101"]
+    records                     = ["10.9.1.101"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns
@@ -152,7 +152,7 @@ module "set_pvt_dns_A_records_database" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.1.1.103"]
+    records                     = ["10.8.1.103"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns
