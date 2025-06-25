@@ -24,6 +24,9 @@ module "shared_vnet_to_cluster1_virtual_network" {
   vnet_dest_id                        = module.cluster1_virtual_network.virtual_network_id
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
+  providers = {
+    azurerm = azurerm.shared_provider
+  }
 }
 
 module "cluster2_virtual_network_to_shared_vnet" {
@@ -42,6 +45,9 @@ module "shared_vnet_to_cluster2_virtual_network" {
   vnet_dest_id                        = module.cluster2_virtual_network.virtual_network_id
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
+  providers = {
+    azurerm = azurerm.shared_provider
+  }
 }
 
 # Link cluster DNS with the DNS of test execution VMs.
