@@ -6,11 +6,11 @@ provider "azurerm" {
 }
 
 # Provider that is used to access the shared resources that runs test VMs.
-provider "azurerm" {
-    alias           = "shared_provider"
-    subscription_id = var.subscription_id_shared
-    features {}
-}
+#provider "azurerm" {   #commented due to role issue
+#    alias           = "shared_provider"
+#    subscription_id = var.subscription_id_shared
+#    features {}
+#}
 
 # Creating resource group.
 module "resource_group" {
