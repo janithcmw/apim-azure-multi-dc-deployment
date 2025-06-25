@@ -51,7 +51,7 @@ module "common_aks_cluster_dns" {
 }
 
 # Link cluster1_virtual_network to DNS zone
-module "cluster1_dns_vnet_link" {
+module "common_cluster_dns_cluster1_vnet_link" {
     source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-Zone-Vnet-Link?ref=v0.44.0"
     private_dns_zone_vnet_link_name     = "cluster1_virtual_network-dns-link"
     resource_group_name                 = module.resource_group.resource_group_name
@@ -63,7 +63,7 @@ module "cluster1_dns_vnet_link" {
     ]
 }
 
-module "cluster2_dns_vnet_link" {
+module "common_cluster_dns_cluster2_vnet_link" {
     source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-Zone-Vnet-Link?ref=v0.44.0"
     private_dns_zone_vnet_link_name     = "cluster2_virtual_network-dns-link"
     resource_group_name                 = module.resource_group.resource_group_name
@@ -83,7 +83,7 @@ module "dns_zone_permission_aks_cluster_1" {
     principal_id            = module.aks_cluster_1.aks_api_server_identity
     depends_on = [
         module.common_aks_cluster_dns,
-        module.cluster1_dns_vnet_link
+        module.common_cluster_dns_cluster1_vnet_link
     ]
 }
 
@@ -94,7 +94,7 @@ module "dns_zone_permission_aks_cluster_2" {
     principal_id            = module.aks_cluster_2.aks_api_server_identity
     depends_on = [
         module.common_aks_cluster_dns,
-        module.cluster2_dns_vnet_link
+        module.common_cluster_dns_cluster2_vnet_link
     ]
 }
 

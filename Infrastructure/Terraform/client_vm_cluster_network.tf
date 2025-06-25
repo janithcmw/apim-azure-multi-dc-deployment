@@ -45,7 +45,7 @@ module "shared_vnet_to_cluster2_virtual_network" {
 }
 
 # Link cluster DNS with the DNS of test execution VMs.
-module "cluster1_dns_vnet_link" {
+module "common_cluster_dns_shared_vnet_link" {
   source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-Zone-Vnet-Link?ref=v0.44.0"
   private_dns_zone_vnet_link_name     = "shared_network_dns_link"
   resource_group_name                 = module.resource_group.resource_group_name
