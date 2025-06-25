@@ -1,3 +1,4 @@
+# Handle the current cluster network.
 #vertual network for the cluster1 'snet-{var.aks_node_pool_subnet_name}'| The created vnet need to be pushed to the Aks cluster
 module "cluster1_virtual_network" {
     source = "github.com/wso2/azure-terraform-modules//modules/azurerm/Virtual-Network?ref=v0.44.0"

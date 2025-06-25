@@ -308,3 +308,34 @@ variable "bastion_vm_nic_name" {
   description = "The name of the bastion nic."
   type = string
 }
+
+# Variables to access the shared resources.
+variable "subscription_id_shared" {
+  description = "Subscription ID for the Azure account that contains the test VMs."
+  type        = string
+}
+
+variable "vnet_name_shared" {
+#  default = "vnet-<prefix>-hub-prod-eastus-shared-001"
+  description = "The vnet name of the test VMs."
+  type = string
+}
+
+variable "resource_group_name_shared" {
+#  default = "rg-<prefix>-prod-westeurope-shared-001"
+  description = "The vnet name of the test VMs."
+  type = string
+}
+
+# Variables to attach ACR.
+variable "acr_name" {
+  default = "CSTimage"
+  description = "The ACR that store the images."
+  type = string
+}
+
+variable "acr_resource_group" {
+  default = "rg-cst-api-app"
+  description = "The ACR that store the images."
+  type = string
+}

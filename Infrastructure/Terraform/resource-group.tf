@@ -1,7 +1,14 @@
 
-# Provider Block
+# Provider Block Used. Default
 provider "azurerm" {
     subscription_id = var.subscription_id
+    features {}
+}
+
+# Provider that is used to access the shared resources that runs test VMs.
+provider "azurerm" {
+    alias           = "shared_provider"
+    subscription_id = var.subscription_id_shared
     features {}
 }
 
