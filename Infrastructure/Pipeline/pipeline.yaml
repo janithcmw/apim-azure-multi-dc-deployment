@@ -8,6 +8,11 @@ variables:
   terraformstorageaccount: 'tfstatestoragecst'
   subscription_id: <sub-id>
 
+  # variables of the test execution VMs.
+  sharedSubscription: <shared_sub-id>
+  sharedResourceGroup: <shared_resource-group>
+  sharedVnet: <shared_vnet>
+
 # Define resources.
 resources:
   repositories:
@@ -72,7 +77,11 @@ stages:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
-              commandOptions: '-var="subscription_id=$(subscription_id)"'
+              commandOptions: >
+                -var="subscription_id=$(subscription_id)"
+                -var="subscription_id_shared=$(sharedSubscription)"
+                -var="resource_group_name_shared=$(sharedResourceGroup)"
+                -var="vnet_name_shared=$(sharedVnet)"
               environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
 
           - task: TerraformTaskV2@2
@@ -84,10 +93,25 @@ stages:
               commandOptions: >
                 -auto-approve
                 -var="subscription_id=$(subscription_id)"
+                -var="subscription_id_shared=$(sharedSubscription)"
+                -var="resource_group_name_shared=$(sharedResourceGroup)"
+                -var="vnet_name_shared=$(sharedVnet)"
               environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
 
           - task: AzureCLI@2
-            displayName: Login to AKS using kubelogin
+            displayName: Execute Pre Helm commands.
+            inputs:
+              azureSubscription: 'Infrastructure Provisioning Service Connection'
+              scriptType: 'bash'
+              scriptLocation: 'scriptPath'
+              scriptPath: '$(Agent.BuildDirectory)/s/env-scripts/pre-deploy.sh'
+              workingDirectory: '$(Agent.BuildDirectory)/s/helm-deployment-build/'
+              env:
+                subscription_id: $(subscription_id)
+                subscription_id_shared: $(sharedVnet)
+          
+          - task: AzureCLI@2
+            displayName: Deploy Helm resources.
             inputs:
               azureSubscription: 'Infrastructure Provisioning Service Connection'
               scriptType: 'bash'
