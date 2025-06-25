@@ -19,7 +19,7 @@ module "cluster1_virtual_network_to_shared_vnet" {
 
 module "shared_vnet_to_cluster1_virtual_network" {
   source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
-  custom_peering_dest_name            = "cluster1_virtual_network_to_shared_vnet"
+  custom_peering_dest_name            = "shared_vnet_to_cluster1_virtual_network"
   vnet_src_id                         = data.azurerm_virtual_network.shared_vnet.id
   vnet_dest_id                        = module.cluster1_virtual_network.virtual_network_id
   allow_virtual_src_network_access    = true
@@ -31,7 +31,7 @@ module "shared_vnet_to_cluster1_virtual_network" {
 
 module "cluster2_virtual_network_to_shared_vnet" {
   source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
-  custom_peering_dest_name            = "cluster1_virtual_network_to_shared_vnet"
+  custom_peering_dest_name            = "cluster2_virtual_network_to_shared_vnet"
   vnet_src_id                         = module.cluster2_virtual_network.virtual_network_id
   vnet_dest_id                        = data.azurerm_virtual_network.shared_vnet.id
   allow_virtual_src_network_access    = true
@@ -40,7 +40,7 @@ module "cluster2_virtual_network_to_shared_vnet" {
 
 module "shared_vnet_to_cluster2_virtual_network" {
   source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
-  custom_peering_dest_name            = "cluster1_virtual_network_to_shared_vnet"
+  custom_peering_dest_name            = "shared_vnet_to_cluster2_virtual_network"
   vnet_src_id                         = data.azurerm_virtual_network.shared_vnet.id
   vnet_dest_id                        = module.cluster2_virtual_network.virtual_network_id
   allow_virtual_src_network_access    = true
