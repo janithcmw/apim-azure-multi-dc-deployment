@@ -339,8 +339,3 @@ variable "acr_resource_group" {
   description = "The ACR that store the images."
   type = string
 }
-
-#tmp variable
-variable "temp_shared_vnet_id" {
-  description = "remove this after resolving the role issue of reading cross subscriptions."
-}
