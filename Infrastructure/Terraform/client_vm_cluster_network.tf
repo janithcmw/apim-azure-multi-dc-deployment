@@ -22,7 +22,7 @@ module "shared_vnet_to_cluster1_virtual_network" {
   source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
   custom_peering_dest_name            = "cluster1_virtual_network_to_shared_vnet"
 #  vnet_src_id                         = data.azurerm_virtual_network.shared_vnet.id  #commented due to role issue
-  vnet_dest_id                        = var.temp_shared_vnet_id
+  vnet_src_id                        = var.temp_shared_vnet_id
   vnet_dest_id                        = module.cluster1_virtual_network.virtual_network_id
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
@@ -42,7 +42,7 @@ module "shared_vnet_to_cluster2_virtual_network" {
   source                              = "github.com/wso2/azure-terraform-modules//modules/azurerm/Vnet-Peering?ref=v0.44.0"
   custom_peering_dest_name            = "cluster1_virtual_network_to_shared_vnet"
 #  vnet_src_id                         = data.azurerm_virtual_network.shared_vnet.id  #commented due to role issue
-  vnet_dest_id                        = var.temp_shared_vnet_id
+  vnet_src_id                        = var.temp_shared_vnet_id
   vnet_dest_id                        = module.cluster2_virtual_network.virtual_network_id
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
@@ -55,7 +55,7 @@ module "common_cluster_dns_shared_vnet_link" {
   resource_group_name                 = module.resource_group.resource_group_name
   private_dns_zone_name               = var.private_dns_zone_name
 #  virtual_network_id                  = data.azurerm_virtual_network.shared_vnet.id  #commented due to role issue
-  vnet_dest_id                        = var.temp_shared_vnet_id
+  virtual_network_id                        = var.temp_shared_vnet_id
   #registration_enabled                = true #not used in module, have to check why?
   depends_on = [
     module.common_aks_cluster_dns
