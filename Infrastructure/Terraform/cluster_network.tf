@@ -27,6 +27,10 @@ module "cluster1_virtual_network_to_cluster2_virtual_network" {
     vnet_dest_id                        = module.cluster2_virtual_network.virtual_network_id
     allow_virtual_src_network_access    = true
     allow_forwarded_src_traffic         = true
+    depends_on = [
+        module.cluster1_virtual_network,
+        module.cluster2_virtual_network
+    ]
 }
 
 
@@ -37,6 +41,10 @@ module "cluster2_virtual_network_to_cluster1_virtual_network" {
     vnet_dest_id                        = module.cluster1_virtual_network.virtual_network_id
     allow_virtual_src_network_access    = true
     allow_forwarded_src_traffic         = true
+    depends_on = [
+        module.cluster1_virtual_network,
+        module.cluster2_virtual_network
+    ]
 }
 
 # If there are existing VNets that needs to be peered with the above VNets those also should be handled.

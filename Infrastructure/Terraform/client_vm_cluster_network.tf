@@ -15,6 +15,9 @@ module "cluster1_virtual_network_to_shared_vnet" {
   vnet_dest_id                        = data.azurerm_virtual_network.shared_vnet.id
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
+  depends_on = [
+    module.cluster1_virtual_network
+  ]
 }
 
 module "shared_vnet_to_cluster1_virtual_network" {
@@ -24,6 +27,9 @@ module "shared_vnet_to_cluster1_virtual_network" {
   vnet_dest_id                        = module.cluster1_virtual_network.virtual_network_id
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
+  depends_on = [
+    module.cluster1_virtual_network
+  ]
   providers = {
     azurerm = azurerm.shared_provider
   }
@@ -36,6 +42,9 @@ module "cluster2_virtual_network_to_shared_vnet" {
   vnet_dest_id                        = data.azurerm_virtual_network.shared_vnet.id
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
+  depends_on = [
+    module.cluster2_virtual_network
+  ]
 }
 
 module "shared_vnet_to_cluster2_virtual_network" {
@@ -45,6 +54,9 @@ module "shared_vnet_to_cluster2_virtual_network" {
   vnet_dest_id                        = module.cluster2_virtual_network.virtual_network_id
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
+  depends_on = [
+    module.cluster2_virtual_network
+  ]
   providers = {
     azurerm = azurerm.shared_provider
   }
