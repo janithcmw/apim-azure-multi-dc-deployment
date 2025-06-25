@@ -106,9 +106,9 @@ stages:
               scriptLocation: 'scriptPath'
               scriptPath: '$(Agent.BuildDirectory)/s/env-scripts/pre-deploy.sh'
               workingDirectory: '$(Agent.BuildDirectory)/s/helm-deployment-build/'
-              env:
-                subscription_id: $(subscription_id)
-                subscription_id_shared: $(sharedVnet)
+            env:
+              subscription_id: $(subscription_id)
+              subscription_id_shared: $(sharedVnet)
           
           - task: AzureCLI@2
             displayName: Deploy Helm resources.

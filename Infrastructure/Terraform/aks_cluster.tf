@@ -81,4 +81,4 @@ module "aks_cluster_2" {
   azure_policy_enabled                                 = var.azure_policy_enabled
 }
 
-#With the above aks cluster creation, tow subnets will be created, 'snet-{var.aks_node_pool_subnet_name}' and 'snet-{var.aks_load_balancer_subnet_name}' In the 'cluster-cluster-network.tf' new vnets will be created for the subnets
+#With the above aks cluster creation, tow subnets will be created, 'snet-{var.aks_node_pool_subnet_name}' and 'snet-{var.aks_load_balancer_subnet_name}' In the 'cluster_cluster_network.tf' new vnets will be created for the subnets
