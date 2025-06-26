@@ -1,0 +1,15 @@
+controller:
+  service:
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+      service.beta.kubernetes.io/azure-load-balancer-internal-subnet: snet-vnet-multi-dc-cst-env-westeurope-002-loadbalancer
+      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
+    externalTrafficPolicy: Local
+    type: LoadBalancer
+    loadBalancerIP: "10.9.1.111"
+  admissionWebhooks:
+    enabled: false
+  defaultTLS:
+    secret: "ingress-nginx/default-certificate-secret"
+rbac:
+  create: true
