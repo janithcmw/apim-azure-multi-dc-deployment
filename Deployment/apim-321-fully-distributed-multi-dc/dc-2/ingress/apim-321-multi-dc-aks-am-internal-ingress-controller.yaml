@@ -9,7 +9,9 @@ controller:
     loadBalancerIP: "10.9.0.111"
   admissionWebhooks:
     enabled: false
-  defaultTLS:
-    secret: "ingress-nginx/default-certificate-secret"
+  extraArgs:
+    default-ssl-certificate: "ingress-nginx/default-ingress-cert"
+#  defaultTLS:
+#    secret: "ingress-nginx/default-certificate-secret"
 rbac:
   create: true
