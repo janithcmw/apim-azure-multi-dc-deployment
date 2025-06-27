@@ -22,31 +22,6 @@ wso2:
 
   deployment:
     storageClassName: "azurefile-csi-premium"
-    hostAliases:
-      ip: 57.158.169.122
-    remoteHostAliases:
-      ip: 57.158.168.56
-      hostnames:
-        - gateway.dc2.am.wso2.com
-        - key.manager.dc2.am.wso2.com
-        - publisher.dc2.am.wso2.com
-        - devportal.dc2.am.wso2.com
-        - traffic.manager.dc2.am.wso2.com
-        - analytics.dc2.am.wso2.com
-        - analytics.worker.dc2.am.wso2.com
-    trafficManagerExternalIP:
-      dc1tm1:
-        ip: 10.20.30.40
-        hostname: traffic.manager1.external.svc.dc1.am.wso2.com
-      dc1tm2:
-        ip: 10.20.30.41
-        hostname: traffic.manager2.external.svc.dc1.am.wso2.com
-      dc2tm1:
-        ip: 10.20.30.42
-        hostname: traffic.manager1.external.svc.dc2.am.wso2.com
-      dc2tm2:
-        ip: 10.20.30.43
-        hostname: traffic.manager2.external.svc.dc2.am.wso2.com
     dependencies:
       # The configuration should be set to be 'true' if a MySQL database should be spawned as a pod within the cluster
       mysql: true
@@ -88,20 +63,14 @@ wso2:
           solrIndexedData: 50M
 
     am:
-      # Container image configurations
-      # If a custom image must be used, uncomment 'dockerRegistry' and provide its value
-      # dockerRegistry: ""
-      imageName: "wso2am"
-      imageTag: "3.2.0"
-#      imageNameDirect: "janithcmw/wso2apim:321.3"
-#      imageNameDirect: "janithcmw/wso2apim:321.16"
-#      imageNameDirect: "janithcmw/wso2apim:321.16.patch"
-      imageNameDirect: "janithcmw/wso2apim:321.38-dc1"
-      # Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
-      imagePullPolicy: Always
-      imagePullSecrets:
-        enable: true
-        secretName: janithcmw-secret
+      image:
+        registry: "cstimage.azurecr.io"
+        repository: "wso2am-3.2.1-3977"
+        tag: "3977"
+        imagePullPolicy: Always
+        imagePullSecrets:
+          enable: false
+          secretName: empty
 
       resources:
         # These are the resource recommendations for running WSO2 API Management product profiles with profile optimization
