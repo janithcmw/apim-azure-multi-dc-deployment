@@ -19,7 +19,7 @@ az aks get-credentials --resource-group rg-multi-dc-cst-env-westeurope --name ak
 sudo kubelogin convert-kubeconfig -l azurecli
 #Add GW pod IPs as hosts.
 #DC1
-source $(pwd)/add-host.sh apim-321-multi-dc-aks-am-gateway-deployment deployment=apim-321-multi-dc-aks-am-gateway dc1 default
+source $(pwd)/fetch-host-entries.sh apim-321-multi-dc-aks-am-gateway-deployment deployment=apim-321-multi-dc-aks-am-gateway dc1 default
 echo -e "$HOST_ENTRIES_ENV" | sudo tee -a /etc/hosts > /dev/null
 
 #login into cluster2
@@ -27,5 +27,5 @@ az aks get-credentials --resource-group rg-multi-dc-cst-env-westeurope --name ak
 sudo kubelogin convert-kubeconfig -l azurecli
 #Add GW pod IPs as hosts.
 #DC2
-source $(pwd)/add-host.sh apim-321-multi-dc-aks-am-gateway-deployment deployment=apim-321-multi-dc-aks-am-gateway dc2 default
+source $(pwd)/fetch-host-entries.sh apim-321-multi-dc-aks-am-gateway-deployment deployment=apim-321-multi-dc-aks-am-gateway dc2 default
 echo -e "$HOST_ENTRIES_ENV" | sudo tee -a /etc/hosts > /dev/null
