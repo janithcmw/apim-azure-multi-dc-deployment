@@ -2,6 +2,8 @@
 echo "The script 'helm-deploy.sh' will be executed inside the path: " && pwd
 echo "Existing files in the Helm build location." && tree
 
+#TODO need to use the env variable and pass the image details during the installation.
+
 #login into cluster1
 az aks get-credentials --resource-group rg-multi-dc-cst-env-westeurope --name aks-multi-dc-cst-env-westeurope-001 --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
