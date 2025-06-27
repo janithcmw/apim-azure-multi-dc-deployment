@@ -64,14 +64,14 @@ ipcount=0
 HOST_ENTRIES=""
 for ip in $POD_IPS; do
   HOST_ENTRY="$ip ${DEPLOYMENT_NAME}.$ipcount.$DC.am.wso2.com"
-  echo "🔹 Host entry [$ipcount]: $HOST_ENTRY"
+  echo "Host entry [$ipcount]: $HOST_ENTRY"
   HOST_ENTRIES+="$HOST_ENTRY\n"
   ((ipcount++))
 done
 
 if [ -n "$HOST_ENTRIES" ]; then
   HOSTS_READY=true
-  export HOST_ENTRIES_ENV="$HOST_ENTRIES"
+  export HOST_ENTRIES_ENV="$(echo -e "$HOST_ENTRIES" | sed '${/^$/d}')"
   echo ""
   echo "Host entries generated. You can run this command to update /etc/hosts:"
   echo "echo -e \"\$HOST_ENTRIES_ENV\" | sudo tee -a /etc/hosts > /dev/null"
