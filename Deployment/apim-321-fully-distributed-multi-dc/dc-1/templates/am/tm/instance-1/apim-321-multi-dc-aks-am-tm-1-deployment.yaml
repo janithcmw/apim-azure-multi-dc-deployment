@@ -31,35 +31,6 @@ spec:
         deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm
         tm-node: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-1
     spec:
-      {{- if .Values.wso2.deployment.hostAliases.ip }}
-      hostAliases:
-        - ip: {{ .Values.wso2.deployment.hostAliases.ip }}
-          hostnames:
-            - {{ .Values.wso2.deployment.am.devportal.ingress.hostname }}
-            - {{ .Values.wso2.deployment.am.gateway.ingress.hostname }}
-            - {{ .Values.wso2.deployment.am.km.ingress.hostname }}
-            - {{ .Values.wso2.deployment.am.publisher.ingress.hostname }}
-            - {{ .Values.wso2.deployment.am.tm.ingress.hostname }}
-            - {{ .Values.wso2.deployment.analytics.dashboard.ingress.hostname }}
-            - {{ .Values.wso2.deployment.analytics.worker.ingress.hostname }}
-        - ip: {{ .Values.wso2.deployment.remoteHostAliases.ip }}
-          hostnames:
-            {{- range .Values.wso2.deployment.remoteHostAliases.hostnames }}
-            - "{{ . }}"
-            {{- end }}
-        - ip: {{ .Values.wso2.deployment.trafficManagerExternalIP.dc1tm1.ip }}
-          hostnames:
-            - {{ .Values.wso2.deployment.trafficManagerExternalIP.dc1tm1.hostname }}
-        - ip: {{ .Values.wso2.deployment.trafficManagerExternalIP.dc1tm2.ip }}
-          hostnames:
-            - {{ .Values.wso2.deployment.trafficManagerExternalIP.dc1tm2.hostname }}
-        - ip: {{ .Values.wso2.deployment.trafficManagerExternalIP.dc2tm1.ip }}
-          hostnames:
-            - {{ .Values.wso2.deployment.trafficManagerExternalIP.dc2tm1.hostname }}
-        - ip: {{ .Values.wso2.deployment.trafficManagerExternalIP.dc2tm2.ip }}
-          hostnames:
-            - {{ .Values.wso2.deployment.trafficManagerExternalIP.dc2tm2.hostname }}
-      {{- end}}
       initContainers:
         {{- if .Values.wso2.deployment.dependencies.mysql }}
         - name: init-apim-db
@@ -153,17 +124,8 @@ spec:
               mountPath: /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/eventstreams
       containers:
         - name: wso2am-tm
-#          {{- if .Values.wso2.deployment.am.dockerRegistry }}
-#          image: {{ .Values.wso2.deployment.am.dockerRegistry }}/{{ .Values.wso2.deployment.am.imageName }}
-#          {{- $tag := .Values.wso2.deployment.am.imageTag }}
-#          {{- if not (eq $tag "") }}{{- printf ":%s" $tag -}}{{- end }}
-#          {{- else if or (eq .Values.wso2.subscription.username "") (eq .Values.wso2.subscription.password "") }}
-#          image: wso2/{{ .Values.wso2.deployment.am.imageName }}:{{ .Values.wso2.deployment.am.imageTag }}
-#          {{- else }}
-#          image: docker.wso2.com/{{ .Values.wso2.deployment.am.imageName }}:{{ .Values.wso2.deployment.am.imageTag }}
-#          {{- end }}
-          image: {{ .Values.wso2.deployment.am.imageNameDirect }}
-          imagePullPolicy: {{ .Values.wso2.deployment.am.imagePullPolicy }}
+          image: {{ .Values.wso2.deployment.am.image.registry }}/{{ .Values.wso2.deployment.am.image.repository }}:{{ .Values.wso2.deployment.am.image.tag }}
+          imagePullPolicy: {{ .Values.wso2.deployment.am.image.imagePullPolicy }}
           env:
             - name: PROFILE_NAME
               value: "traffic-manager"
@@ -234,9 +196,9 @@ spec:
               mountPath: /home/wso2carbon/wso2-artifact-volume/repository/components/dropins
             {{ end }}
       serviceAccountName: {{ .Values.kubernetes.serviceAccount }}
-      {{ if .Values.wso2.deployment.am.imagePullSecrets.enable }}
+      {{ if .Values.wso2.deployment.am.image.imagePullSecrets.enable }}
       imagePullSecrets:
-        - name: {{ .Values.wso2.deployment.am.imagePullSecrets.secretName }}
+        - name: {{ .Values.wso2.deployment.am.image.imagePullSecrets.secretName }}
       {{ end }}
       volumes:
         - name: wso2am-tm-shared-executionplans-storage-volume
