@@ -39,7 +39,7 @@ cluster1_aks_node_pool_subnet_nsg_rules = {
     source_port_ranges                         = ["0-65535"]
     destination_port_ranges                    = ["0-65535"]
     source_address_prefixes                    = ["10.9.0.0/16", "10.2.0.0/16"] # aks2 vnet and shared vnet
-    destination_address_prefixes               = ["*"]
+    destination_address_prefixes               = ["10.8.0.0/16"]
     source_application_security_group_ids      = []
     destination_application_security_group_ids = []
   }
@@ -56,7 +56,7 @@ cluster1_aks_load_balancer_subnet_nsg_rules = {
     source_port_ranges                         = ["0-65535"]
     destination_port_ranges                    = ["0-65535"]
     source_address_prefixes                    = ["10.9.0.0/16", "10.2.0.0/16"] # aks2 vnet and shared vnet
-    destination_address_prefixes               = ["*"]
+    destination_address_prefixes               = ["10.8.0.0/16"]
     source_application_security_group_ids      = []
     destination_application_security_group_ids = []
   }
@@ -74,7 +74,7 @@ cluster2_aks_node_pool_subnet_nsg_rules = {
     source_port_ranges                         = ["0-65535"]
     destination_port_ranges                    = ["0-65535"]
     source_address_prefixes                    = ["10.8.0.0/16", "10.2.0.0/16"] # aks1 vnet and shared vnet
-    destination_address_prefixes               = ["*"]
+    destination_address_prefixes               = ["10.9.0.0/16"]
     source_application_security_group_ids      = []
     destination_application_security_group_ids = []
   }
@@ -91,7 +91,7 @@ cluster2_aks_load_balancer_subnet_nsg_rules = {
     source_port_ranges                         = ["0-65535"]
     destination_port_ranges                    = ["0-65535"]
     source_address_prefixes                    = ["10.8.0.0/16", "10.2.0.0/16"] # aks1 vnet and shared vnet
-    destination_address_prefixes               = ["*"]
+    destination_address_prefixes               = ["10.9.0.0/16"]
     source_application_security_group_ids      = []
     destination_application_security_group_ids = []
   }
