@@ -5,8 +5,11 @@ echo "Existing files in the Helm build location." && tree
 #TODO need to use the env variable and pass the image details during the installation.
 
 #Building image details based on 'helm_override_value_string'
-imageRepo=$(echo "$helm_overide_value_string" | cut -d'=' -f2)
+echo "Incoming 'helm_override_value_string' is: $helm_override_value_string"
+imageRepo=$(echo "$helm_override_value_string" | cut -d'=' -f2)
+echo "Captured 'imageRepo' is: $imageRepo"
 imageTag=$(echo "$imageRepo" | grep -oP '\d+$')
+echo "Captured 'imageTag' is: $imageTag"
 
 #Handing resource names.
 resourceGroup=$(echo "rg-$customer_project-cst-multi-dc-westeurope")
