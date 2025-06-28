@@ -458,9 +458,9 @@ data:
               validationTimeout: 30000
 
     siddhi:
-      # properties:
-      #  partitionById: true
-      #  shardId: 1
+      properties:
+        partitionById: true
+        shardId: analytics-worker-dc-1
       refs:
         - ref:
             name: 'grpcSource'
@@ -510,7 +510,7 @@ data:
 
       # Cluster Configuration
     cluster.config:
-      enabled: true
+      enabled: false
       groupId:  sp
       coordinationStrategyClass: org.wso2.carbon.cluster.coordinator.rdbms.RDBMSCoordinationStrategy
       strategyConfig:
