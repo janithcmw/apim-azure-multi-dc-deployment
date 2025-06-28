@@ -26,11 +26,11 @@ module "aks_cluster_1" {
   virtual_network_name                                 = module.cluster1_virtual_network.virtual_network_name
   aks_node_pool_subnet_network_security_group_name     = join("-", ["nodepool", var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
   aks_node_pool_subnet_route_table_name                = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
-  aks_node_pool_subnet_nsg_rules                       = var.aks_node_pool_subnet_nsg_rules # two this is working? I do not need to specify any ips, can I skip
+  aks_node_pool_subnet_nsg_rules                       = var.cluster1_aks_node_pool_subnet_nsg_rules # two this is working? I do not need to specify any ips, can I skip
   service_cidr                                         = var.cluster1_service_cidr
   dns_service_ip                                       = var.cluster1_dns_service_ip
   outbound_type                                        = var.outbound_type  # default type is also loadBalancer
-  aks_load_balancer_subnet_nsg_rules                   = var.aks_load_balancer_subnet_nsg_rules # two this is working? I do not need to specify any ips, can I skip
+  aks_load_balancer_subnet_nsg_rules                   = var.cluster1_aks_load_balancer_subnet_nsg_rules # two this is working? I do not need to specify any ips, can I skip
   aks_load_balancer_subnet_network_security_group_name = join("-", ["loadbalancer", var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
   aks_load_balancer_subnet_name                        = join("-", [module.cluster1_virtual_network.virtual_network_name, "loadbalancer"])
   internal_loadbalancer_subnet_address_prefix          = var.cluster1_internal_loadbalancer_subnet_address_prefix
@@ -68,11 +68,11 @@ module "aks_cluster_2" {
   virtual_network_name                                 = module.cluster2_virtual_network.virtual_network_name
   aks_node_pool_subnet_network_security_group_name     = join("-", ["nodepool", var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
   aks_node_pool_subnet_route_table_name                = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
-  aks_node_pool_subnet_nsg_rules                       = var.aks_node_pool_subnet_nsg_rules
+  aks_node_pool_subnet_nsg_rules                       = var.cluster2_aks_node_pool_subnet_nsg_rules
   service_cidr                                         = var.cluster2_service_cidr
   dns_service_ip                                       = var.cluster2_dns_service_ip
   outbound_type                                        = var.outbound_type
-  aks_load_balancer_subnet_nsg_rules                   = var.aks_load_balancer_subnet_nsg_rules
+  aks_load_balancer_subnet_nsg_rules                   = var.cluster2_aks_load_balancer_subnet_nsg_rules
   aks_load_balancer_subnet_network_security_group_name = join("-", ["loadbalancer", var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
   aks_load_balancer_subnet_name                        = join("-", [module.cluster2_virtual_network.virtual_network_name, "loadbalancer"])
   internal_loadbalancer_subnet_address_prefix          = var.cluster2_internal_loadbalancer_subnet_address_prefix
