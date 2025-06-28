@@ -29,65 +29,37 @@ aks_admin_username      = "ubuntu"
 
 # NSG rules for cluster subnet and Load balancer subnet
 aks_node_pool_subnet_nsg_rules = {
-#  allow_vm_subnet_to_nodepool = {#todo need to check for the outbunt traffic
-#    priority                                   = "100"
-#    name                                       = "AllowVmSubnetToNodepool"
-#    description                                = "Allow traffic from VM's subnet to AKS node pool"
-#    direction                                  = "Inbound"
-#    access                                     = "Allow"
-#    protocol                                   = "*"
-#    source_port_ranges                         = ["0-65535"]
-#    destination_port_ranges                    = ["0-65535"]
-#    source_address_prefixes                    = ["*"]
-#    destination_address_prefixes               = ["*"]
-#    source_application_security_group_ids      = []
-#    destination_application_security_group_ids = []
-#  }
-  # allow_nodepool_outbound_to_any = {
-  # priority                                   = "200"
-  # name                                       = "AllowNodepoolOutboundToAny"
-  # description                                = "Allow AKS node pool to send outbound traffic to any"
-  # direction                                  = "Outbound"
-  # access                                     = "Allow"
-  # protocol                                   = "*"
-  # source_port_ranges                         = ["0-65535"]
-  # destination_port_ranges                    = ["0-65535"]
-  # source_address_prefixes                    = ["*"]   # or specific nodepool subnet like ["10.0.1.0/24"]
-  # destination_address_prefixes               = ["*"]   # or e.g., ["10.0.5.0/24"] for DB
-  # source_application_security_group_ids      = []
-  # destination_application_security_group_ids = []
-  # }
+  allow_inbound_from_virtual-network = { # added to allow communication from vnet.
+    priority                                   = "100"
+    name                                       = "AllowInboundFromVirtualNetwork"
+    description                                = "Allow inbound traffic from all peered VNets"
+    direction                                  = "Inbound"
+    access                                     = "Allow"
+    protocol                                   = "*"
+    source_port_ranges                         = ["0-65535"]
+    destination_port_ranges                    = ["0-65535"]
+    source_address_prefixes                    = ["VirtualNetwork"]
+    destination_address_prefixes               = ["*"]
+    source_application_security_group_ids      = []
+    destination_application_security_group_ids = []
+  }
 }
 
 aks_load_balancer_subnet_nsg_rules = {
-#  allow_vm_subnet_to_loadbalancer = {
-#    priority                                   = "120"
-#    name                                       = "AllowVmSubnetToLoadBalancer"
-#    description                                = "Allow traffic from VM's subnet to AKS load balancer"
-#    direction                                  = "Inbound"
-#    access                                     = "Allow"
-#    protocol                                   = "*"
-#    source_port_ranges                         = ["0-65535"]
-#    destination_port_ranges                    = ["0-65535"]
-#    source_address_prefixes                    = ["*"]
-#    destination_address_prefixes               = ["*"]
-#    source_application_security_group_ids      = []
-#    destination_application_security_group_ids = []
-#  }
-  # allow_loadbalancer_outbound_to_any = {
-  # priority                                   = "220"
-  # name                                       = "AllowNodepoolOutboundToAny"
-  # description                                = "Allow AKS node pool to send outbound traffic to any"
-  # direction                                  = "Outbound"
-  # access                                     = "Allow"
-  # protocol                                   = "*"
-  # source_port_ranges                         = ["0-65535"]
-  # destination_port_ranges                    = ["0-65535"]
-  # source_address_prefixes                    = ["*"]   # or specific nodepool subnet like ["10.0.1.0/24"]
-  # destination_address_prefixes               = ["*"]   # or e.g., ["10.0.5.0/24"] for DB
-  # source_application_security_group_ids      = []
-  # destination_application_security_group_ids = []
-  # }
+  allow_inbound_from_virtual-network = {  # added to allow communication from vnet.
+    priority                                   = "100"
+    name                                       = "AllowInboundFromVirtualNetwork"
+    description                                = "Allow inbound traffic from all peered VNets"
+    direction                                  = "Inbound"
+    access                                     = "Allow"
+    protocol                                   = "*"
+    source_port_ranges                         = ["0-65535"]
+    destination_port_ranges                    = ["0-65535"]
+    source_address_prefixes                    = ["VirtualNetwork"]
+    destination_address_prefixes               = ["*"]
+    source_application_security_group_ids      = []
+    destination_application_security_group_ids = []
+  }
 }
 
 # Network Profile
