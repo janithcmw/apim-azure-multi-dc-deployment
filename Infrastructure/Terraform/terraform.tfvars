@@ -1,8 +1,8 @@
 # Cluster Configurations
 # Common Configurations.
-project          = "multi-dc"
+project          = "test"
 application_name = "cst"
-environment      = "env"
+environment      = "multi-dc"
 location         = "westeurope"
 hub_spoke        = "spoke"
 

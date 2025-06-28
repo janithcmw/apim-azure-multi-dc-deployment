@@ -220,7 +220,7 @@ wso2:
     analytics:
       imagePullSecrets:
         enable: false
-        secretName: janithcmw-secret
+        secretName: empty
         # kubectl create secret docker-registry <secret-name> --docker-username=<username> --docker-password=<dckr_pat_xxxxxxxx> --docker-email=<email>
       dashboard:
         # Container image configurations
