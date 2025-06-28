@@ -223,7 +223,7 @@ variable "private_dns_zone_name" {
   type = string
 }
 
-variable "aks_node_pool_subnet_nsg_rules" {
+variable "cluster1_aks_node_pool_subnet_nsg_rules" {
   default     = {}
   description = "NSG rules for the nodepool subnet"
   type = map(object({
@@ -242,7 +242,45 @@ variable "aks_node_pool_subnet_nsg_rules" {
   }))
 }
 
-variable "aks_load_balancer_subnet_nsg_rules" {
+variable "cluster1_aks_load_balancer_subnet_nsg_rules" {
+  default     = {}
+  description = "NSG rules for the load balancer subnet"
+  type = map(object({
+    priority                                   = string
+    name                                       = string
+    description                                = string
+    direction                                  = string
+    access                                     = string
+    protocol                                   = string
+    source_port_ranges                         = list(string)
+    destination_port_ranges                    = list(string)
+    source_address_prefixes                    = list(string)
+    destination_address_prefixes               = list(string)
+    source_application_security_group_ids      = list(string)
+    destination_application_security_group_ids = list(string)
+  }))
+}
+
+variable "cluster2_aks_node_pool_subnet_nsg_rules" {
+  default     = {}
+  description = "NSG rules for the nodepool subnet"
+  type = map(object({
+    priority                                   = string
+    name                                       = string
+    description                                = string
+    direction                                  = string
+    access                                     = string
+    protocol                                   = string
+    source_port_ranges                         = list(string)
+    destination_port_ranges                    = list(string)
+    source_address_prefixes                    = list(string)
+    destination_address_prefixes               = list(string)
+    source_application_security_group_ids      = list(string)
+    destination_application_security_group_ids = list(string)
+  }))
+}
+
+variable "cluster2_aks_load_balancer_subnet_nsg_rules" {
   default     = {}
   description = "NSG rules for the load balancer subnet"
   type = map(object({
