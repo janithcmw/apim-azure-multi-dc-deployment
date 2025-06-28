@@ -107,7 +107,7 @@ cluster2_aks_node_pool_subnet_nsg_rules = {
     destination_application_security_group_ids = []
   }
   allow_outbound_to_other_virtual-network = {  # added to allow communication from vnet.
-    priority                                   = "100"
+    priority                                   = "200"
     name                                       = "AllowOutboundFromCluster2PoolSnetVnetToOtherVnets"
     description                                = "Allow inbound traffic from all peered VNets"
     direction                                  = "Inbound"
