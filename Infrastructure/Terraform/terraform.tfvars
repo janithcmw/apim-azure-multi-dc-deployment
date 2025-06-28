@@ -8,7 +8,7 @@ hub_spoke        = "spoke"
 
 //AKS Cluster 
 kubernetes_version      = "1.31.8"
-private_cluster_enabled = false
+private_cluster_enabled = true
 
 #Node Pool
 default_node_pool_name                 = "pl"
@@ -93,7 +93,7 @@ cluster2_aks_node_pool_subnet_nsg_rules = {
     destination_application_security_group_ids = []
   }
   allow_inbound_from_other_virtual-network = { # added to allow communication from vnet.
-    priority                                   = "100"
+    priority                                   = "200"
     name                                       = "AllowInboundFromVirtualNetwork"
     description                                = "Allow inbound traffic from all peered VNets"
     direction                                  = "Inbound"
