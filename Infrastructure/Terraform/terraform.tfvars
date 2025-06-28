@@ -28,7 +28,7 @@ aks_public_ssh_key_path = "./ssh/id_rsa.pub"
 aks_admin_username      = "ubuntu"
 
 # NSG rules for cluster subnet and Load balancer subnet
-aks_node_pool_subnet_nsg_rules = {
+cluster1_aks_node_pool_subnet_nsg_rules = {
   allow_inbound_from_virtual-network = { # added to allow communication from vnet.
     priority                                   = "100"
     name                                       = "AllowInboundFromVirtualNetwork"
@@ -38,14 +38,14 @@ aks_node_pool_subnet_nsg_rules = {
     protocol                                   = "*"
     source_port_ranges                         = ["0-65535"]
     destination_port_ranges                    = ["0-65535"]
-    source_address_prefixes                    = "VIRTUALNETWORK"
+    source_address_prefixes                    = ["10.9.0.0/16", "10.2.0.0/16"] # aks2 vnet and shared vnet
     destination_address_prefixes               = ["*"]
     source_application_security_group_ids      = []
     destination_application_security_group_ids = []
   }
 }
 
-aks_load_balancer_subnet_nsg_rules = {
+cluster1_aks_load_balancer_subnet_nsg_rules = {
   allow_inbound_from_virtual-network = {  # added to allow communication from vnet.
     priority                                   = "100"
     name                                       = "AllowInboundFromVirtualNetwork"
@@ -55,7 +55,42 @@ aks_load_balancer_subnet_nsg_rules = {
     protocol                                   = "*"
     source_port_ranges                         = ["0-65535"]
     destination_port_ranges                    = ["0-65535"]
-    source_address_prefixes                    = "VIRTUALNETWORK"
+    source_address_prefixes                    = ["10.9.0.0/16", "10.2.0.0/16"] # aks2 vnet and shared vnet
+    destination_address_prefixes               = ["*"]
+    source_application_security_group_ids      = []
+    destination_application_security_group_ids = []
+  }
+}
+
+# NSG rules for cluster subnet and Load balancer subnet
+cluster2_aks_node_pool_subnet_nsg_rules = {
+  allow_inbound_from_virtual-network = { # added to allow communication from vnet.
+    priority                                   = "100"
+    name                                       = "AllowInboundFromVirtualNetwork"
+    description                                = "Allow inbound traffic from all peered VNets"
+    direction                                  = "Inbound"
+    access                                     = "Allow"
+    protocol                                   = "*"
+    source_port_ranges                         = ["0-65535"]
+    destination_port_ranges                    = ["0-65535"]
+    source_address_prefixes                    = ["10.8.0.0/16", "10.2.0.0/16"] # aks1 vnet and shared vnet
+    destination_address_prefixes               = ["*"]
+    source_application_security_group_ids      = []
+    destination_application_security_group_ids = []
+  }
+}
+
+cluster2_aks_load_balancer_subnet_nsg_rules = {
+  allow_inbound_from_virtual-network = {  # added to allow communication from vnet.
+    priority                                   = "100"
+    name                                       = "AllowInboundFromVirtualNetwork"
+    description                                = "Allow inbound traffic from all peered VNets"
+    direction                                  = "Inbound"
+    access                                     = "Allow"
+    protocol                                   = "*"
+    source_port_ranges                         = ["0-65535"]
+    destination_port_ranges                    = ["0-65535"]
+    source_address_prefixes                    = ["10.8.0.0/16", "10.2.0.0/16"] # aks1 vnet and shared vnet
     destination_address_prefixes               = ["*"]
     source_application_security_group_ids      = []
     destination_application_security_group_ids = []
