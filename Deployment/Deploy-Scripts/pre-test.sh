@@ -14,8 +14,12 @@ echo "10.9.1.102 traffic.manager2.external.svc.dc2.am.wso2.com" | sudo tee -a /e
 #DB-Host
 echo "10.8.1.103 mysql.service.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
 
+resourceGroup=$(echo "rg-$customer_project-cst-multi-dc-westeurope")
+aksCluster_1=$(echo "aks-$customer_project-cst-multi-dc-westeurope-001")
+aksCluster_2=$(echo "aks-$customer_project-cst-multi-dc-westeurope-002")
+
 #login into cluster1
-az aks get-credentials --resource-group rg-multi-dc-cst-env-westeurope --name aks-multi-dc-cst-env-westeurope-001 --overwrite-existing --admin
+az aks get-credentials --resource-group $resourceGroup --name $aksCluster_1 --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
 #Add GW pod IPs as hosts.
 #DC1
@@ -23,7 +27,7 @@ source $(pwd)/fetch-host-entries.sh apim-321-multi-dc-aks-am-gateway-deployment 
 echo -e "$HOST_ENTRIES_ENV" | sudo tee -a /etc/hosts > /dev/null
 
 #login into cluster2
-az aks get-credentials --resource-group rg-multi-dc-cst-env-westeurope --name aks-multi-dc-cst-env-westeurope-002 --overwrite-existing --admin
+az aks get-credentials --resource-group $resourceGroup --name $aksCluster_2 --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
 #Add GW pod IPs as hosts.
 #DC2
