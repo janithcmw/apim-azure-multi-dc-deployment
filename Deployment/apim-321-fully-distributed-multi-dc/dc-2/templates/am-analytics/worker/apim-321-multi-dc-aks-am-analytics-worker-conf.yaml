@@ -460,7 +460,7 @@ data:
     siddhi:
       properties:
         partitionById: true
-        shardId: shardId: analytics-worker-dc-2
+        shardId: analytics-worker-dc-2
       refs:
         - ref:
             name: 'grpcSource'
