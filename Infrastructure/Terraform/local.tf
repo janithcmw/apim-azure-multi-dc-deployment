@@ -16,4 +16,8 @@ locals {
   cluster1_virtual_network_name         = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
   cluster2_virtual_network_name         = join("-", [var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
   tags                                  = {tag = join("-", ["tag", var.project, var.application_name, var.environment, var.location])}
+  cluster1_aks_private_dns_zone_name = [
+    for r in data.azurerm_resources.cluster_1_pvt_dns_zones.resources :
+    r.name if can(regex("privatelink", r.name))
+  ][0]
 }
