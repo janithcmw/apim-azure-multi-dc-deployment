@@ -114,7 +114,7 @@ module "cluster1_external_service_subnet" {
     location                    = var.location
     virtual_network_name        = module.cluster1_virtual_network.virtual_network_name
     address_prefix              = ["10.8.4.0/24"]
-    network_security_group_name = join("-", ["nodepool", var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
+    network_security_group_name = var.cluster1_external_service_subnet_nsg
     tags                        = local.tags
     depends_on = [
         module.aks_cluster_1
@@ -129,7 +129,7 @@ module "cluster2_external_service_subnet" {
     location                    = var.location
     virtual_network_name        = module.cluster2_virtual_network.virtual_network_name
     address_prefix              = ["10.9.4.0/24"]
-    network_security_group_name = join("-", ["nodepool", var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
+    network_security_group_name = var.cluster1_external_service_subnet_nsg
     tags                        = local.tags
     depends_on = [
         module.aks_cluster_2
