@@ -106,6 +106,36 @@ module "dns_zone_permission_aks_cluster_2" {
     ]
 }
 
+#Add subnet for point to point communication services
+module "cluster1_external_service_subnet" {
+    source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Subnet?ref=v2.1.0"
+    subnet_name                 = var.cluster1_external_service_subnet
+    resource_group_name         = module.resource_group.resource_group_name
+    location                    = var.location
+    virtual_network_name        = module.cluster1_virtual_network.virtual_network_name
+    address_prefix              = ["10.8.4.0/24"]
+    network_security_group_name = join("-", ["nodepool", var.project, var.application_name, var.environment, var.location, var.cluster1_padding])
+    tags                        = local.tags
+    depends_on = [
+        module.aks_cluster_1
+    ]
+}
+
+#Add subnet for point to point communication services
+module "cluster2_external_service_subnet" {
+    source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Subnet?ref=v2.1.0"
+    subnet_name                 = var.cluster2_external_service_subnet
+    resource_group_name         = module.resource_group.resource_group_name
+    location                    = var.location
+    virtual_network_name        = module.cluster2_virtual_network.virtual_network_name
+    address_prefix              = ["10.9.4.0/24"]
+    network_security_group_name = join("-", ["nodepool", var.project, var.application_name, var.environment, var.location, var.cluster2_padding])
+    tags                        = local.tags
+    depends_on = [
+        module.aks_cluster_2
+    ]
+}
+
 #Adding DNS A recodes based on the set up in Helm.
 module "set_pvt_dns_A_records_tm1_DC1" {
     source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Private-DNS-A-Record?ref=v0.44.0"
@@ -113,7 +143,7 @@ module "set_pvt_dns_A_records_tm1_DC1" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.8.1.101"]
+    records                     = ["10.8.4.101"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns
@@ -125,7 +155,7 @@ module "set_pvt_dns_A_records_tm2_DC1" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.8.1.102"]
+    records                     = ["10.8.4.102"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns
@@ -137,7 +167,7 @@ module "set_pvt_dns_A_records_tm1_DC2" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.9.1.101"]
+    records                     = ["10.9.4.101"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns
@@ -149,7 +179,7 @@ module "set_pvt_dns_A_records_tm2_DC2" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.9.1.101"]
+    records                     = ["10.9.4.101"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns
@@ -161,7 +191,7 @@ module "set_pvt_dns_A_records_database" {
     private_dns_zone_name       = var.private_dns_zone_name
     resource_group_name         = module.resource_group.resource_group_name
     time_to_live                = 300
-    records                     = ["10.8.1.103"]
+    records                     = ["10.8.4.103"]
     tags                        = local.tags
     depends_on = [
         module.common_aks_cluster_dns

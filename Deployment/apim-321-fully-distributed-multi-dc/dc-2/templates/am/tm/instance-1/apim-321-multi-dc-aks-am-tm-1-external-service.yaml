@@ -20,7 +20,7 @@ metadata:
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 #    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "snet-vnet-test-cst-multi-dc-westeurope-002-nodepool" # will be passed via --set-sting command.
-    service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.9.1.101"
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.9.4.101"
     {{- with .Values.wso2.deployment.services.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}

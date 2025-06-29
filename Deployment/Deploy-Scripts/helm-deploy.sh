@@ -33,7 +33,7 @@ kubectl apply -f ./apim-321-fully-distributed-multi-dc/dc-1/ingress/certificate/
 helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-1 \
       --set wso2.deployment.am.image.repository="$imageRepo" \
       --set wso2.deployment.am.image.tag="$imageTag" \
-      --set-string wso2.deployment.services.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-internal-subnet"="snet-vnet-$customer_project-cst-multi-dc-westeurope-001-nodepool"
+      --set-string wso2.deployment.services.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-internal-subnet"="cluster1_external_service_subnet"
 kubectl get pods --namespace default
 
 #login into cluster2
@@ -54,7 +54,7 @@ kubectl apply -f ./apim-321-fully-distributed-multi-dc/dc-2/ingress/certificate/
 helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-2 \
       --set wso2.deployment.am.image.repository="$imageRepo" \
       --set wso2.deployment.am.image.tag="$imageTag" \
-      --set-string wso2.deployment.services.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-internal-subnet"="snet-vnet-$customer_project-cst-multi-dc-westeurope-002-nodepool"
+      --set-string wso2.deployment.services.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-internal-subnet"="cluster2_external_service_subnet"
 kubectl get pods --namespace default
 
 echo "Deployment executed successfully!!!"
