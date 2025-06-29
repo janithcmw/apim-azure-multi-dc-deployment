@@ -57,7 +57,7 @@ module "shared_vnet_to_cluster2_virtual_network" {
   allow_forwarded_src_traffic         = true
   depends_on = [
     module.cluster2_virtual_network,
-    module.shared_vnet_to_cluster2_virtual_network
+    module.cluster2_virtual_network_to_shared_vnet
   ]
   providers = {
     azurerm = azurerm.shared_provider
