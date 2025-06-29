@@ -121,6 +121,18 @@ module "cluster1_external_service_subnet" {
     ]
 }
 
+#Assign roles to the Aks cluster on subnet
+module "aks_cluster1_permission_cluster1_external_service_subnet" {
+    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/Role-Assignment?ref=v0.44.0"
+    resource_id             = module.cluster1_external_service_subnet.subnet_id
+    role_definition_name    = "Network Contributor"
+    principal_id            = module.aks_cluster_1.aks_api_server_identity
+    depends_on = [
+        module.aks_cluster_1,
+        module.cluster1_external_service_subnet
+    ]
+}
+
 #Add subnet for point to point communication services
 module "cluster2_external_service_subnet" {
     source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Subnet?ref=v2.1.0"
@@ -133,6 +145,18 @@ module "cluster2_external_service_subnet" {
     tags                        = local.tags
     depends_on = [
         module.aks_cluster_2
+    ]
+}
+
+#Assign roles to the Aks cluster on subnet
+module "aks_cluster2_permission_cluster2_external_service_subnet" {
+    source                  = "github.com/wso2/azure-terraform-modules//modules/azurerm/Role-Assignment?ref=v0.44.0"
+    resource_id             = module.cluster2_external_service_subnet.subnet_id
+    role_definition_name    = "Network Contributor"
+    principal_id            = module.aks_cluster_2.aks_api_server_identity
+    depends_on = [
+        module.aks_cluster_2,
+        module.cluster2_external_service_subnet
     ]
 }
 
