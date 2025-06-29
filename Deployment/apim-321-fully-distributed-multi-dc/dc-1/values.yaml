@@ -22,6 +22,8 @@ wso2:
 
   deployment:
     storageClassName: "azurefile-csi-premium"
+    services:
+      annotations: {}
     dependencies:
       # The configuration should be set to be 'true' if a MySQL database should be spawned as a pod within the cluster
       mysql: true
