@@ -377,3 +377,15 @@ variable "acr_resource_group" {
   description = "The ACR that store the images."
   type = string
 }
+
+variable "cluster1_external_service_subnet" {
+  default = "cluster1_external_service_subnet"
+  description = "Subnet to use for external services."
+  type = string
+}
+
+variable "cluster2_external_service_subnet" {
+  default = "cluster1_external_service_subnet"
+  description = "Subnet to use for external services."
+  type = string
+}
