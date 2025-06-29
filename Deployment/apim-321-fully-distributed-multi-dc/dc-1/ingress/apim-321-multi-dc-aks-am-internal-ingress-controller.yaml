@@ -1,9 +1,9 @@
 controller:
   service:
     annotations:
-      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-      service.beta.kubernetes.io/azure-load-balancer-internal-subnet: snet-vnet-multi-dc-cst-env-westeurope-001-loadbalancer
-      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true" # will be passed via --set-sting command.
+      service.beta.kubernetes.io/azure-load-balancer-internal-subnet: snet-vnet-test-cst-multi-dc-westeurope-001-loadbalancer # will be passed via --set-sting command.
+      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz  # will be passed via --set-sting command.
     externalTrafficPolicy: Local
     type: LoadBalancer
     loadBalancerIP: "10.8.0.111"
