@@ -2466,6 +2466,8 @@ data:
     CREATE USER IF NOT EXISTS 'wso2carbon'@'%' IDENTIFIED WITH mysql_native_password BY 'wso2carbon';
     GRANT ALL PRIVILEGES ON WSO2AM_STATS_DB.* TO 'wso2carbon'@'%';
     FLUSH PRIVILEGES;
+    ALTER DATABASE WSO2AM_STATS_DB CHARACTER SET latin1 COLLATE latin1_bin;
+    
     
     CREATE DATABASE WSO2_CLUSTER_DB;
     CREATE USER IF NOT EXISTS 'wso2carbon'@'%' IDENTIFIED WITH mysql_native_password BY 'wso2carbon';
