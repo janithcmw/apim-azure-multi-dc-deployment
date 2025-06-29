@@ -6,13 +6,13 @@ echo -e "10.8.0.111 analytics.dc1.am.wso2.com devportal.dc1.am.wso2.com gateway.
 echo -e "10.9.0.111 analytics.dc2.am.wso2.com devportal.dc2.am.wso2.com gateway.dc2.am.wso2.com publisher.dc2.am.wso2.com traffic.manager.dc2.am.wso2.com key.manager.dc2.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
 
 #TM-Hosts
-echo "10.8.1.101 traffic.manager1.external.svc.dc1.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
-echo "10.8.1.102 traffic.manager2.external.svc.dc1.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
-echo "10.9.1.101 traffic.manager1.external.svc.dc2.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
-echo "10.9.1.102 traffic.manager2.external.svc.dc2.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
+echo "10.8.4.101 traffic.manager1.external.svc.dc1.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
+echo "10.8.4.102 traffic.manager2.external.svc.dc1.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
+echo "10.9.4.101 traffic.manager1.external.svc.dc2.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
+echo "10.9.4.102 traffic.manager2.external.svc.dc2.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
 
 #DB-Host
-echo "10.8.1.103 mysql.service.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
+echo "10.8.4.103 mysql.service.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
 
 resourceGroup=$(echo "rg-$customer_project-cst-multi-dc-westeurope")
 aksCluster_1=$(echo "aks-$customer_project-cst-multi-dc-westeurope-001")
