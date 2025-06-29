@@ -52,7 +52,7 @@ module "cluster2_aks_dns_cluster1_vnet_link" {
   virtual_network_id                  = module.cluster1_virtual_network.virtual_network_id
   #registration_enabled                = true #not used in module, have to check why?
   depends_on = [
-    module.aks_cluster_1,
+    module.aks_cluster_2,
     module.cluster2_virtual_network
   ]
 }
@@ -79,6 +79,6 @@ module "cluster2_aks_dns_shared_vnet_link" {
   virtual_network_id                  = data.azurerm_virtual_network.shared_vnet.id
   #registration_enabled                = true #not used in module, have to check why?
   depends_on = [
-    module.aks_cluster_1
+    module.aks_cluster_2
   ]
 }
