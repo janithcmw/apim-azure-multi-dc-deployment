@@ -28,7 +28,8 @@ module "shared_vnet_to_cluster1_virtual_network" {
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
   depends_on = [
-    module.cluster1_virtual_network
+    module.cluster1_virtual_network,
+    module.cluster1_virtual_network_to_shared_vnet
   ]
   providers = {
     azurerm = azurerm.shared_provider
@@ -55,7 +56,8 @@ module "shared_vnet_to_cluster2_virtual_network" {
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
   depends_on = [
-    module.cluster2_virtual_network
+    module.cluster2_virtual_network,
+    module.shared_vnet_to_cluster2_virtual_network
   ]
   providers = {
     azurerm = azurerm.shared_provider
