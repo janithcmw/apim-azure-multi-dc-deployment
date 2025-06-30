@@ -12,18 +12,55 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#apiVersion: v1 # moving to shared storage across the aks clusters.
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-shared-synapse-configs-volume-claim
+#  namespace : {{ .Release.Namespace }}
+#spec:
+#  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.synapseConfigs }}
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-shared-synapse-configs-volume
+  namespace : {{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: {{ .Values.wso2.am.deployment.storage.reclaimPolicy }}
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
+  csi:
+    driver: file.csi.azure.com
+    volumeHandle: {{ .Values.wso2.am.deployment.storage.storageAccountName }}#{{ .Values.wso2.am.deployment.storage.shareNames.synapse }}
+    readOnly: false
+    volumeAttributes:
+      secretName: azure-secret
+      shareName: {{ .Values.wso2.am.deployment.storage.shareNames.synapse }}
+      storageAccount: {{ .Values.wso2.am.deployment.storage.storageAccountName }}
+
+---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-shared-synapse-configs-volume-claim
   namespace : {{ .Release.Namespace }}
 spec:
-  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
   accessModes:
     - ReadWriteMany
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.synapseConfigs }}
+      storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  volumeName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-shared-synapse-configs-volume
 
 ---
 
