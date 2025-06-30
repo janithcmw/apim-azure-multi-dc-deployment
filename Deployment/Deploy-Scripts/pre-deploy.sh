@@ -4,6 +4,8 @@ echo "Helm resources to be deployed..." && tree
 echo "Just Echo the variables. $subscription_id, $customer_project"
 
 resourceGroup=$(echo "rg-$customer_project-cst-multi-dc-westeurope")
+aksCluster_1=$(echo "aks-$customer_project-cst-multi-dc-westeurope-001")
+aksCluster_2=$(echo "aks-$customer_project-cst-multi-dc-westeurope-002")
 
 #Create Azure File share to use between two AKS clusters.
 echo "Starting to create Azure Storage Account."
