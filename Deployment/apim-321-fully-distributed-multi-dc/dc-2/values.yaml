@@ -22,6 +22,17 @@ wso2:
 
   deployment:
     storageClassName: "azurefile-csi-premium"
+    storage:
+      storageClassName: azurefile
+      shareNames:
+        synapse: synapse-configs
+        executionplans: executionplans
+        eventreceivers: eventreceivers
+        eventpublishers: eventpublishers
+        eventstreams: eventstreams
+      storageAccountName: aksclustercommonsa
+      capacity: 1Gi
+      reclaimPolicy: Retain
     services:
       annotations: {}
     dependencies:
