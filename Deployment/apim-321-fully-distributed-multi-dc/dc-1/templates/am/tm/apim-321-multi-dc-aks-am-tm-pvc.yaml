@@ -12,18 +12,93 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#apiVersion: v1 # moving to shared storage across the aks clusters.
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-executionplans-volume-claim
+#  namespace : {{ .Release.Namespace }}
+#spec:
+#  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.executionPlans }}
+
+#executionplans
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-executionplans-volume
+  namespace : {{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: {{ .Values.wso2.am.deployment.storage.reclaimPolicy }}
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
+  csi:
+    driver: file.csi.azure.com
+    volumeHandle: {{ .Values.wso2.am.deployment.storage.storageAccountName }}#{{ .Values.wso2.am.deployment.storage.shareNames.executionplans }}
+    readOnly: false
+    volumeAttributes:
+      secretName: azure-secret
+      shareName: {{ .Values.wso2.am.deployment.storage.shareNames.executionplans }}
+      storageAccount: {{ .Values.wso2.am.deployment.storage.storageAccountName }}
+
+---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-executionplans-volume-claim
   namespace : {{ .Release.Namespace }}
 spec:
-  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
   accessModes:
     - ReadWriteMany
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.executionPlans }}
+      storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  volumeName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-executionplans-volume
+
+---
+
+#apiVersion: v1 # moving to shared storage across the aks clusters.
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventpublishers-volume-claim
+#  namespace : {{ .Release.Namespace }}
+#spec:
+#  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.eventpublishers }}
+
+#eventpublishers
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventpublishers-volume
+  namespace : {{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: {{ .Values.wso2.am.deployment.storage.reclaimPolicy }}
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
+  csi:
+    driver: file.csi.azure.com
+    volumeHandle: {{ .Values.wso2.am.deployment.storage.storageAccountName }}#{{ .Values.wso2.am.deployment.storage.shareNames.eventpublishers }}
+    readOnly: false
+    volumeAttributes:
+      secretName: azure-secret
+      shareName: {{ .Values.wso2.am.deployment.storage.shareNames.eventpublishers }}
+      storageAccount: {{ .Values.wso2.am.deployment.storage.storageAccountName }}
 
 ---
 
@@ -33,12 +108,50 @@ metadata:
   name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventpublishers-volume-claim
   namespace : {{ .Release.Namespace }}
 spec:
-  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
   accessModes:
     - ReadWriteMany
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.eventpublishers }}
+      storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  volumeName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventpublishers-volume
+
+---
+
+#apiVersion: v1 # moving to shared storage across the aks clusters.
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventreceivers-volume-claim
+#  namespace : {{ .Release.Namespace }}
+#spec:
+#  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.eventreceivers }}
+
+#eventreceivers
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventreceivers-volume
+  namespace : {{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: {{ .Values.wso2.am.deployment.storage.reclaimPolicy }}
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
+  csi:
+    driver: file.csi.azure.com
+    volumeHandle: {{ .Values.wso2.am.deployment.storage.storageAccountName }}#{{ .Values.wso2.am.deployment.storage.shareNames.eventreceivers }}
+    readOnly: false
+    volumeAttributes:
+      secretName: azure-secret
+      shareName: {{ .Values.wso2.am.deployment.storage.shareNames.eventreceivers }}
+      storageAccount: {{ .Values.wso2.am.deployment.storage.storageAccountName }}
 
 ---
 
@@ -48,12 +161,50 @@ metadata:
   name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventreceivers-volume-claim
   namespace : {{ .Release.Namespace }}
 spec:
-  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
   accessModes:
     - ReadWriteMany
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.eventreceivers }}
+      storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  volumeName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventreceivers-volume
+
+---
+
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventstreams-volume-claim
+#  namespace : {{ .Release.Namespace }}
+#spec:
+#  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.eventstreams }}
+
+#eventstreams
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventstreams-volume
+  namespace : {{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: {{ .Values.wso2.am.deployment.storage.reclaimPolicy }}
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
+  csi:
+    driver: file.csi.azure.com
+    volumeHandle: {{ .Values.wso2.am.deployment.storage.storageAccountName }}#{{ .Values.wso2.am.deployment.storage.shareNames.eventstreams }}
+    readOnly: false
+    volumeAttributes:
+      secretName: azure-secret
+      shareName: {{ .Values.wso2.am.deployment.storage.shareNames.eventstreams }}
+      storageAccount: {{ .Values.wso2.am.deployment.storage.storageAccountName }}
 
 ---
 
@@ -63,12 +214,14 @@ metadata:
   name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventstreams-volume-claim
   namespace : {{ .Release.Namespace }}
 spec:
-  storageClassName: {{ .Values.wso2.deployment.storageClassName}}
   accessModes:
     - ReadWriteMany
+  storageClassName: {{ .Values.wso2.am.deployment.storage.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedArtifacts.capacity.eventstreams }}
+      storage: {{ .Values.wso2.am.deployment.storage.capacity }}
+  volumeName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-shared-eventstreams-volume
+
 ---
 
 apiVersion: v1
