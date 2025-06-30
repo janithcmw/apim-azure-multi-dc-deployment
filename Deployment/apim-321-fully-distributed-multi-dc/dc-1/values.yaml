@@ -30,7 +30,7 @@ wso2:
         eventreceivers: eventreceivers
         eventpublishers: eventpublishers
         eventstreams: eventstreams
-      storageAccountName: aksClusterCommonSA
+      storageAccountName: aksclustercommonsa
       capacity: 1Gi
       reclaimPolicy: Retain
     services:
