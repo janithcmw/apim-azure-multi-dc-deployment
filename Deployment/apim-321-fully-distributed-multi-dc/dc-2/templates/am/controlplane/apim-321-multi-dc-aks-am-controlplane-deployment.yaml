@@ -27,7 +27,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum.am.controlplane.conf: {{ include (print $.Template.BasePath "/am/publisher/apim-321-multi-dc-aks-am-controlplane-conf.yaml") . | sha256sum }}
+        checksum.am.controlplane.conf: {{ include (print $.Template.BasePath "/am/controlplane/apim-321-multi-dc-aks-am-controlplane-conf.yaml") . | sha256sum }}
       labels:
         deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane
     spec:
