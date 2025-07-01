@@ -2,7 +2,11 @@
 # Provider Block Used. Default
 provider "azurerm" {
     subscription_id = var.subscription_id
-    features {}
+    features {
+        resource_group {
+            prevent_deletion_if_contains_resources = false
+        }
+    }
 }
 
 # Provider that is used to access the shared resources that runs test VMs.
