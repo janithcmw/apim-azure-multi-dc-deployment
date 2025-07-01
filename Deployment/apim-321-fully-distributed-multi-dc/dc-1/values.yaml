@@ -174,12 +174,12 @@ wso2:
 #          deployment.toml: |-
 #            # deployment configurations for the Key Manager profile of WSO2 API Manager v3.2.0 (<WSO2AM>/repository/conf/deployment.toml)
 
-      # API Manager's Publisher specific configurations
-      publisher:
+      # API Manager's Publisher Devportal specific configurations
+      publisherdevportal:
         # Configure Ingress
         ingress:
           # Hostname for Publisher profile
-          hostname: "publisher.dc1.am.wso2.com"
+          hostname: "control.plane.dc1.am.wso2.com"
           # Annotations for the API Manager Publisher service Ingress
           annotations:
             kubernetes.io/ingress.class: "nginx"
@@ -187,32 +187,6 @@ wso2:
             nginx.ingress.kubernetes.io/affinity: "cookie"
             nginx.ingress.kubernetes.io/session-cookie-name: "route"
             nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
-
-        # If the deployment configurations for the Publisher profile of WSO2 API Manager v3.2.0 (<WSO2AM>/repository/conf/deployment.toml),
-        # add the customized configuration file under (wso2 -> deployment -> am -> publisher -> config -> deployment.toml)
-#        config:
-#          deployment.toml: |-
-#            # deployment configurations for the Publisher profile of WSO2 API Manager v3.2.0 (<WSO2AM>/repository/conf/deployment.toml)
-
-      # API Manager's DevPortal specific configurations
-      devportal:
-        # Configure Ingress
-        ingress:
-          # Hostname for DevPortal profile
-          hostname: "devportal.dc1.am.wso2.com"
-          # Annotations for the API Manager DevPortal service Ingress
-          annotations:
-            kubernetes.io/ingress.class: "nginx"
-            nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-            nginx.ingress.kubernetes.io/affinity: "cookie"
-            nginx.ingress.kubernetes.io/session-cookie-name: "route"
-            nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
-
-        # If the deployment configurations for the DevPortal profile of WSO2 API Manager v3.2.0 (<WSO2AM>/repository/conf/deployment.toml),
-        # add the customized configuration file under (wso2 -> deployment -> am -> devportal -> config -> deployment.toml)
-#        config:
-#          deployment.toml: |-
-#            # deployment configurations for the DevPortal profile of WSO2 API Manager v3.2.0 (<WSO2AM>/repository/conf/deployment.toml)
 
       # API Manager's Traffic Manager specific configurations
       tm:

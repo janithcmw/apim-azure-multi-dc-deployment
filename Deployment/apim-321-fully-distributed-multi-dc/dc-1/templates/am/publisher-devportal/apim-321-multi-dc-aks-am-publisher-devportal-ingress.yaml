@@ -15,25 +15,25 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-devportal-ingress
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-ingress
   namespace : {{ .Release.Namespace }}
-{{- if .Values.wso2.deployment.am.devportal.ingress.annotations }}
+{{- if .Values.wso2.deployment.am.publisher.ingress.annotations }}
   annotations:
-{{ toYaml .Values.wso2.deployment.am.devportal.ingress.annotations | indent 4 }}
+{{ toYaml .Values.wso2.deployment.am.publisher.ingress.annotations | indent 4 }}
 {{- end }}
 spec:
   tls:
     - hosts:
-        - {{ .Values.wso2.deployment.am.devportal.ingress.hostname }}
+        - {{ .Values.wso2.deployment.am.publisher.ingress.hostname }}
       secretName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-certificate-secret
   rules:
-    - host: {{ .Values.wso2.deployment.am.devportal.ingress.hostname }}
+    - host: {{ .Values.wso2.deployment.am.publisher.ingress.hostname }}
       http:
         paths:
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-devportal-service
+              name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-service
               port:
                 number: 9443
