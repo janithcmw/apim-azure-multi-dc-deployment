@@ -27,7 +27,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum.am.publisher.conf: {{ include (print $.Template.BasePath "/am/publisher/apim-321-multi-dc-aks-am-publisher-devportal-conf.yaml") . | sha256sum }}
+        checksum.am.publisherdevportal.conf: {{ include (print $.Template.BasePath "/am/publisher/apim-321-multi-dc-aks-am-publisher-devportal-conf.yaml") . | sha256sum }}
       labels:
         deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal
     spec:

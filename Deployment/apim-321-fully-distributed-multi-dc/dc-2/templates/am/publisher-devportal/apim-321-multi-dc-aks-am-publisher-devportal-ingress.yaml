@@ -17,17 +17,17 @@ kind: Ingress
 metadata:
   name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-ingress
   namespace : {{ .Release.Namespace }}
-{{- if .Values.wso2.deployment.am.publisher.ingress.annotations }}
+{{- if .Values.wso2.deployment.am.publisherdevportal.ingress.annotations }}
   annotations:
-{{ toYaml .Values.wso2.deployment.am.publisher.ingress.annotations | indent 4 }}
+{{ toYaml .Values.wso2.deployment.am.publisherdevportal.ingress.annotations | indent 4 }}
 {{- end }}
 spec:
   tls:
     - hosts:
-        - {{ .Values.wso2.deployment.am.publisher.ingress.hostname }}
+        - {{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}
       secretName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-certificate-secret
   rules:
-    - host: {{ .Values.wso2.deployment.am.publisher.ingress.hostname }}
+    - host: {{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}
       http:
         paths:
         - path: /

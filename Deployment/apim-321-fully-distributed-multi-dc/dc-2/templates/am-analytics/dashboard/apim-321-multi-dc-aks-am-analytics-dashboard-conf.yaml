@@ -414,7 +414,7 @@ data:
         adminUsername: admin
         adminPassword: admin
         kmDcrUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-service:9443/client-registration/v0.17/register
-        kmTokenUrlForRedirection: https://{{ .Values.wso2.deployment.am.publisher.ingress.hostname }}/oauth2
+        kmTokenUrlForRedirection: https://{{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}/oauth2
         kmTokenUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-service:9443/oauth2
         kmUsername: admin
         kmPassword: admin
@@ -425,7 +425,7 @@ data:
         grantType: authorization_code
         publisherUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-service:9443
         devPortalUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-devportal-service:9443
-        externalLogoutUrl: https://{{ .Values.wso2.deployment.am.publisher.ingress.hostname }}/oidc/logout
+        externalLogoutUrl: https://{{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}/oidc/logout
 
     wso2.dashboard:
       roles:
