@@ -12,7 +12,7 @@ module "bastion" {
   tunneling_enabled             = false
   sku                           = "Standard"
   tags                          = var.tags
-  bastion_subnet_name           = var.bastion_vm_subnet_name
+  bastion_subnet_name           = "AzureBastionSubnet"
   virtual_network_name          = module.cluster1_virtual_network.virtual_network_name
   subnet_address_prefixes       = "10.8.2.0/24"
   allow_https_internet_inbound  = true
@@ -20,6 +20,8 @@ module "bastion" {
   public_ip_name                = "bastion"
   public_address_prefixes       = ["203.0.113.45/32", "198.51.100.0/28"]
   network_security_group_name   = "bastion_host_nsg"
-
+  depends_on = [
+    module.bastion_vm_subnet
+  ]
 }
 
