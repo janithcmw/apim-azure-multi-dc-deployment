@@ -19,9 +19,6 @@ kubectl delete -f ./apim-321-fully-distributed-multi-dc/dc-1/ingress/certificate
 helm uninstall apim-321-multi-dc-aks
 kubectl get pods --namespace default
 
-#verify successful clean up.
-sh $(pwd)/wait-for-helm-cleanup.sh default
-
 #login into cluster2
 az aks get-credentials --resource-group "$resourceGroup" --name "$aksCluster_2" --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
@@ -36,6 +33,15 @@ helm uninstall apim-321-multi-dc-aks
 kubectl get pods --namespace default
 
 #verify successful clean up.
+sh $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
+sh $(pwd)/wait-for-helm-cleanup.sh default
+
+#login into cluster1
+az aks get-credentials --resource-group "$resourceGroup" --name "$aksCluster_1" --overwrite-existing --admin
+sudo kubelogin convert-kubeconfig -l azurecli
+
+#verify successful clean up.
+sh $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
 sh $(pwd)/wait-for-helm-cleanup.sh default
 
 echo "Helm resources undeployed successfully!!!"
