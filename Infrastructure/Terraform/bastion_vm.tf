@@ -8,6 +8,9 @@ module "bastion_vm_subnet" {
   address_prefix              = ["10.8.3.0/24"]
   network_security_group_name = var.bastion_nsg_name
   tags                        = local.tags
+  depends_on = [
+    module.bastion
+  ]
 }
 
 # Create the bastion VM.
