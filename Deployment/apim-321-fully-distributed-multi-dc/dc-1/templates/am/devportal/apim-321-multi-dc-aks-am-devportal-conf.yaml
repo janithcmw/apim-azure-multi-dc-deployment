@@ -164,7 +164,7 @@ data:
 
     #[[apim.event_hub.publish.url_group]]
     #urls = ["tcp://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-statefulset-0.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-headless-service:9611"]
-    3auth_urls = ["ssl://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-statefulset-0.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-headless-service:9711"]
+    #auth_urls = ["ssl://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-statefulset-0.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-headless-service:9711"]
 
     #[[apim.event_hub.publish.url_group]]
     #urls = ["tcp://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-statefulset-1.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-headless-service:9611"]
