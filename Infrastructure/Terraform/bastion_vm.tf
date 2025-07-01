@@ -1,16 +1,13 @@
 # Create a subnet for the VM.
 module "bastion_vm_subnet" {
   source                      = "github.com/wso2/azure-terraform-modules//modules/azurerm/Subnet?ref=v2.1.0"
-  subnet_name                 = var.bastion_vm_subnet_name
+  subnet_name                 = "AzureBastionSubnet"
   resource_group_name         = module.resource_group.resource_group_name
   location                    = var.location
   virtual_network_name        = module.cluster1_virtual_network.virtual_network_name
-  address_prefix              = ["10.8.3.0/24"]
+  address_prefix              = ["10.8.2.0/24"]
   network_security_group_name = var.bastion_nsg_name
   tags                        = local.tags
-  depends_on = [
-    module.bastion
-  ]
 }
 
 # Create the bastion VM.
@@ -55,6 +52,6 @@ resource "azurerm_network_interface" "bastion_vm_nic" {
     name                          = "internal"
     subnet_id                     = module.bastion_vm_subnet.subnet_id
     private_ip_address_allocation = "Static"
-    private_ip_address            = "10.8.3.111"
+    private_ip_address            = "10.8.2.111"
   }
 }
