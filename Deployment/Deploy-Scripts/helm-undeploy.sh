@@ -13,11 +13,11 @@ sudo kubelogin convert-kubeconfig -l azurecli
 
 #uninstall in dc-1
 #uninstall nginx in dc-1
-helm uninstall ingress-nginx
+helm uninstall ingress-nginx -n ingress-nginx
 kubectl delete -f ./apim-321-fully-distributed-multi-dc/dc-1/ingress/certificate/apim-321-multi-dc-aks-am-ingress-cert.yaml
 
 #uninstall cluster in dc-1
-helm uninstall apim-321-multi-dc-aks
+helm uninstall apim-321-multi-dc-aks -n default
 kubectl get pods --namespace default
 
 #login into cluster2
@@ -26,11 +26,11 @@ sudo kubelogin convert-kubeconfig -l azurecli
 
 #uninstall in dc-2
 #uninstall nginx in dc-2
-helm uninstall ingress-nginx
+helm uninstall ingress-nginx -n ingress-nginx
 kubectl delete -f ./apim-321-fully-distributed-multi-dc/dc-2/ingress/certificate/apim-321-multi-dc-aks-am-ingress-cert.yaml
 
 #uninstall cluster in dc-2
-helm uninstall apim-321-multi-dc-aks
+helm uninstall apim-321-multi-dc-aks -n default
 kubectl get pods --namespace default
 
 #verify successful clean up.
