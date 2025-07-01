@@ -15,7 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-deployment
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-deployment-1
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.wso2.deployment.am.gateway.replicas }}
@@ -30,7 +30,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum.am.km.conf: {{ include (print $.Template.BasePath "/am/gateway/apim-321-multi-dc-aks-am-gateway-conf.yaml") . | sha256sum }}
+        checksum.am.km.conf: {{ include (print $.Template.BasePath "/am/gateway/deployment-1/apim-321-multi-dc-aks-am-gateway-conf-1.yaml") . | sha256sum }}
       labels:
         deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway
     spec:
@@ -169,7 +169,7 @@ spec:
             claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-log-storage-volume-claim
         - name: wso2am-gateway-conf
           configMap:
-            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-conf
+            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-conf-1
         - name: wso2am-gateway-conf-entrypoint
           configMap:
             name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-conf-entrypoint
