@@ -15,22 +15,22 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-devportal-conf
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-conf
   namespace : {{ .Release.Namespace }}
-  {{ if .Values.wso2.deployment.am.devportal.config }}
+  {{- if .Values.wso2.deployment.am.publisherdevportal.config }}
 data:
-  {{- range $index, $content := .Values.wso2.deployment.am.devportal.config }}
+  {{- range $index, $content := .Values.wso2.deployment.am.publisherdevportal.config }}
   {{ $index }}: |-
   {{ tpl $content $ | indent 4 }}
   {{- end }}
 
-  {{ else }}
+  {{- else }}
 data:
   deployment.toml: |-
     [server]
-    hostname = "{{ .Values.wso2.deployment.am.devportal.ingress.hostname }}"
+    hostname = "{{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}"
     node_ip = "$env{NODE_IP}"
-    server_role="api-devportal"
+    #server_role = "api-publisher"
 
     [user_store]
     type = "database_unique_id"
@@ -66,12 +66,6 @@ data:
     type = "JKS"
     password = "wso2carbon"
 
-    # key manager implementation
-    [apim.key_manager]
-    service_url = "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-km-service:${mgt.transport.https.port}/services/"
-    username= "$ref{super_admin.username}"
-    password= "$ref{super_admin.password}"
-
     [[apim.gateway.environment]]
     name= "Production and Sandbox"
     type= "hybrid"
@@ -80,10 +74,17 @@ data:
     service_url= "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-service:${mgt.transport.https.port}${carbon.context}services/"
     username= "${admin.username}"
     password= "${admin.password}"
-    ws_endpoint= "ws://gateway.dc1.am.wso2.com:9099"
+    ws_endpoint = "ws://{{ .Values.wso2.deployment.am.gateway.ingress.websocket.nonSecure.hostname }}"
+    wss_endpoint = "wss://{{ .Values.wso2.deployment.am.gateway.ingress.websocket.secure.hostname }}"
     http_endpoint = "http://{{ .Values.wso2.deployment.am.gateway.ingress.hostname }}"
     https_endpoint = "https://{{ .Values.wso2.deployment.am.gateway.ingress.hostname }}"
-    show_as_token_endpoint_url = true
+
+
+    # key manager implementation
+    [apim.key_manager]
+    service_url = "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-km-service:${mgt.transport.https.port}/services/"
+    username= "$ref{super_admin.username}"
+    password= "$ref{super_admin.password}"
 
     [apim.analytics]
     enable = "true"
@@ -96,31 +97,9 @@ data:
     analytics_auth_url =["ssl://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-analytics-worker-statefulset-0.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-analytics-worker-headless-service:7712","ssl://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-analytics-worker-statefulset-1.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-analytics-worker-headless-service:7712"]
     type = "failover"
 
-    [apim.cache.recent_apis]
-    enable = false
-
-    [apim.cache.scopes]
-    enable = true
-
-    [apim.cache.tags]
-    expiry_time = 120000
-
-    [apim.devportal]
-    enable_application_sharing = true
-    application_sharing_type = "default" #changed to type, saml, default
-    #application_sharing_impl = "org.wso2.carbon.apimgt.impl.DefaultGroupIDExtractorImpl"
-    display_multiple_versions = false
-    display_deprecated_apis = false
-    enable_comments = true
-    enable_ratings = true
-    enable_forum = true
-
-    [[event_handler]]
-    name="userPostSelfRegistration"
-    subscriptions=["POST_ADD_USER"]
-
     # Traffic Manager configurations
     [apim.throttling]
+    service_url = "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-service:${mgt.transport.https.port}/services/"
     username= "$ref{super_admin.username}"
     password= "$ref{super_admin.password}"
     #throttle_decision_endpoints = ["tcp://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-statefulset-0.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-headless-service:5672","tcp://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-statefulset-1.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-headless-service:5672"]
@@ -157,6 +136,44 @@ data:
     traffic_manager_auth_urls = ["ssl://traffic.manager2.external.svc.dc2.am.wso2.com:9711"]
     type = "loadbalance"
 
+    [apim.cache.recent_apis]
+    enable = false
+
+    [apim.cache.scopes]
+    enable = true
+
+    [apim.cache.tags]
+    expiry_time = 120000
+
+    [apim.cache.publisher_roles] #check the usage and move to dev role
+    enable = true
+
+    [apim.devportal]
+    url = "https://{{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}/devportal"
+    enable_application_sharing = true
+    application_sharing_type = "default" #changed to type, saml, default
+    #application_sharing_impl = "org.wso2.carbon.apimgt.impl.DefaultGroupIDExtractorImpl"
+    display_multiple_versions = false
+    display_deprecated_apis = false
+    enable_comments = true
+    enable_ratings = true
+    enable_forum = true
+
+    [[event_handler]]
+    name="userPostSelfRegistration"
+    subscriptions=["POST_ADD_USER"]
+
+    [apim.workflow]
+    enable = false
+    service_url = "https://localhost:9445/bpmn"
+    username = "$ref{super_admin.username}"
+    password = "$ref{super_admin.password}"
+    callback_endpoint = "https://localhost:9443/api/am/publisher/v0.16/workflows/update-workflow-status"
+    token_endpoint = "https://localhost:8243/token"
+    client_registration_endpoint = "https://localhost:9443/client-registration/v0.17/register"
+    client_registration_username = "$ref{super_admin.username}"
+    client_registration_password = "$ref{super_admin.password}"
+
     #[apim.event_hub]
     #service_url = "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-service:9443"
     #event_listening_endpoints = ["tcp://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-statefulset-0.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-headless-service:5672","tcp://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-statefulset-1.{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-headless-service:5672"]
@@ -184,3 +201,4 @@ data:
     url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
     {{ end }}
   {{- end }}
+

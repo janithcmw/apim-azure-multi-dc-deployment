@@ -15,7 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-deployment
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-deployment
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
@@ -23,13 +23,13 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher
+      deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal
   template:
     metadata:
       annotations:
-        checksum.am.publisher.conf: {{ include (print $.Template.BasePath "/am/publisher/apim-321-multi-dc-aks-am-publisher-conf.yaml") . | sha256sum }}
+        checksum.am.publisher.conf: {{ include (print $.Template.BasePath "/am/publisher/apim-321-multi-dc-aks-am-publisher-devportal-conf.yaml") . | sha256sum }}
       labels:
-        deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher
+        deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal
     spec:
       initContainers:
         {{- if .Values.wso2.deployment.dependencies.mysql }}
@@ -136,8 +136,6 @@ spec:
             - containerPort: 9443
               protocol: "TCP"
           env:
-            - name: PROFILE_NAME
-              value: api-publisher
             - name: NODE_IP
               valueFrom:
                 fieldRef:
@@ -172,21 +170,21 @@ spec:
       volumes:
         - name: wso2am-publisher-conf
           configMap:
-            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-conf
+            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-conf
         - name: wso2am-publisher-log-storage-volume
           persistentVolumeClaim:
-            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-log-storage-volume-claim
+            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-log-storage-volume-claim
         {{ if .Values.wso2.deployment.persistentRuntimeArtifacts.apacheSolrIndexing.enabled }}
         - name: wso2am-publisher-conf-entrypoint
           configMap:
-            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-conf-entrypoint
+            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-conf-entrypoint
             defaultMode: 0407
         - name: wso2am-publisher-local-carbon-database-storage
           persistentVolumeClaim:
-            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-1-local-carbon-database-volume-claim
+            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-1-local-carbon-database-volume-claim
         - name: wso2am-publisher-indexed-data-volume
           persistentVolumeClaim:
-            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-solr-indexed-data-volume-claim
+            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-solr-indexed-data-volume-claim
         {{ end }}
         {{ if .Values.wso2.deployment.dependencies.mysql }}
         - name: mysql-connector-jar
