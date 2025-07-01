@@ -1,3 +1,4 @@
+#!/bin/bash
 # Current location and the file structure.
 echo "The script 'helm-undeploy.sh' will be executed inside the path: " && pwd
 
@@ -33,15 +34,15 @@ helm uninstall apim-321-multi-dc-aks
 kubectl get pods --namespace default
 
 #verify successful clean up.
-sh $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
-sh $(pwd)/wait-for-helm-cleanup.sh default
+bash $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
+bash $(pwd)/wait-for-helm-cleanup.sh default
 
 #login into cluster1
 az aks get-credentials --resource-group "$resourceGroup" --name "$aksCluster_1" --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
 
 #verify successful clean up.
-sh $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
-sh $(pwd)/wait-for-helm-cleanup.sh default
+bash $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
+bash $(pwd)/wait-for-helm-cleanup.sh default
 
 echo "Helm resources undeployed successfully!!!"
