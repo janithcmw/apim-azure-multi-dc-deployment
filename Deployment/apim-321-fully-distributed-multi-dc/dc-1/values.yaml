@@ -125,6 +125,11 @@ wso2:
         ingress:
           # Hostname for Gateway profile
           hostname: "gateway.dc1.am.wso2.com"
+          websocket:
+            secure:
+              hostname: "wss.gateway.dc1.am.wso2.com"
+            nonSecure:
+              hostname: "ws.gateway.dc1.am.wso2.com"
           # Annotations for the API Manager Gateway service Ingress
           annotations:
             kubernetes.io/ingress.class: "nginx"

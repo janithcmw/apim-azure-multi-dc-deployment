@@ -35,3 +35,9 @@ spec:
     - name: servlet-https
       protocol: TCP
       port: 9443
+    - name: ws
+      protocol: TCP
+      port: 9099
+    - name: wss
+      protocol: TCP
+      port: 8099

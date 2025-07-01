@@ -80,7 +80,7 @@ data:
     service_url= "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-service:${mgt.transport.https.port}${carbon.context}services/"
     username= "${admin.username}"
     password= "${admin.password}"
-    ws_endpoint= "ws://api.gw.wso2.com:9099"
+    ws_endpoint= "ws://gateway.dc1.am.wso2.com:9099"
     http_endpoint = "http://{{ .Values.wso2.deployment.am.gateway.ingress.hostname }}"
     https_endpoint = "https://{{ .Values.wso2.deployment.am.gateway.ingress.hostname }}"
     show_as_token_endpoint_url = true
