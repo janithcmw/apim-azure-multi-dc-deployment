@@ -391,7 +391,7 @@ variable "cluster1_external_service_subnet_nsg" {
 }
 
 variable "cluster2_external_service_subnet" {
-  default = "cluster1_external_service_subnet"
+  default = "cluster2_external_service_subnet"
   description = "Subnet to use for external services."
   type = string
 }
