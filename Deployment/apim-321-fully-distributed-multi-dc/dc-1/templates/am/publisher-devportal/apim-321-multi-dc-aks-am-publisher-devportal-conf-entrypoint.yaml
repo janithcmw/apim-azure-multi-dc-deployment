@@ -17,7 +17,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-conf-entrypoint
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-conf-entrypoint
   namespace: {{ .Release.Namespace }}
 data:
   docker-entrypoint.sh: |

@@ -15,7 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-deployment
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-deployment
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
@@ -23,13 +23,13 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal
+      deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane
   template:
     metadata:
       annotations:
-        checksum.am.publisherdevportal.conf: {{ include (print $.Template.BasePath "/am/publisher/apim-321-multi-dc-aks-am-publisher-devportal-conf.yaml") . | sha256sum }}
+        checksum.am.controlplane.conf: {{ include (print $.Template.BasePath "/am/publisher/apim-321-multi-dc-aks-am-controlplane-conf.yaml") . | sha256sum }}
       labels:
-        deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal
+        deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane
     spec:
       initContainers:
         {{- if .Values.wso2.deployment.dependencies.mysql }}
@@ -68,7 +68,7 @@ spec:
                       fi;"
           ]
           volumeMounts:
-            - name: wso2am-publisher-local-carbon-database-storage
+            - name: wso2am-controlplane-local-carbon-database-storage
               mountPath: /home/wso2carbon/solr/database
         - name: init-permissions-solr-index
           image: busybox
@@ -82,7 +82,7 @@ spec:
                       fi;"
           ]
           volumeMounts:
-            - name: wso2am-publisher-indexed-data-volume
+            - name: wso2am-controlplane-indexed-data-volume
               mountPath: /home/wso2carbon/solr/indexed-data
         {{end}}
         - name: init-permissions-logs
@@ -97,7 +97,7 @@ spec:
                       fi;"
           ]
           volumeMounts:
-            - name: wso2am-publisher-log-storage-volume
+            - name: wso2am-controlplane-log-storage-volume
               mountPath: /home/wso2carbon/wso2am-3.2.1/repository/logs
       containers:
         - name: wso2am-publisher
@@ -145,16 +145,16 @@ spec:
           securityContext:
             runAsUser: 802
           volumeMounts:
-          - name: wso2am-publisher-conf
+          - name: wso2am-controlplane-conf
             mountPath: /home/wso2carbon/wso2-config-volume/repository/conf
           {{ if .Values.wso2.deployment.persistentRuntimeArtifacts.apacheSolrIndexing.enabled }}
-          - name: wso2am-publisher-local-carbon-database-storage
+          - name: wso2am-controlplane-local-carbon-database-storage
             mountPath: /home/wso2carbon/solr/database
-          - name: wso2am-publisher-indexed-data-volume
+          - name: wso2am-controlplane-indexed-data-volume
             mountPath: /home/wso2carbon/solr/indexed-data
-          - name: wso2am-publisher-log-storage-volume
+          - name: wso2am-controlplane-log-storage-volume
             mountPath: /home/wso2carbon/wso2am-3.2.1/repository/logs
-          - name: wso2am-publisher-conf-entrypoint
+          - name: wso2am-controlplane-conf-entrypoint
             mountPath: /home/wso2carbon/docker-entrypoint.sh
             subPath: docker-entrypoint.sh
           {{ end }}
@@ -168,23 +168,23 @@ spec:
         - name: {{ .Values.wso2.deployment.am.image.imagePullSecrets.secretName }}
       {{ end }}
       volumes:
-        - name: wso2am-publisher-conf
+        - name: wso2am-controlplane-conf
           configMap:
-            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-conf
-        - name: wso2am-publisher-log-storage-volume
+            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-conf
+        - name: wso2am-controlplane-log-storage-volume
           persistentVolumeClaim:
-            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-log-storage-volume-claim
+            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-log-storage-volume-claim
         {{ if .Values.wso2.deployment.persistentRuntimeArtifacts.apacheSolrIndexing.enabled }}
-        - name: wso2am-publisher-conf-entrypoint
+        - name: wso2am-controlplane-conf-entrypoint
           configMap:
-            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-conf-entrypoint
+            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-conf-entrypoint
             defaultMode: 0407
-        - name: wso2am-publisher-local-carbon-database-storage
+        - name: wso2am-controlplane-local-carbon-database-storage
           persistentVolumeClaim:
-            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-1-local-carbon-database-volume-claim
-        - name: wso2am-publisher-indexed-data-volume
+            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-1-local-carbon-database-volume-claim
+        - name: wso2am-controlplane-indexed-data-volume
           persistentVolumeClaim:
-            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-solr-indexed-data-volume-claim
+            claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-solr-indexed-data-volume-claim
         {{ end }}
         {{ if .Values.wso2.deployment.dependencies.mysql }}
         - name: mysql-connector-jar
