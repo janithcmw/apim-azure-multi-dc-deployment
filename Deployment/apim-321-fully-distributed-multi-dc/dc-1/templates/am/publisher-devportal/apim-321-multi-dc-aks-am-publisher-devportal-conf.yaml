@@ -15,11 +15,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-conf
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-conf
   namespace : {{ .Release.Namespace }}
-  {{- if .Values.wso2.deployment.am.publisherdevportal.config }}
+  {{- if .Values.wso2.deployment.am.controlplane.config }}
 data:
-  {{- range $index, $content := .Values.wso2.deployment.am.publisherdevportal.config }}
+  {{- range $index, $content := .Values.wso2.deployment.am.controlplane.config }}
   {{ $index }}: |-
   {{ tpl $content $ | indent 4 }}
   {{- end }}
@@ -28,7 +28,7 @@ data:
 data:
   deployment.toml: |-
     [server]
-    hostname = "{{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}"
+    hostname = "{{ .Values.wso2.deployment.am.controlplane.ingress.hostname }}"
     node_ip = "$env{NODE_IP}"
     #server_role = "api-publisher"
 
@@ -149,7 +149,7 @@ data:
     enable = true
 
     [apim.devportal]
-    url = "https://{{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}/devportal"
+    url = "https://{{ .Values.wso2.deployment.am.controlplane.ingress.hostname }}/devportal"
     enable_application_sharing = true
     application_sharing_type = "default" #changed to type, saml, default
     #application_sharing_impl = "org.wso2.carbon.apimgt.impl.DefaultGroupIDExtractorImpl"

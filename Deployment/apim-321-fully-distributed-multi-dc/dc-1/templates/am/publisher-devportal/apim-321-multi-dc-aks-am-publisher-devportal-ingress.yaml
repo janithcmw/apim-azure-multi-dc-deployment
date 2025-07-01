@@ -15,25 +15,25 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-ingress
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-ingress
   namespace : {{ .Release.Namespace }}
-{{- if .Values.wso2.deployment.am.publisherdevportal.ingress.annotations }}
+{{- if .Values.wso2.deployment.am.controlplane.ingress.annotations }}
   annotations:
-{{ toYaml .Values.wso2.deployment.am.publisherdevportal.ingress.annotations | indent 4 }}
+{{ toYaml .Values.wso2.deployment.am.controlplane.ingress.annotations | indent 4 }}
 {{- end }}
 spec:
   tls:
     - hosts:
-        - {{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}
+        - {{ .Values.wso2.deployment.am.controlplane.ingress.hostname }}
       secretName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-certificate-secret
   rules:
-    - host: {{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}
+    - host: {{ .Values.wso2.deployment.am.controlplane.ingress.hostname }}
       http:
         paths:
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-devportal-service
+              name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-service
               port:
                 number: 9443

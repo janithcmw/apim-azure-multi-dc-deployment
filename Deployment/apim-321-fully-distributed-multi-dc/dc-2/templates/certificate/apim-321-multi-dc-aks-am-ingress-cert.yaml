@@ -17,7 +17,7 @@ data:
 #                               -extensions v3_req -config <(echo "[req]"; \
 #                               echo distinguished_name=req; \
 #                               echo "[v3_req]"; \
-#                               echo "subjectAltName=DNS:*.am.wso2.com,DNS:analytics.am.wso2.com,DNS:devportal.am.wso2.com,DNS:gateway.am.wso2.com,DNS:publisher.am.wso2.com,DNS:traffic.manager.am.wso2.com,DNS:key.manager.am.wso2.com"; \
+#                               echo "subjectAltName=DNS:*.am.wso2.com,DNS:analytics.am.wso2.com,DNS:controlplane.am.wso2.com,DNS:gateway.am.wso2.com,DNS:traffic.manager.am.wso2.com,DNS:key.manager.am.wso2.com"; \
 #                               echo "keyUsage=digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment")
 #  3. Generate keystore if required: openssl pkcs12 -export -in certificate.crt -inkey private.key -out keystore.p12 -name wso2carbon
 #                                    keytool -importkeystore -srckeystore keystore.p12 -srcstoretype PKCS12 -destkeystore wso2carbon.jks -deststoretype JKS
@@ -33,7 +33,7 @@ data:
 #                                       echo "[v3_req]"; \
 #                                       echo "keyUsage=digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment"; \
 #                                       echo "extendedKeyUsage=serverAuth,clientAuth"; \
-#                                       echo "subjectAltName=DNS:*.am.wso2.com,DNS:analytics.am.wso2.com,DNS:devportal.am.wso2.com,DNS:gateway.am.wso2.com,DNS:publisher.am.wso2.com,DNS:traffic.manager.am.wso2.com,DNS:key.manager.am.wso2.com")
+#                                       echo "subjectAltName=DNS:*.am.wso2.com,DNS:analytics.am.wso2.com,DNS:controlplane.am.wso2.com,DNS:gateway.am.wso2.com,DNS:traffic.manager.am.wso2.com,DNS:key.manager.am.wso2.com")
 #
 # Then, base64 encode the content and add it to tls.crt and tls.key:
 #  1.  cat certificate.crt | base64 -w 0

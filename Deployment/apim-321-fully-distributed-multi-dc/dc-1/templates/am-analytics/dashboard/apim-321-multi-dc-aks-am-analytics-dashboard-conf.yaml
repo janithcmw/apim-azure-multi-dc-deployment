@@ -413,9 +413,9 @@ data:
         allScopes: apim_analytics:admin openid apim:api_view apim:subscribe apim_analytics:monitoring_dashboard:own apim_analytics:monitoring_dashboard:edit apim_analytics:monitoring_dashboard:view apim_analytics:business_analytics:own apim_analytics:business_analytics:edit apim_analytics:business_analytics:view apim_analytics:api_analytics:own apim_analytics:api_analytics:edit apim_analytics:api_analytics:view apim_analytics:application_analytics:own apim_analytics:application_analytics:edit apim_analytics:application_analytics:view
         adminUsername: admin
         adminPassword: admin
-        kmDcrUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-service:9443/client-registration/v0.17/register
-        kmTokenUrlForRedirection: https://{{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}/oauth2
-        kmTokenUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-service:9443/oauth2
+        kmDcrUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-service:9443/client-registration/v0.17/register
+        kmTokenUrlForRedirection: https://{{ .Values.wso2.deployment.am.controlplane.ingress.hostname }}/oauth2
+        kmTokenUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-service:9443/oauth2
         kmUsername: admin
         kmPassword: admin
         portalAppContext: analytics-dashboard
@@ -423,9 +423,9 @@ data:
         cacheTimeout: 30
         baseUrl: https://{{ .Values.wso2.deployment.analytics.dashboard.ingress.hostname }}
         grantType: authorization_code
-        publisherUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-publisher-service:9443
-        devPortalUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-devportal-service:9443
-        externalLogoutUrl: https://{{ .Values.wso2.deployment.am.publisherdevportal.ingress.hostname }}/oidc/logout
+        publisherUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-service:9443
+        devPortalUrl: https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-controlplane-service:9443
+        externalLogoutUrl: https://{{ .Values.wso2.deployment.am.controlplane.ingress.hostname }}/oidc/logout
 
     wso2.dashboard:
       roles:
