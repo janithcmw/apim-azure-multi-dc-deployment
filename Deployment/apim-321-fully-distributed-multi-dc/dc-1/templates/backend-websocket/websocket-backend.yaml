@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websocket-netty-deployment
+  labels:
+    app: websocket-netty
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: websocket-netty
+  template:
+    metadata:
+      labels:
+        app: websocket-netty
+    spec:
+      containers:
+        - name: websocket-netty
+          image: cstimage.azurecr.io/websocket-netty-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8095
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
