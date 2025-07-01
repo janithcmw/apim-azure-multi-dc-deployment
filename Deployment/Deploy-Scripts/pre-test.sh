@@ -18,18 +18,26 @@ resourceGroup=$(echo "rg-$customer_project-cst-multi-dc-westeurope")
 aksCluster_1=$(echo "aks-$customer_project-cst-multi-dc-westeurope-001")
 aksCluster_2=$(echo "aks-$customer_project-cst-multi-dc-westeurope-002")
 
+#Sleeping
+echo "Next 5 minutes the scripts will be sleeping and allowing the k8s setup to be deployed."
+sleep 300
+
 #login into cluster1
+echo "Login to the  DC1 to capture the hostname."
 az aks get-credentials --resource-group $resourceGroup --name $aksCluster_1 --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
 #Add GW pod IPs as hosts.
 #DC1
+echo "The GW pod hostname capturing script will be executed against the DC1"
 source $(pwd)/fetch-host-entries.sh apim-321-multi-dc-aks-am-gateway-deployment deployment=apim-321-multi-dc-aks-am-gateway dc1 default
 echo -e "$HOST_ENTRIES_ENV" | sudo tee -a /etc/hosts > /dev/null
 
 #login into cluster2
+echo "Login to the  DC1 to capture the hostname."
 az aks get-credentials --resource-group $resourceGroup --name $aksCluster_2 --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
 #Add GW pod IPs as hosts.
 #DC2
+echo "The GW pod hostname capturing script will be executed against the DC2"
 source $(pwd)/fetch-host-entries.sh apim-321-multi-dc-aks-am-gateway-deployment deployment=apim-321-multi-dc-aks-am-gateway dc2 default
 echo -e "$HOST_ENTRIES_ENV" | sudo tee -a /etc/hosts > /dev/null
