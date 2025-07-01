@@ -15,7 +15,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-conf
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-conf-1
   namespace : {{ .Release.Namespace }}
   {{ if .Values.wso2.deployment.am.gateway.config }}
 data:
