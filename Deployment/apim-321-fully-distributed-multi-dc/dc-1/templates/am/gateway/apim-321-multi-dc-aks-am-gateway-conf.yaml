@@ -146,10 +146,10 @@ data:
     auth_header = "Authorization"
 
     [apim.cors]
-    allow_origins = "*"
-    allow_methods = ["GET","PUT","POST","DELETE","PATCH","OPTIONS"]
-    allow_headers = ["authorization","Access-Control-Allow-Origin","Content-Type","SOAPAction"]
-    allow_credentials = false
+    enable = true
+    allow_headers = ["authorization","Access-Control-Allow-Origin","",""]
+    enable_validation_for_ws = true
+    enable_ws_additional_cors_validation = true
 
     [transport.https.properties]
     proxyPort = 443
