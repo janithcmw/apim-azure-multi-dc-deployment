@@ -40,7 +40,7 @@ bash $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
 bash $(pwd)/wait-for-helm-cleanup.sh default
 
 #Forcefully deleting the LB
-az network lb delete --name KUBERNETES-INTERNAL --resource-group "$aksCluster_1"
+az network lb delete --name kubernetes-internal --resource-group "$aksCluster_1"
 
 #login into cluster1
 az aks get-credentials --resource-group "$resourceGroup" --name "$aksCluster_1" --overwrite-existing --admin
@@ -51,6 +51,6 @@ bash $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
 bash $(pwd)/wait-for-helm-cleanup.sh default
 
 #Forcefully deleting the LB
-az network lb delete --name KUBERNETES-INTERNAL --resource-group "$aksCluster_1"
+az network lb delete --name kubernetes-internal --resource-group "$aksCluster_2"
 
 echo "Helm resources undeployed successfully!!!"
