@@ -136,7 +136,7 @@ wso2:
             nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
         # Number of deployment replicas
-        replicas: 1
+        replicas: 2
 
         # Kubernetes RollingUpdate strategy configurations
         strategy:
