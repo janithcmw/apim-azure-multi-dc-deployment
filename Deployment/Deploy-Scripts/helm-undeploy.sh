@@ -39,6 +39,9 @@ kubectl get pods -n default
 bash $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
 bash $(pwd)/wait-for-helm-cleanup.sh default
 
+#Forcefully deleting the LB
+az network lb delete --name KUBERNETES-INTERNAL --resource-group "$aksCluster_1"
+
 #login into cluster1
 az aks get-credentials --resource-group "$resourceGroup" --name "$aksCluster_1" --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
@@ -46,5 +49,8 @@ sudo kubelogin convert-kubeconfig -l azurecli
 #verify successful clean up.
 bash $(pwd)/wait-for-helm-cleanup.sh ingress-nginx
 bash $(pwd)/wait-for-helm-cleanup.sh default
+
+#Forcefully deleting the LB
+az network lb delete --name KUBERNETES-INTERNAL --resource-group "$aksCluster_1"
 
 echo "Helm resources undeployed successfully!!!"
