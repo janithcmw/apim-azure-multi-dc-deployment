@@ -35,8 +35,8 @@ kubectl apply -f ./apim-321-fully-distributed-multi-dc/dc-1/ingress/certificate/
 # keystore
 #create wso2carbon.jks and client-truststore.jks secrets.
 echo "Starting to create secrets that contains JKS files."
-kubectl create secret generic wso2carbon_jks --from-file=./apim-321-fully-distributed-multi-dc/dc-1/keystores/wso2carbon.jks
-kubectl create secret generic client-truststore_jks --from-file=./apim-321-fully-distributed-multi-dc/dc-1/keystores/client-truststore.jks
+kubectl create secret generic wso2carbon-jks --from-file=./apim-321-fully-distributed-multi-dc/dc-1/keystores/wso2carbon.jks
+kubectl create secret generic client-truststore-jks --from-file=./apim-321-fully-distributed-multi-dc/dc-1/keystores/client-truststore.jks
 
 #install cluster in dc-1
 helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-1 \
@@ -64,8 +64,8 @@ kubectl apply -f ./apim-321-fully-distributed-multi-dc/dc-2/ingress/certificate/
 # keystore
 #create wso2carbon.jks and client-truststore.jks secrets.
 echo "Starting to create secrets that contains JKS files."
-kubectl create secret generic wso2carbon_jks --from-file=./apim-321-fully-distributed-multi-dc/dc-2/keystores/wso2carbon.jks
-kubectl create secret generic client-truststore_jks --from-file=./apim-321-fully-distributed-multi-dc/dc-2/keystores/client-truststore.jks
+kubectl create secret generic wso2carbon-jks --from-file=./apim-321-fully-distributed-multi-dc/dc-2/keystores/wso2carbon.jks
+kubectl create secret generic client-truststore-jks --from-file=./apim-321-fully-distributed-multi-dc/dc-2/keystores/client-truststore.jks
 
 #install cluster in dc-2
 helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-2 \

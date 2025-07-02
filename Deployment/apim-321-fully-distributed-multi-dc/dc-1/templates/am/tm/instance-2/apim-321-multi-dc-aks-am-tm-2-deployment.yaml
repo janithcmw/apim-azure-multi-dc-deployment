@@ -191,10 +191,10 @@ spec:
             - name: wso2am-tm-conf-entrypoint
               mountPath: /home/wso2carbon/docker-entrypoint.sh
               subPath: docker-entrypoint.sh
-            - name: wso2am-wso2carbon_jks
+            - name: wso2am-wso2carbon-jks
               mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/wso2carbon.jks
               subPath: wso2carbon.jks
-            - name: wso2am-client-truststore_jks
+            - name: wso2am-client-truststore-jks
               mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/client-truststore.jks
               subPath: client-truststore.jks
             {{ if .Values.wso2.deployment.dependencies.mysql }}
@@ -229,12 +229,12 @@ spec:
           configMap:
             name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-conf-entrypoint
             defaultMode: 0407
-        - name: wso2am-wso2carbon_jks
+        - name: wso2am-wso2carbon-jks
           secret:
-            secretName: wso2carbon_jks
-        - name: wso2am-client-truststore_jks
+            secretName: wso2carbon-jks
+        - name: wso2am-client-truststore-jks
           secret:
-            secretName: client-truststore_jks
+            secretName: client-truststore-jks
         {{ if .Values.wso2.deployment.dependencies.mysql }}
         - name: mysql-connector-jar
           emptyDir: {}
