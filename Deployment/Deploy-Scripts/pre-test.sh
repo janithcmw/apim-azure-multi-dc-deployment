@@ -1,6 +1,6 @@
 #This script is used to populate the DNS mappings relevant to the tests.
 #dc-1
-echo -e "10.8.0.111 analytics.dc1.am.wso2.com gateway.dc1.am.wso2.com controlplane.dc1.am.wso2.com traffic.manager.dc1.am.wso2.com key.manager.dc1.am.wso2.com wss.gateway.dc1.am.wso2.com ws.gateway.dc1.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
+echo -e "10.8.0.111 websocket.wso2.com gateway.wso2.com am.wso2.com analytics.dc1.am.wso2.com gateway.dc1.am.wso2.com controlplane.dc1.am.wso2.com traffic.manager.dc1.am.wso2.com key.manager.dc1.am.wso2.com wss.gateway.dc1.am.wso2.com ws.gateway.dc1.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
 
 #dc-2
 echo -e "10.9.0.111 analytics.dc2.am.wso2.com gateway.dc2.am.wso2.com controlplane.dc2.am.wso2.com traffic.manager.dc2.am.wso2.com key.manager.dc2.am.wso2.com wss.gateway.dc2.am.wso2.com ws.gateway.dc2.am.wso2.com" | sudo tee -a /etc/hosts > /dev/null
