@@ -19,6 +19,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    service.beta.kubernetes.io/azure-load-balancer-health-probe-protocol: "TCP"
+    service.beta.kubernetes.io/azure-load-balancer-health-probe-port: "9611"
 #    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "snet-vnet-test-cst-multi-dc-westeurope-001-nodepool" # will be passed via --set-sting command.
     service.beta.kubernetes.io/azure-load-balancer-ipv4: "10.8.4.102"
     {{- with .Values.wso2.deployment.services.annotations }}
