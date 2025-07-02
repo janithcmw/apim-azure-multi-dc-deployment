@@ -122,6 +122,12 @@ spec:
           - name: wso2am-analytics-dashboard-bin
             mountPath: /home/wso2carbon/wso2-config-volume/wso2/dashboard/bin/carbon.sh
             subPath: carbon.sh
+          - name: wso2am-wso2carbon_jks
+            mountPath: /home/wso2carbon/wso2-config-volume/resources/security/wso2carbon.jks
+            subPath: wso2carbon.jks
+          - name: wso2am-client-truststore_jks
+            mountPath: /home/wso2carbon/wso2-config-volume/resources/security/client-truststore.jks
+            subPath: client-truststore.jks
           {{ if .Values.wso2.deployment.dependencies.mysql }}
           - name: mysql-connector-jar
             mountPath: /home/wso2carbon/wso2-artifact-volume/lib
@@ -141,6 +147,12 @@ spec:
         - name: wso2am-analytics-dashboard-log-storage-volume
           persistentVolumeClaim:
             claimName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-analytics-dashboard-log-storage-volume-claim
+        - name: wso2am-wso2carbon_jks
+          secret:
+            secretName: wso2carbon_jks
+        - name: wso2am-client-truststore_jks
+          secret:
+            secretName: client-truststore_jks
         {{ if .Values.wso2.deployment.dependencies.mysql }}
         - name: mysql-connector-jar
           emptyDir: {}

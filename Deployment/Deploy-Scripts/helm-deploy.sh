@@ -18,9 +18,11 @@ aksCluster_2=$(echo "aks-$customer_project-cst-multi-dc-westeurope-002")
 #login into cluster1
 az aks get-credentials --resource-group "$resourceGroup" --name "$aksCluster_1" --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
+echo "Successfully logged in to the aks cluster $aksCluster_1."
 
 #install in dc-1
 #install nginx in dc-1
+echo "Installing ingress-nginx in cluster."
 helm upgrade --install ingress-nginx ingress-nginx \
       --repo https://kubernetes.github.io/ingress-nginx \
       --namespace ingress-nginx \
@@ -28,6 +30,13 @@ helm upgrade --install ingress-nginx ingress-nginx \
       -f ./apim-321-fully-distributed-multi-dc/dc-1/ingress/apim-321-multi-dc-aks-am-internal-ingress-controller.yaml \
       --set-string controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-internal-subnet"="snet-vnet-$customer_project-cst-multi-dc-westeurope-001-loadbalancer"
 kubectl apply -f ./apim-321-fully-distributed-multi-dc/dc-1/ingress/certificate/apim-321-multi-dc-aks-am-ingress-cert.yaml
+
+# create relevant config maps.
+# keystore
+#create wso2carbon.jks and client-truststore.jks secrets.
+echo "Starting to create secrets that contains JKS files."
+kubectl create secret generic wso2carbon_jks --from-file=./apim-321-fully-distributed-multi-dc/dc-1/keystores/wso2carbon.jks
+kubectl create secret generic client-truststore_jks --from-file=./apim-321-fully-distributed-multi-dc/dc-1/keystores/client-truststore.jks
 
 #install cluster in dc-1
 helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-1 \
@@ -39,6 +48,7 @@ kubectl get pods --namespace default
 #login into cluster2
 az aks get-credentials --resource-group "$resourceGroup" --name "$aksCluster_2" --overwrite-existing --admin
 sudo kubelogin convert-kubeconfig -l azurecli
+echo "Successfully logged in to the aks cluster $aksCluster_2."
 
 #install dc-2
 #install nginx in dc-2
@@ -49,6 +59,13 @@ helm upgrade --install ingress-nginx ingress-nginx \
       -f ./apim-321-fully-distributed-multi-dc/dc-2/ingress/apim-321-multi-dc-aks-am-internal-ingress-controller.yaml \
       --set-string controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-internal-subnet"="snet-vnet-$customer_project-cst-multi-dc-westeurope-002-loadbalancer"
 kubectl apply -f ./apim-321-fully-distributed-multi-dc/dc-2/ingress/certificate/apim-321-multi-dc-aks-am-ingress-cert.yaml
+
+# create relevant config maps.
+# keystore
+#create wso2carbon.jks and client-truststore.jks secrets.
+echo "Starting to create secrets that contains JKS files."
+kubectl create secret generic wso2carbon_jks --from-file=./apim-321-fully-distributed-multi-dc/dc-2/keystores/wso2carbon.jks
+kubectl create secret generic client-truststore_jks --from-file=./apim-321-fully-distributed-multi-dc/dc-2/keystores/client-truststore.jks
 
 #install cluster in dc-2
 helm install apim-321-multi-dc-aks ./apim-321-fully-distributed-multi-dc/dc-2 \

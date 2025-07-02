@@ -135,13 +135,11 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: wso2am-gateway-storage-volume
-#          mountPath: /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs
           mountPath: /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs
         - name: wso2am-gateway-default-artifacts
           mountPath: /home/wso2carbon/wso2-artifact-volume/repository/deployment/server/synapse-configs/default/sequences/_cors_request_handler_.xml
           subPath: _cors_request_handler_.xml
         - name: wso2am-gateway-log-storage-volume
-#          mountPath: /home/wso2carbon/wso2am-3.2.1/repository/logs
           mountPath: /home/wso2carbon/wso2am-3.2.1/repository/logs
         - name: wso2am-gateway-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
@@ -152,6 +150,12 @@ spec:
         - name: wso2am-gateway-conf-entrypoint
           mountPath: /home/wso2carbon/docker-entrypoint.sh
           subPath: docker-entrypoint.sh
+        - name: wso2am-wso2carbon_jks
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/wso2carbon.jks
+          subPath: wso2carbon.jks
+        - name: wso2am-client-truststore_jks
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/client-truststore.jks
+          subPath: client-truststore.jks
       serviceAccountName: {{ .Values.kubernetes.serviceAccount }}
       {{ if .Values.wso2.deployment.am.image.imagePullSecrets.enable }}
       imagePullSecrets:
@@ -174,3 +178,9 @@ spec:
           configMap:
             name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-conf-entrypoint
             defaultMode: 0407
+        - name: wso2am-wso2carbon_jks
+          secret:
+            secretName: wso2carbon_jks
+        - name: wso2am-client-truststore_jks
+          secret:
+            secretName: client-truststore_jks
