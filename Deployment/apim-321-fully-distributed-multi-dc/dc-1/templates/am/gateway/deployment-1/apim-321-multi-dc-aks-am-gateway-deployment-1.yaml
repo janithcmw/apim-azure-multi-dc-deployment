@@ -47,21 +47,19 @@ spec:
       - name: init-tm-2
         image: busybox:1.32
         command: ['sh', '-c', 'echo -e "Checking for the availability of TM instance two deployment"; while ! nc -z {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-2-internal-service 9611; do sleep 1; printf "-"; done; echo -e "  >> TM instance two has started";']
-      - name: init-permissions-synapse
-        image: busybox
-#        command: [ "sh", "-c", "find /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs -not -path '/home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs/.snapshot*' -exec chmod 777 {} +" ]
-        command: [ "sh", "-c", "echo 'Setting permissions on /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs...';
-                    find /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs -not -path '/home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs/.snapshot*' -exec chmod 777 {} +;
-                    if [ $? -eq 0 ]; then
-                      echo 'Permissions set successfully for synapse mount.';
-                    else
-                      echo 'Error setting permissions for synapse mount, please check the NFS server settings.';
-                    fi;"
-        ]
-        volumeMounts:
-          - name: wso2am-gateway-storage-volume
+#      - name: init-permissions-synapse
+#        image: busybox
+#        command: [ "sh", "-c", "echo 'Setting permissions on /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs...';
+#                    find /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs -not -path '/home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs/.snapshot*' -exec chmod 777 {} +;
+#                    if [ $? -eq 0 ]; then
+#                      echo 'Permissions set successfully for synapse mount.';
+#                    else
+#                      echo 'Error setting permissions for synapse mount, please check the NFS server settings.';
+#                    fi;"
+#        ]
+#        volumeMounts:
+#          - name: wso2am-gateway-storage-volume
 #            mountPath: /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs
-            mountPath: /home/wso2carbon/wso2am-3.2.1/repository/deployment/server/synapse-configs
       - name: init-permissions-logs
         image: busybox
 #        command: [ "sh", "-c", "find /home/wso2carbon/wso2am-3.2.1/repository/logs -not -path '/home/wso2carbon/wso2am-3.2.1/repository/logs/.snapshot*' -exec chmod 777 {} +" ]
