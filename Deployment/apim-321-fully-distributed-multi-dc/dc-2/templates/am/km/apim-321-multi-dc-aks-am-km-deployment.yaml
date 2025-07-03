@@ -23,7 +23,7 @@ spec:
     matchLabels:
       deployment: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-km
   replicas: {{ .Values.wso2.deployment.am.km.replicas }}
-#  serviceName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-km-service
+#  serviceName: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-km-service
   template:
     metadata:
       annotations:

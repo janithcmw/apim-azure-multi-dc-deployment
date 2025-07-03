@@ -54,7 +54,7 @@ spec:
           command: ['sh', '-c', 'echo -e "Checking for the availability of WSO2 API Manager Analytics Worker deployment"; while ! nc -z {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-analytics-worker-service 7712; do sleep 1; printf "-"; done; echo -e "  >> WSO2 API Manager Analytics Worker has started";']
         - name: init-km
           image: busybox:1.32
-          command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']
+          command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']
         {{ if .Values.wso2.deployment.persistentRuntimeArtifacts.apacheSolrIndexing.enabled }}
         - name: init-permissions-carbon-database
           image: busybox
