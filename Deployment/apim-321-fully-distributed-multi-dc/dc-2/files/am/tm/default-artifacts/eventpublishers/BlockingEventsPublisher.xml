@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventPublisher name="BlockingEventsPublisher" processing="enable"
+  statistics="disable" trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
+  <from streamName="org.wso2.blocking.request.stream" version="1.0.0"/>
+  <mapping customMapping="disable" type="json"/>
+  <to eventAdapterType="logger">
+    <property name="enableLineBreak">false</property>
+    <property name="uniqueId">Blocking condition will be published to the GW</property>
+  </to>
+</eventPublisher>
