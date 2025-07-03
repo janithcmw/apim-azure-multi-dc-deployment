@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% if custom_token_revocation.connection_factory is defined %}
+  {% set key_value_pairs = custom_token_revocation.connection_factory.items() | list %}
+  {% if key_value_pairs | length < 2 %} 
+    <eventPublisher name="jmsEventPublisher4" statistics="disable" processing="disable"
+  {% else %}
+    <eventPublisher name="jmsEventPublisher4" statistics="disable"
+  {% endif %}
+                  trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
+  <from streamName="org.wso2.apimgt.token.revocation.stream" version="1.0.0"/>
+  <mapping customMapping="disable" type="map"/>
+  <to eventAdapterType="jms">
+    <property name="java.naming.factory.initial">org.wso2.andes.jndi.PropertiesFileInitialContextFactory</property>
+    <property name="java.naming.provider.url">repository/conf/jndi3.properties</property>
+    <property name="transport.jms.DestinationType">topic</property>
+    <property name="transport.jms.Destination">tokenRevocation</property>
+    <property name="transport.jms.ConcurrentPublishers">allow</property>
+    {% if key_value_pairs | length >= 2 %}
+      {% set pair = key_value_pairs[1] %}
+      {% set name = pair['key'] %}
+      {% set value = pair['value'] %}
+      <property name="transport.jms.ConnectionFactoryJNDIName">{{ name }}</property>
+    {% endif %}
+  </to>
+</eventPublisher>
+{% else %}
+  <eventPublisher name="jmsEventPublisher4" statistics="disable" 
+                  processing="disable" trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
+  <from streamName="org.wso2.apimgt.token.revocation.stream" version="1.0.0"/>
+  <mapping customMapping="disable" type="map"/>
+  <to eventAdapterType="jms">
+    <property name="java.naming.factory.initial">org.wso2.andes.jndi.PropertiesFileInitialContextFactory</property>
+    <property name="java.naming.provider.url">repository/conf/jndi3.properties</property>
+    <property name="transport.jms.DestinationType">topic</property>
+    <property name="transport.jms.Destination">tokenRevocation</property>
+    <property name="transport.jms.ConcurrentPublishers">allow</property>
+  </to>
+</eventPublisher>
+{% endif %}
