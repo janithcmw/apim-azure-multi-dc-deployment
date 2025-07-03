@@ -16,7 +16,8 @@ module "cluster1_virtual_network_to_shared_vnet" {
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
   depends_on = [
-    module.cluster1_virtual_network
+    module.cluster1_virtual_network,
+    module.cluster1_external_service_subnet
   ]
 }
 
@@ -44,7 +45,8 @@ module "cluster2_virtual_network_to_shared_vnet" {
   allow_virtual_src_network_access    = true
   allow_forwarded_src_traffic         = true
   depends_on = [
-    module.cluster2_virtual_network
+    module.cluster2_virtual_network,
+    module.cluster2_external_service_subnet
   ]
 }
 
