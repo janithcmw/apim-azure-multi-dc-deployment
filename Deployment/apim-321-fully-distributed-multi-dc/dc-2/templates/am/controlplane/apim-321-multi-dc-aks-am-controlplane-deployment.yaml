@@ -147,6 +147,12 @@ spec:
           volumeMounts:
           - name: wso2am-controlplane-conf
             mountPath: /home/wso2carbon/wso2-config-volume/repository/conf
+          - name: wso2am-wso2carbon-jks
+            mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/wso2carbon.jks
+            subPath: wso2carbon.jks
+          - name: wso2am-client-truststore-jks
+            mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/client-truststore.jks
+            subPath: client-truststore.jks
           {{ if .Values.wso2.deployment.persistentRuntimeArtifacts.apacheSolrIndexing.enabled }}
           - name: wso2am-controlplane-local-carbon-database-storage
             mountPath: /home/wso2carbon/solr/database
@@ -157,12 +163,6 @@ spec:
           - name: wso2am-controlplane-conf-entrypoint
             mountPath: /home/wso2carbon/docker-entrypoint.sh
             subPath: docker-entrypoint.sh
-          - name: wso2am-wso2carbon-jks
-            mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/wso2carbon.jks
-            subPath: wso2carbon.jks
-          - name: wso2am-client-truststore-jks
-            mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/client-truststore.jks
-            subPath: client-truststore.jks
           {{ end }}
           {{ if .Values.wso2.deployment.dependencies.mysql }}
           - name: mysql-connector-jar
