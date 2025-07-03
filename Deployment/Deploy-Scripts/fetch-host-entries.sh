@@ -63,7 +63,7 @@ fi
 ipcount=0
 HOST_ENTRIES=""
 for ip in $POD_IPS; do
-  HOST_ENTRY="$ip ${DEPLOYMENT_NAME}.$ipcount.$DC.am.wso2.com"
+  HOST_ENTRY="$ip ${DEPLOYMENT_NAME}-$ipcount-$DC.am.wso2.com"
   echo "Host entry [$ipcount]: $HOST_ENTRY"
   HOST_ENTRIES+="$HOST_ENTRY\n"
   ((ipcount++))
