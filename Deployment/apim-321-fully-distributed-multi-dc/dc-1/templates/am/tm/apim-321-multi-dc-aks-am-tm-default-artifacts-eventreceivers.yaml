@@ -18,8 +18,8 @@ metadata:
   name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-artifacts-eventreceivers
   namespace: {{ .Release.Namespace }}
 data:
-  {{- $files := .Files.Glob "am/tm/default-artifacts/eventreceivers/*.xml" }}
+  {{- $files := .Files.Glob "files/am/tm/default-artifacts/eventreceivers/*.xml" }}
   {{- range $path, $file := $files }}
     {{ base $path }}: |
-  {{ $file | indent 4 }}
+  {{ $file | toString | indent 4 }}
   {{- end }}
