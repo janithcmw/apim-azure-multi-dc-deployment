@@ -20,6 +20,6 @@ metadata:
 data:
   {{- $files := .Files.Glob "am/tm/custom-jndi-j2/*.j2" }}
   {{- range $path, $file := $files }}
-    {{ base $path } }: |
+    {{ base $path }}: |
   {{ $file | indent 4 }}
   {{- end }}

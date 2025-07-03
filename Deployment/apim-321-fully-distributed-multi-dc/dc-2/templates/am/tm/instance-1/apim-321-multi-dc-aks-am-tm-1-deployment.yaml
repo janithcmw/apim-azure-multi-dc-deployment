@@ -243,13 +243,13 @@ spec:
             name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-conf-jms-eventpublishers
         - name: wso2am-tm-default-artifacts-eventpublishers
           configMap:
-            name: { { template "apim-321-multi-dc-aks.resource.prefix" . } }-am-tm-artifacts-eventpublishers
+            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-artifacts-eventpublishers
         - name: wso2am-tm-default-artifacts-eventreceivers
           configMap:
-            name: { { template "apim-321-multi-dc-aks.resource.prefix" . } }-am-tm-artifacts-eventreceivers
+            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-artifacts-eventreceivers
         - name: wso2am-tm-default-artifacts-eventstreams
           configMap:
-            name: { { template "apim-321-multi-dc-aks.resource.prefix" . } }-am-tm-artifacts-eventstreams
+            name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-artifacts-eventstreams
         - name: wso2am-wso2carbon-jks
           secret:
             secretName: wso2carbon-jks
