@@ -191,6 +191,12 @@ spec:
               subPath: jndi3.properties.j2
             - name: wso2am-tm-conf-jms-eventpublishers
               mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/conf/templates/repository/deployment/server/eventpublishers
+            - name: wso2am-tm-default-artifacts-eventpublishers
+              mountPath: /home/wso2carbon/wso2-artifact-volume/repository/deployment/server/eventpublishers
+            - name: wso2am-tm-default-artifacts-eventreceivers
+              mountPath: /home/wso2carbon/wso2-artifact-volume/repository/deployment/server/eventreceivers
+            - name: wso2am-tm-default-artifacts-eventstreams
+              mountPath: /home/wso2carbon/wso2-artifact-volume/repository/deployment/server/eventstreams
             - name: wso2am-wso2carbon-jks
               mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/wso2carbon.jks
               subPath: wso2carbon.jks
@@ -235,6 +241,15 @@ spec:
         - name: wso2am-tm-conf-jms-eventpublishers
           configMap:
             name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-conf-jms-eventpublishers
+        - name: wso2am-tm-default-artifacts-eventpublishers
+          configMap:
+            name: { { template "apim-321-multi-dc-aks.resource.prefix" . } }-am-tm-artifacts-eventpublishers
+        - name: wso2am-tm-default-artifacts-eventreceivers
+          configMap:
+            name: { { template "apim-321-multi-dc-aks.resource.prefix" . } }-am-tm-artifacts-eventreceivers
+        - name: wso2am-tm-default-artifacts-eventstreams
+          configMap:
+            name: { { template "apim-321-multi-dc-aks.resource.prefix" . } }-am-tm-artifacts-eventstreams
         - name: wso2am-wso2carbon-jks
           secret:
             secretName: wso2carbon-jks

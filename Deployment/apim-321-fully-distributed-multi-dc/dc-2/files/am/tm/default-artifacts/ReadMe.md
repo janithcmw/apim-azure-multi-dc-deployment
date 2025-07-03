@@ -1,0 +1,1 @@
+This is used to push non preserved default artifacts 'eventreceivers', 'eventstreams', 'eventpublishers'. 
