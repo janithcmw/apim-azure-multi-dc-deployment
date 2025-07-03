@@ -17,6 +17,10 @@ kind: Ingress
 metadata:
   name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-gateway-ingress-ws
   namespace : {{ .Release.Namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
 spec:
   rules:
       - host: {{ .Values.wso2.deployment.am.gateway.ingress.websocket.nonSecure.hostname }}
