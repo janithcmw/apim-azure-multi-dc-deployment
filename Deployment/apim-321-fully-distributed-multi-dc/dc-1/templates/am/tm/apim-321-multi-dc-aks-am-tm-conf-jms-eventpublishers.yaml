@@ -1,0 +1,101 @@
+# Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-tm-conf-jms-eventpublishers
+  namespace: {{ .Release.Namespace }}
+data:
+  jmsEventPublisher3.xml.j2: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    {% if custom_token_revocation.connection_factory is defined %}
+      {% set key_value_pairs = custom_token_revocation.connection_factory.items() | list %}
+      {% if key_value_pairs | length < 1 %} 
+        <eventPublisher name="jmsEventPublisher3" statistics="disable" processing="disable"
+      {% else %}
+        <eventPublisher name="jmsEventPublisher3" statistics="disable"
+      {% endif %}
+                      trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
+      <from streamName="org.wso2.apimgt.token.revocation.stream" version="1.0.0"/>
+      <mapping customMapping="disable" type="map"/>
+      <to eventAdapterType="jms">
+        <property name="java.naming.factory.initial">org.wso2.andes.jndi.PropertiesFileInitialContextFactory</property>
+        <property name="java.naming.provider.url">repository/conf/jndi3.properties</property>
+        <property name="transport.jms.DestinationType">topic</property>
+        <property name="transport.jms.Destination">tokenRevocation</property>
+        <property name="transport.jms.ConcurrentPublishers">allow</property>
+        {% if key_value_pairs | length >= 1 %}
+          {% set pair = key_value_pairs[0] %}
+          {% set name = pair['key'] %}
+          {% set value = pair['value'] %}
+          <property name="transport.jms.ConnectionFactoryJNDIName">{{ name }}</property>
+        {% endif %}
+      </to>
+    </eventPublisher>
+    {% else %}
+      <eventPublisher name="jmsEventPublisher3" statistics="disable" 
+                      processing="disable" trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
+      <from streamName="org.wso2.apimgt.token.revocation.stream" version="1.0.0"/>
+      <mapping customMapping="disable" type="map"/>
+      <to eventAdapterType="jms">
+        <property name="java.naming.factory.initial">org.wso2.andes.jndi.PropertiesFileInitialContextFactory</property>
+        <property name="java.naming.provider.url">repository/conf/jndi3.properties</property>
+        <property name="transport.jms.DestinationType">topic</property>
+        <property name="transport.jms.Destination">tokenRevocation</property>
+        <property name="transport.jms.ConcurrentPublishers">allow</property>
+      </to>
+    </eventPublisher>
+    {% endif %}
+
+  jmsEventPublisher4.xml.j2: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    {% if custom_token_revocation.connection_factory is defined %}
+      {% set key_value_pairs = custom_token_revocation.connection_factory.items() | list %}
+      {% if key_value_pairs | length < 2 %} 
+        <eventPublisher name="jmsEventPublisher4" statistics="disable" processing="disable"
+      {% else %}
+        <eventPublisher name="jmsEventPublisher4" statistics="disable"
+      {% endif %}
+                      trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
+      <from streamName="org.wso2.apimgt.token.revocation.stream" version="1.0.0"/>
+      <mapping customMapping="disable" type="map"/>
+      <to eventAdapterType="jms">
+        <property name="java.naming.factory.initial">org.wso2.andes.jndi.PropertiesFileInitialContextFactory</property>
+        <property name="java.naming.provider.url">repository/conf/jndi3.properties</property>
+        <property name="transport.jms.DestinationType">topic</property>
+        <property name="transport.jms.Destination">tokenRevocation</property>
+        <property name="transport.jms.ConcurrentPublishers">allow</property>
+        {% if key_value_pairs | length >= 2 %}
+          {% set pair = key_value_pairs[1] %}
+          {% set name = pair['key'] %}
+          {% set value = pair['value'] %}
+          <property name="transport.jms.ConnectionFactoryJNDIName">{{ name }}</property>
+        {% endif %}
+      </to>
+    </eventPublisher>
+    {% else %}
+      <eventPublisher name="jmsEventPublisher4" statistics="disable" 
+                      processing="disable" trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
+      <from streamName="org.wso2.apimgt.token.revocation.stream" version="1.0.0"/>
+      <mapping customMapping="disable" type="map"/>
+      <to eventAdapterType="jms">
+        <property name="java.naming.factory.initial">org.wso2.andes.jndi.PropertiesFileInitialContextFactory</property>
+        <property name="java.naming.provider.url">repository/conf/jndi3.properties</property>
+        <property name="transport.jms.DestinationType">topic</property>
+        <property name="transport.jms.Destination">tokenRevocation</property>
+        <property name="transport.jms.ConcurrentPublishers">allow</property>
+      </to>
+    </eventPublisher>
+    {% endif %}
