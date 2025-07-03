@@ -69,10 +69,10 @@ data:
 
     # key manager implementation
     [apim.key_manager]
-    service_url = "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-km-service:9443/services/"
+    service_url = "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-km-service:9443/services/"
 
     [apim.oauth_config]
-    revoke_endpoint = "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-km-service:9443/oauth2/revoke"
+    revoke_endpoint = "https://{{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-km-service:9443/oauth2/revoke"
     enable_token_encryption = false
     enable_token_hashing = false
 

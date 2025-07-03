@@ -51,7 +51,7 @@ spec:
         {{- end }}
         - name: init-tm
           image: busybox:1.32
-          command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']
+          command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']
         - name: init-permissions-logs
           image: busybox
 #          command: [ "sh", "-c", "find /home/wso2carbon/wso2am-3.2.1/repository/logs -not -path '/home/wso2carbon/wso2am-3.2.1/repository/logs/.snapshot*' -exec chmod 777 {} +" ]

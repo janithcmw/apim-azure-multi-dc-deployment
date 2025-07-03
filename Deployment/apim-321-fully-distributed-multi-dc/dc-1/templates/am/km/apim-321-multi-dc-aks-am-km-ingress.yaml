@@ -36,6 +36,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-km-service
+                name: {{ template "apim-321-multi-dc-aks.resource.prefix" . }}-am-km-service
                 port:
                   number: 9443
