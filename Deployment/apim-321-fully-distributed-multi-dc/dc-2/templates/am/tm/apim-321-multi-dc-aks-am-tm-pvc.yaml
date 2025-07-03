@@ -46,7 +46,12 @@ spec:
       secretName: azure-secret
       shareName: {{ .Values.wso2.deployment.storage.shareNames.executionplans }}
       storageAccount: {{ .Values.wso2.deployment.storage.storageAccountName }}
-      mountOptions: "uid=802,gid=802,dir_mode=0777,file_mode=0777"
+#      mountOptions: "uid=802,gid=802,dir_mode=0777,file_mode=0777"
+  mountOptions:
+    - uid=802
+    - gid=802
+    - dir_mode=0777
+    - file_mode=0777
 
 ---
 
@@ -100,7 +105,12 @@ spec:
       secretName: azure-secret
       shareName: {{ .Values.wso2.deployment.storage.shareNames.eventpublishers }}
       storageAccount: {{ .Values.wso2.deployment.storage.storageAccountName }}
-      mountOptions: "uid=802,gid=802,dir_mode=0777,file_mode=0777"
+#      mountOptions: "uid=802,gid=802,dir_mode=0777,file_mode=0777"
+  mountOptions:
+    - uid=802
+    - gid=802
+    - dir_mode=0777
+    - file_mode=0777
 
 ---
 
@@ -154,7 +164,12 @@ spec:
       secretName: azure-secret
       shareName: {{ .Values.wso2.deployment.storage.shareNames.eventreceivers }}
       storageAccount: {{ .Values.wso2.deployment.storage.storageAccountName }}
-      mountOptions: "uid=802,gid=802,dir_mode=0777,file_mode=0777"
+#      mountOptions: "uid=802,gid=802,dir_mode=0777,file_mode=0777"
+  mountOptions:
+    - uid=802
+    - gid=802
+    - dir_mode=0777
+    - file_mode=0777
 
 ---
 
@@ -208,7 +223,12 @@ spec:
       secretName: azure-secret
       shareName: {{ .Values.wso2.deployment.storage.shareNames.eventstreams }}
       storageAccount: {{ .Values.wso2.deployment.storage.storageAccountName }}
-      mountOptions: "uid=802,gid=802,dir_mode=0777,file_mode=0777"
+#      mountOptions: "uid=802,gid=802,dir_mode=0777,file_mode=0777"
+  mountOptions:
+    - uid=802
+    - gid=802
+    - dir_mode=0777
+    - file_mode=0777
 
 ---
 
