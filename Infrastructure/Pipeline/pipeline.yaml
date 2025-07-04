@@ -2,6 +2,14 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
+parameters:
+  - name: customer
+    default: test
+    type: string
+  - name: helm_overide_value_string # there is a spelling issue, can this be changed?
+    default: wso2.deployment.wso2am.repository=wso2am-3.2.1-3977
+    type: string
+
 variables:
   # terraform backend
   terraformstoragerg: 'rg-cst-api-app'
@@ -21,9 +29,13 @@ resources:
       endpoint: azure-multi-dc-deployment
       name: janithcmw/apim-azure-multi-dc-deployment
       ref: refs/heads/localRun
+    - repository: cst-bnymellonprod
+      type: github
+      endpoint: wso2-cs
+      name: wso2-cs/cst-bnymellonprod
 
 pool:
-  vmImage: ubuntu-latest
+  name: shared-vmss-pool-4
 
 stages:
   - stage: Infrastructure_Provisioning
@@ -33,6 +45,7 @@ stages:
         steps:
           - script: echo Starting Azure Multi DC Pipeline!!!
             displayName: 'Beginning'
+
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
             displayName: 'Install Terraform 1.12.2'
             inputs:
@@ -46,17 +59,7 @@ stages:
               mkdir -p "$(Agent.BuildDirectory)/s/azure-build-tf"
               cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Infrastructure/Terraform/." "$(Agent.BuildDirectory)/s/azure-build-tf/"
               echo "Existing files in the Terraform build location." && ls "$(Agent.BuildDirectory)/s/azure-build-tf/"
-              
-              # handle the helm scripts.
-              mkdir -p "$(Agent.BuildDirectory)/s/helm-deployment-build"
-              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/." "$(Agent.BuildDirectory)/s/helm-deployment-build/"
-              echo "Existing files in the Helm build location." && ls "$(Agent.BuildDirectory)/s/helm-deployment-build/"
-              
-              # handle the env specific scripts.
-              mkdir -p "$(Agent.BuildDirectory)/s/env-scripts"
-              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/Deploy-Scripts/." "$(Agent.BuildDirectory)/s/env-scripts/"
-              echo "Existing files in the script location." && ls "$(Agent.BuildDirectory)/s/env-scripts/"
-            displayName: 'Handle terraform scripts | helm artefacts | env specific Env.'
+            displayName: 'Handle Terraform scripts.'
 
           - task: TerraformTaskV2@2
             displayName: 'Terraform init'
@@ -82,6 +85,7 @@ stages:
                 -var="subscription_id_shared=$(sharedSubscription)"
                 -var="resource_group_name_shared=$(sharedResourceGroup)"
                 -var="vnet_name_shared=$(sharedVnet)"
+                -var="project=${{ parameters.customer }}"
               environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
 
           - task: TerraformTaskV2@2
@@ -96,7 +100,30 @@ stages:
                 -var="subscription_id_shared=$(sharedSubscription)"
                 -var="resource_group_name_shared=$(sharedResourceGroup)"
                 -var="vnet_name_shared=$(sharedVnet)"
+                -var="project=${{ parameters.customer }}"
               environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
+
+  - stage: Deploy_Helm_Charts
+    dependsOn: Infrastructure_Provisioning
+    condition: succeeded()
+    jobs:
+      - job:
+        displayName: Deploy Helm artefacts to create desired deployment
+        steps:
+          - checkout: apim-azure-multi-dc-deployment
+            path: s/apim-azure-multi-dc-deployment
+
+          - script: |
+              # handle the helm scripts.
+              mkdir -p "$(Agent.BuildDirectory)/s/helm-deployment-build"
+              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/." "$(Agent.BuildDirectory)/s/helm-deployment-build/"
+              echo "Existing files in the Helm build location." && ls "$(Agent.BuildDirectory)/s/helm-deployment-build/"
+              
+              # handle the env specific scripts.
+              mkdir -p "$(Agent.BuildDirectory)/s/env-scripts"
+              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/Deploy-Scripts/." "$(Agent.BuildDirectory)/s/env-scripts/"
+              echo "Existing files in the script location." && ls "$(Agent.BuildDirectory)/s/env-scripts/"
+            displayName: 'Handle Env specific Scripts | Helm artefacts.'
 
           - task: AzureCLI@2
             displayName: Execute Pre Helm commands.
@@ -108,8 +135,8 @@ stages:
               workingDirectory: '$(Agent.BuildDirectory)/s/helm-deployment-build/'
             env:
               subscription_id: $(subscription_id)
-              subscription_id_shared: $(sharedVnet)
-          
+              customer_project: ${{ parameters.customer }}
+
           - task: AzureCLI@2
             displayName: Deploy Helm resources.
             inputs:
@@ -118,3 +145,141 @@ stages:
               scriptLocation: 'scriptPath'
               scriptPath: '$(Agent.BuildDirectory)/s/env-scripts/helm-deploy.sh'
               workingDirectory: '$(Agent.BuildDirectory)/s/helm-deployment-build/'
+            env:
+              customer_project: ${{ parameters.customer }}
+              helm_override_value_string: ${{parameters.helm_overide_value_string}} # there is a spelling issue, can this be changed?
+
+  - stage: Execute_The_Test_Cases
+    dependsOn: Deploy_Helm_Charts
+    condition: succeeded()
+    jobs:
+      - job:
+        displayName: Handle Test Cases.
+        steps:
+          - checkout: apim-azure-multi-dc-deployment
+            path: s/apim-azure-multi-dc-deployment
+
+          - script: |
+              # handle the env specific scripts.
+              mkdir -p "$(Agent.BuildDirectory)/s/env-scripts"
+              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/Deploy-Scripts/." "$(Agent.BuildDirectory)/s/env-scripts/"
+              echo "Existing files in the script location." && ls "$(Agent.BuildDirectory)/s/env-scripts/"
+
+          - task: AzureCLI@2
+            displayName: Execute Pre Test commands.
+            inputs:
+              azureSubscription: 'Infrastructure Provisioning Service Connection'
+              scriptType: 'bash'
+              scriptLocation: 'scriptPath'
+              scriptPath: '$(Agent.BuildDirectory)/s/env-scripts/pre-test.sh'
+              workingDirectory: '$(Agent.BuildDirectory)/s/env-scripts/'
+            env:
+              customer_project: ${{ parameters.customer }}
+
+          - script: cat /etc/hosts
+            displayName: 'List the updated /etc/hosts mappings.'
+
+          # added to run test case.
+          - checkout: cst-bnymellonprod
+            clean: true
+            path: s
+
+          - script: |
+              cd $(Agent.BuildDirectory)/s/Infrastructure-Provisioning/
+            displayName: 'Navigate to Infrastructure Directory'
+
+          - script: |
+              sudo apt install -y openjdk-11-jdk
+              echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> ~/.bashrc
+              export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+              export PATH=$JAVA_HOME/bin:$PATH\
+            displayName: 'Install Java 11 and maven'
+
+          - script: sudo apt install -y maven
+          - task: Maven@4
+            displayName: 'Running Tests on the product'
+            inputs:
+              azureSubscription: 'Infrastructure Provisioning Service Connection'
+              mavenPomFile: 'Tests/pom.xml'
+              publishJUnitResults: true
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              javaHomeOption: 'Path'
+              jdkDirectory: '/usr/lib/jvm/java-11-openjdk-amd64'
+              mavenVersionOption: 'Default'
+              mavenAuthenticateFeed: false
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false
+          # added to run test case
+          #TODO there are plenty to continue, hope there will not be much changes.
+
+  - stage: Cleanup_Infrastructure
+    dependsOn: Execute_The_Test_Cases
+    condition: succeeded()  # may need to change the condition to always()
+    jobs:
+      - job: Destroy_Infrastructure
+        displayName: 'Destroy infrastructure after 1 hour'
+        timeoutInMinutes: 70
+        steps:
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+            displayName: 'Install Terraform 1.12.2'
+            inputs:
+              terraformVersion: 1.12.2
+
+          - checkout: apim-azure-multi-dc-deployment
+            path: s/apim-azure-multi-dc-deployment
+
+          - script: |
+              # handle the tf scripts.
+              mkdir -p "$(Agent.BuildDirectory)/s/azure-build-tf"
+              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Infrastructure/Terraform/." "$(Agent.BuildDirectory)/s/azure-build-tf/"
+              echo "Existing files in the Terraform build location." && ls "$(Agent.BuildDirectory)/s/azure-build-tf/"
+
+              # handle the env specific scripts.
+              mkdir -p "$(Agent.BuildDirectory)/s/env-scripts"
+              cp -r "$(Agent.BuildDirectory)/s/apim-azure-multi-dc-deployment/Deployment/Deploy-Scripts/." "$(Agent.BuildDirectory)/s/env-scripts/"
+              echo "Existing files in the script location." && ls "$(Agent.BuildDirectory)/s/env-scripts/"
+
+          - task: AzureCLI@2
+            displayName: Undeploy Helm resources.
+            inputs:
+              azureSubscription: 'Infrastructure Provisioning Service Connection'
+              scriptType: 'bash'
+              scriptLocation: 'scriptPath'
+              scriptPath: '$(Agent.BuildDirectory)/s/env-scripts/helm-undeploy.sh'
+              workingDirectory: '$(Agent.BuildDirectory)/s/env-scripts/'
+            env:
+              customer_project: ${{ parameters.customer }}
+              helm_override_value_string: ${{parameters.helm_overide_value_string}} # there is a spelling issue, can this be changed?
+
+          # - script: |
+          #     echo "Sleeping for 10 min before cleanup..."
+          #     sleep 600
+          #   displayName: 'Wait for 10 min'
+
+          - task: TerraformTaskV2@2
+            displayName: 'Terraform init (before destroy)'
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
+              commandOptions: '-upgrade'
+              backendServiceArm: 'Infrastructure Provisioning Service Connection'
+              backendAzureRmResourceGroupName: '$(terraformstoragerg)'
+              backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
+              backendAzureRmContainerName: 'test-terraform-storage'
+              backendAzureRmKey: '.terraform/terraform.tfstate'
+
+          - task: TerraformTaskV2@2
+            displayName: 'Terraform destroy -auto-approve'
+            inputs:
+              provider: 'azurerm'
+              command: 'destroy'
+              workingDirectory: '$(Agent.BuildDirectory)/s/azure-build-tf/'
+              commandOptions: >
+                -auto-approve
+                -var="subscription_id=$(subscription_id)"
+                -var="subscription_id_shared=$(sharedSubscription)"
+                -var="resource_group_name_shared=$(sharedResourceGroup)"
+                -var="vnet_name_shared=$(sharedVnet)"
+                -var="project=${{ parameters.customer }}"
+              environmentServiceNameAzureRM: 'Infrastructure Provisioning Service Connection'
